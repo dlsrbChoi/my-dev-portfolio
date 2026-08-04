@@ -1,7 +1,6 @@
 'use client'
 
 import Link from 'next/link'
-import { Button } from '@/components/ui/button'
 import { Container } from './container'
 import { MobileNav } from './mobile-nav'
 import { ThemeToggle } from './theme-toggle'
@@ -42,11 +41,6 @@ export function Header() {
         </div>
 
         <div className="flex items-center gap-4">
-          <Link href="/login">
-            <Button variant="outline" size="sm">
-              로그인
-            </Button>
-          </Link>
           <ThemeToggle />
           <MobileNav />
         </div>
