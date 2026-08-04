@@ -16,7 +16,7 @@ export function MobileNav() {
       <SheetContent side="left" className="w-[240px]">
         <div className="mb-4">
           <Link href="/" className="font-semibold text-lg">
-            Next.js Starter
+            최인규
           </Link>
         </div>
         <nav className="space-y-3">

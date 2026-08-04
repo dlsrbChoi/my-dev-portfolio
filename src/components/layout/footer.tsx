@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import { Separator } from '@/components/ui/separator'
 import { Container } from './container'
 
@@ -8,44 +9,35 @@ export function Footer() {
         <Separator className="mb-8" />
         <div className="grid grid-cols-1 gap-8 sm:grid-cols-3">
           <div>
-            <h3 className="font-semibold text-foreground">Product</h3>
+            <h3 className="font-semibold text-foreground">사이트</h3>
             <nav className="mt-4 space-y-2 text-sm text-muted-foreground">
-              <a href="#" className="hover:text-foreground transition-colors">
-                Features
+              <Link href="/" className="hover:text-foreground transition-colors">
+                홈
+              </Link>
+              <Link href="/about" className="block hover:text-foreground transition-colors">
+                소개
+              </Link>
+              <Link href="/projects" className="block hover:text-foreground transition-colors">
+                프로젝트
+              </Link>
+            </nav>
+          </div>
+          <div>
+            <h3 className="font-semibold text-foreground">연락처</h3>
+            <nav className="mt-4 space-y-2 text-sm text-muted-foreground">
+              <a href="mailto:awdzx456@naver.com" className="hover:text-foreground transition-colors">
+                이메일
               </a>
-              <a href="#" className="block hover:text-foreground transition-colors">
-                Pricing
-              </a>
-              <a href="#" className="block hover:text-foreground transition-colors">
-                Docs
+              <a href="https://github.com/dlsrbChoi" target="_blank" rel="noopener noreferrer" className="block hover:text-foreground transition-colors">
+                GitHub
               </a>
             </nav>
           </div>
           <div>
-            <h3 className="font-semibold text-foreground">Company</h3>
+            <h3 className="font-semibold text-foreground">이력서</h3>
             <nav className="mt-4 space-y-2 text-sm text-muted-foreground">
-              <a href="#" className="hover:text-foreground transition-colors">
-                About
-              </a>
-              <a href="#" className="block hover:text-foreground transition-colors">
-                Blog
-              </a>
-              <a href="#" className="block hover:text-foreground transition-colors">
-                Careers
-              </a>
-            </nav>
-          </div>
-          <div>
-            <h3 className="font-semibold text-foreground">Legal</h3>
-            <nav className="mt-4 space-y-2 text-sm text-muted-foreground">
-              <a href="#" className="hover:text-foreground transition-colors">
-                Privacy
-              </a>
-              <a href="#" className="block hover:text-foreground transition-colors">
-                Terms
-              </a>
-              <a href="#" className="block hover:text-foreground transition-colors">
-                Contact
+              <a href="/resume" className="hover:text-foreground transition-colors">
+                다운로드
               </a>
             </nav>
           </div>
@@ -53,7 +45,7 @@ export function Footer() {
         <Separator className="my-8" />
         <div className="flex items-center justify-between">
           <p className="text-sm text-muted-foreground">
-            © 2024 Next.js Starter Kit. All rights reserved.
+            © 2026 최인규. All rights reserved.
           </p>
         </div>
       </Container>

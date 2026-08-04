@@ -14,7 +14,7 @@ export function Header() {
       <Container className="flex h-16 items-center justify-between">
         <div className="flex items-center gap-8">
           <Link href="/" className="font-bold text-lg">
-            Next.js Starter
+            최인규
           </Link>
           <nav className="hidden items-center gap-6 md:flex">
             {navItems.map((item) => (

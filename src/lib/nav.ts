@@ -5,8 +5,9 @@ export interface NavItem {
 }
 
 export const navItems: NavItem[] = [
-  { label: '기능', href: '/#features' },
-  { label: '문서', href: '/docs' },
-  { label: '예제', href: '/examples' },
-  { label: 'GitHub', href: 'https://github.com', external: true },
+  { label: '홈', href: '/' },
+  { label: '소개', href: '/about' },
+  { label: '프로젝트', href: '/projects' },
+  { label: '이력서', href: '/resume' },
+  { label: 'GitHub', href: 'https://github.com/dlsrbChoi', external: true },
 ]
