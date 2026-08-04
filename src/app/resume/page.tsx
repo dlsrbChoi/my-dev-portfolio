@@ -1,5 +1,7 @@
+import type { Metadata } from 'next'
 import { getResumeData } from '@/lib/notion'
 import { siteConfig } from '@/lib/site-config'
+import { getSkillIcon } from '@/lib/skill-icons'
 import { Container } from '@/components/layout/container'
 import { PageHeader } from '@/components/patterns/page-header'
 import { PrintButton } from '@/components/patterns/print-button'
@@ -8,6 +10,15 @@ import { ExperienceTimeline } from '@/components/resume/experience-timeline'
 import { Card } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Mail, GitBranch, Phone, MapPin } from 'lucide-react'
+
+export const metadata: Metadata = {
+  title: '이력서',
+  description: '최인규의 경력, 학력, 기술 스택을 담은 이력서입니다.',
+  openGraph: {
+    title: '이력서 | 최인규 포트폴리오',
+    description: '최인규의 경력, 학력, 기술 스택을 담은 이력서입니다.',
+  },
+}
 
 export default async function ResumePage() {
   const { experiences, education, certificates } = await getResumeData()
@@ -89,15 +100,19 @@ export default async function ResumePage() {
                   {skillGroup.category}
                 </h3>
                 <div className="flex flex-wrap gap-2">
-                  {skillGroup.items.map((skill) => (
-                    <Badge
-                      key={skill}
-                      variant="secondary"
-                      className="cursor-default"
-                    >
-                      {skill}
-                    </Badge>
-                  ))}
+                  {skillGroup.items.map((skill) => {
+                    const icon = getSkillIcon(skill)
+                    return (
+                      <Badge
+                        key={skill}
+                        variant="secondary"
+                        className="cursor-default flex items-center gap-1.5"
+                      >
+                        {icon && <span>{icon}</span>}
+                        {skill}
+                      </Badge>
+                    )
+                  })}
                 </div>
               </Card>
             ))}
