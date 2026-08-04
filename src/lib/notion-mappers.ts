@@ -64,7 +64,6 @@ export function mapNotionProjectToApp(page: PageObjectResponse): Project {
     displayOrder: displayOrderNumber || 0,
     projectType: projectTypeSelect?.name || '',
     externalLink: externalLinkUrl || undefined,
-    body: [],
   }
 }
 

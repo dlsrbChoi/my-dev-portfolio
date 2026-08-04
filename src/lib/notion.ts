@@ -1,7 +1,7 @@
 // Notion API 클라이언트 및 데이터 페칭 함수
 
 import { Client } from '@notionhq/client'
-import type { PageObjectResponse } from '@notionhq/client'
+import type { PageObjectResponse, BlockObjectResponse } from '@notionhq/client'
 import type { Project, ExperienceEntry } from '@/types/notion'
 import { mapNotionProjectToApp, mapNotionExperienceToApp } from './notion-mappers'
 
@@ -104,5 +104,40 @@ export async function getResumeData(): Promise<{
       education: [],
       certificates: [],
     }
+  }
+}
+
+/**
+ * Notion 페이지의 본문 블록을 조회합니다 (1단계, 자식 블록의 자식은 재귀 조회하지 않음)
+ * @param pageId - Notion 페이지(프로젝트) ID
+ * @returns BlockObjectResponse 배열 (실패 시 빈 배열 — graceful degrade)
+ */
+export async function getProjectBlocks(pageId: string): Promise<BlockObjectResponse[]> {
+  try {
+    const blocks: BlockObjectResponse[] = []
+    let cursor: string | undefined
+
+    do {
+      const response = await notion.blocks.children.list({
+        block_id: pageId,
+        start_cursor: cursor,
+        page_size: 100,
+      })
+
+      blocks.push(
+        ...response.results.filter(
+          (b): b is BlockObjectResponse => 'type' in b
+        )
+      )
+
+      cursor = response.has_more ? (response.next_cursor ?? undefined) : undefined
+    } while (cursor)
+
+    return blocks
+  } catch (error) {
+    console.error(`Failed to fetch blocks for page "${pageId}":`, error)
+    // 런타임 본문 조회 실패는 빌드 전체를 막지 않음 (graceful degrade)
+    // 해당 프로젝트는 히어로/지표/뱃지만 표시되고 본문 섹션만 빈 상태가 됨
+    return []
   }
 }

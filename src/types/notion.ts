@@ -14,7 +14,6 @@ export interface Project {
   displayOrder: number
   projectType: string
   externalLink?: string
-  body: NotionBlock[]
 }
 
 export interface ExperienceEntry {
@@ -26,9 +25,4 @@ export interface ExperienceEntry {
   period: { start: string; end: string }
   description: string
   displayOrder: number
-}
-
-export interface NotionBlock {
-  type: string
-  content: string | unknown
 }
