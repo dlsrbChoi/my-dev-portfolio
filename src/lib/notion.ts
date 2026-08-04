@@ -5,6 +5,9 @@ import type { PageObjectResponse, BlockObjectResponse } from '@notionhq/client'
 import type { Project, ExperienceEntry } from '@/types/notion'
 import { mapNotionProjectToApp, mapNotionExperienceToApp } from './notion-mappers'
 
+// Notion API 버전 (https://developers.notion.com/reference/versioning)
+const NOTION_VERSION = '2026-03-11'
+
 // Notion 클라이언트 초기화
 const notion = new Client({
   auth: process.env.NOTION_API_KEY,
@@ -22,7 +25,7 @@ export async function getProjects(): Promise<Project[]> {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${process.env.NOTION_API_KEY}`,
-        'Notion-Version': '2024-06-15',
+        'Notion-Version': NOTION_VERSION,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
@@ -88,7 +91,7 @@ export async function getResumeData(): Promise<{
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${process.env.NOTION_API_KEY}`,
-        'Notion-Version': '2024-06-15',
+        'Notion-Version': NOTION_VERSION,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
