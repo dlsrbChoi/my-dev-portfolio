@@ -1,0 +1,34 @@
+// Notion 데이터 모델 타입 정의
+
+export interface Project {
+  id: string
+  name: string
+  slug: string
+  summary: string
+  period: { start: string; end: string }
+  role: string[]
+  techStack: string[]
+  impactMetrics: string[]
+  coverImage?: { url: string; alt: string }
+  status: 'draft' | 'published'
+  displayOrder: number
+  projectType: string
+  externalLink?: string
+  body: NotionBlock[]
+}
+
+export interface ExperienceEntry {
+  id: string
+  name: string
+  entryType: 'experience' | 'education' | 'certificate'
+  organization: string
+  position: string
+  period: { start: string; end: string }
+  description: string
+  displayOrder: number
+}
+
+export interface NotionBlock {
+  type: string
+  content: string | unknown
+}
