@@ -1,5 +1,6 @@
 'use client'
 
+import Image from 'next/image'
 import type { BlockObjectResponse, RichTextItemResponse } from '@notionhq/client'
 import { cn } from '@/lib/utils'
 
@@ -104,7 +105,15 @@ function renderBlock(block: BlockObjectResponse): React.ReactNode {
         img.caption.map((c) => c.plain_text).join('') || 'project image'
       return (
         <figure className="my-4">
-          <img src={url} alt={alt} className="w-full rounded-lg" />
+          <div className="relative w-full aspect-video">
+            <Image
+              src={url}
+              alt={alt}
+              fill
+              sizes="(max-width: 768px) 100vw, 100vw"
+              className="object-cover rounded-lg"
+            />
+          </div>
           {img.caption.length > 0 && (
             <figcaption className="mt-2 text-center text-sm text-muted-foreground">
               <RichText items={img.caption} />

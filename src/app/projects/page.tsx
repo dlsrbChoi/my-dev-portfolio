@@ -1,8 +1,18 @@
+import type { Metadata } from 'next'
 import { getProjects } from '@/lib/notion'
 import { PageHeader } from '@/components/patterns/page-header'
 import { ProjectCard } from '@/components/projects/project-card'
 import { EmptyState } from '@/components/patterns/empty-state'
 import { Briefcase } from 'lucide-react'
+
+export const metadata: Metadata = {
+  title: '프로젝트',
+  description: '다양한 규모와 기술 스택의 프로젝트 경험을 소개합니다',
+  openGraph: {
+    title: '프로젝트 | 최인규 포트폴리오',
+    description: '다양한 규모와 기술 스택의 프로젝트 경험을 소개합니다',
+  },
+}
 
 export default async function ProjectsPage() {
   const projects = await getProjects()

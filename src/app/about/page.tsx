@@ -1,4 +1,14 @@
+import type { Metadata } from 'next'
 import { PageHeader } from '@/components/patterns/page-header'
+
+export const metadata: Metadata = {
+  title: '소개',
+  description: '프론트엔드 UI/UX 구현에서 출발해 공공 프로젝트의 풀스택 개발까지 확장한 성장 과정을 나눕니다.',
+  openGraph: {
+    title: '소개 | 최인규 포트폴리오',
+    description: '프론트엔드 UI/UX 구현에서 출발해 공공 프로젝트의 풀스택 개발까지 확장한 성장 과정을 나눕니다.',
+  },
+}
 
 export default function AboutPage() {
   return (

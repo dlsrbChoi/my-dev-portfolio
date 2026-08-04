@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import Link from 'next/link'
 import type { Project } from '@/types/notion'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
@@ -16,11 +17,13 @@ export function ProjectCard({ project, className }: ProjectCardProps) {
     <Card className={cn('flex flex-col overflow-hidden', className)}>
       {/* 썸네일 이미지 */}
       {project.coverImage && (
-        <div className="w-full h-48 overflow-hidden bg-muted">
-          <img
+        <div className="relative w-full h-48 overflow-hidden bg-muted">
+          <Image
             src={project.coverImage.url}
             alt={project.coverImage.alt}
-            className="w-full h-full object-cover"
+            fill
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+            className="object-cover"
           />
         </div>
       )}

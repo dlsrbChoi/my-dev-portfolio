@@ -1,3 +1,4 @@
+import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import { getProjects, getProjectBySlug, getProjectBlocks } from '@/lib/notion'
@@ -9,10 +10,46 @@ import { NotionRenderer } from '@/components/projects/notion-renderer'
 import { Separator } from '@/components/ui/separator'
 import { Button } from '@/components/ui/button'
 import { ExternalLink } from 'lucide-react'
+import { siteConfig } from '@/lib/site-config'
 
 export async function generateStaticParams() {
   const projects = await getProjects()
   return projects.map((p) => ({ slug: p.slug }))
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>
+}): Promise<Metadata> {
+  const { slug } = await params
+  const project = await getProjectBySlug(slug)
+
+  if (!project) {
+    return {
+      title: '프로젝트를 찾을 수 없습니다',
+      description: '요청하신 프로젝트 페이지가 없습니다.',
+    }
+  }
+
+  return {
+    title: project.name,
+    description: project.summary || project.name,
+    openGraph: {
+      title: `${project.name} | ${siteConfig.name} 포트폴리오`,
+      description: project.summary || project.name,
+      images: project.coverImage
+        ? [
+            {
+              url: project.coverImage.url,
+              width: 1200,
+              height: 630,
+              alt: project.coverImage.alt,
+            },
+          ]
+        : [],
+    },
+  }
 }
 
 export default async function ProjectDetailPage({

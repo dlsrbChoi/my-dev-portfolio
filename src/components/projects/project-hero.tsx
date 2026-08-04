@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import type { Project } from '@/types/notion'
 import { Badge } from '@/components/ui/badge'
 import { Container } from '@/components/layout/container'
@@ -23,11 +24,14 @@ export function ProjectHero({ project }: ProjectHeroProps) {
   return (
     <section className="border-b border-border">
       {project.coverImage && (
-        <div className="w-full h-56 sm:h-72 lg:h-80 overflow-hidden bg-muted">
-          <img
+        <div className="relative w-full h-56 sm:h-72 lg:h-80 overflow-hidden bg-muted">
+          <Image
             src={project.coverImage.url}
             alt={project.coverImage.alt}
-            className="w-full h-full object-cover"
+            fill
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 100vw, 100vw"
+            className="object-cover"
+            priority
           />
         </div>
       )}

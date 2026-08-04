@@ -1,4 +1,15 @@
+import type { Metadata } from 'next'
 import { Hero } from '@/components/patterns/hero'
+import { siteConfig } from '@/lib/site-config'
+
+export const metadata: Metadata = {
+  title: '홈',
+  description: siteConfig.description,
+  openGraph: {
+    title: `${siteConfig.name} | 개발자 포트폴리오`,
+    description: siteConfig.description,
+  },
+}
 
 export default function Home() {
   return (
