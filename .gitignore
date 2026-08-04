@@ -42,3 +42,6 @@ next-env.d.ts
 
 # Claude Code hook logs
 .claude/hooks/notify.log
+
+# Playwright MCP
+.playwright-mcp

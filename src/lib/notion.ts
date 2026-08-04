@@ -6,7 +6,10 @@ import type { Project, ExperienceEntry } from '@/types/notion'
 import { mapNotionProjectToApp, mapNotionExperienceToApp } from './notion-mappers'
 
 // Notion 클라이언트 초기화
-const notion = new Client({ auth: process.env.NOTION_API_KEY })
+const notion = new Client({
+  auth: process.env.NOTION_API_KEY,
+  baseUrl: 'https://api.notion.com/v1',
+})
 
 /**
  * Notion Projects Database에서 모든 프로젝트 조회
@@ -15,25 +18,37 @@ const notion = new Client({ auth: process.env.NOTION_API_KEY })
  */
 export async function getProjects(): Promise<Project[]> {
   try {
-    // @ts-expect-error - databases.query는 타입 정의에 포함되지 않음
-    const response = await notion.databases.query({
-      database_id: process.env.NOTION_PROJECTS_DB_ID!,
-      filter: {
-        property: 'Status',
-        select: {
-          equals: 'Published',
-        },
+    const response = await fetch('https://api.notion.com/v1/databases/' + process.env.NOTION_PROJECTS_DB_ID + '/query', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${process.env.NOTION_API_KEY}`,
+        'Notion-Version': '2024-06-15',
+        'Content-Type': 'application/json',
       },
-      sorts: [
-        {
-          property: 'DisplayOrder',
-          direction: 'ascending',
+      body: JSON.stringify({
+        filter: {
+          property: 'Status',
+          select: {
+            equals: 'Published',
+          },
         },
-      ],
+        sorts: [
+          {
+            property: 'DisplayOrder',
+            direction: 'ascending',
+          },
+        ],
+      }),
     })
 
+    if (!response.ok) {
+      throw new Error(`Notion API error: ${response.status}`)
+    }
+
+    const data = (await response.json()) as any
+
     // 타입 가드: PageObjectResponse인 항목만 매핑
-    return (response.results as unknown[])
+    return (data.results as unknown[])
       .filter((result): result is PageObjectResponse => {
         return typeof result === 'object' && result !== null && 'properties' in result
       })
@@ -69,19 +84,31 @@ export async function getResumeData(): Promise<{
   certificates: ExperienceEntry[]
 }> {
   try {
-    // @ts-expect-error - databases.query는 타입 정의에 포함되지 않음
-    const response = await notion.databases.query({
-      database_id: process.env.NOTION_RESUME_DB_ID!,
-      sorts: [
-        {
-          property: 'DisplayOrder',
-          direction: 'ascending',
-        },
-      ],
+    const response = await fetch('https://api.notion.com/v1/databases/' + process.env.NOTION_RESUME_DB_ID + '/query', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${process.env.NOTION_API_KEY}`,
+        'Notion-Version': '2024-06-15',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        sorts: [
+          {
+            property: 'DisplayOrder',
+            direction: 'ascending',
+          },
+        ],
+      }),
     })
 
+    if (!response.ok) {
+      throw new Error(`Notion API error: ${response.status}`)
+    }
+
+    const data = (await response.json()) as any
+
     // 타입 가드: PageObjectResponse인 항목만 매핑
-    const entries = (response.results as unknown[])
+    const entries = (data.results as unknown[])
       .filter((result): result is PageObjectResponse => {
         return typeof result === 'object' && result !== null && 'properties' in result
       })

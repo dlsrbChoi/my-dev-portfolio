@@ -128,3 +128,27 @@
     @apply font-sans;
   }
 }
+
+@media print {
+  header,
+  footer,
+  nav,
+  .print-button,
+  .theme-toggle,
+  [data-print-hidden="true"] {
+    display: none !important;
+  }
+
+  @page {
+    size: A4;
+    margin: 15mm;
+  }
+
+  :root {
+    color-scheme: light;
+  }
+
+  .resume-section {
+    page-break-inside: avoid;
+  }
+}
