@@ -6,13 +6,55 @@ import type { Project, ExperienceEntry } from '@/types/notion'
 import { mapNotionProjectToApp, mapNotionExperienceToApp } from './notion-mappers'
 
 // Notion API 버전 (https://developers.notion.com/reference/versioning)
+// 2025-09-03 이상부터 databases/query 대신 data_sources/query 사용 필수
 const NOTION_VERSION = '2026-03-11'
 
-// Notion 클라이언트 초기화
+// Notion 클라이언트 초기화 (getProjectBlocks에서만 사용)
 const notion = new Client({
   auth: process.env.NOTION_API_KEY,
   baseUrl: 'https://api.notion.com/v1',
 })
+
+// database_id → data_source_id 캐시 (DB 속성이 거의 변하지 않으므로 in-memory 캐싱)
+const dataSourceIdCache = new Map<string, string>()
+
+/**
+ * database_id로부터 실제 data_source_id를 조회합니다.
+ * Notion API 2025-09-03 이상에서 databases/query가 폐지되고 data_sources/query로 변경되었으므로 필수입니다.
+ * @param databaseId - Notion database ID
+ * @returns data_source_id
+ */
+async function getDataSourceId(databaseId: string): Promise<string> {
+  if (dataSourceIdCache.has(databaseId)) {
+    return dataSourceIdCache.get(databaseId)!
+  }
+
+  try {
+    const response = await fetch(`https://api.notion.com/v1/databases/${databaseId}`, {
+      headers: {
+        'Authorization': `Bearer ${process.env.NOTION_API_KEY}`,
+        'Notion-Version': NOTION_VERSION,
+      },
+    })
+
+    if (!response.ok) {
+      throw new Error(`Failed to retrieve database: ${response.status}`)
+    }
+
+    const data = (await response.json()) as Record<string, unknown>
+    const dataSourceId = (data.data_sources as Array<{ id: string }>)?.[0]?.id
+
+    if (!dataSourceId) {
+      throw new Error(`No data source found for database ${databaseId}`)
+    }
+
+    dataSourceIdCache.set(databaseId, dataSourceId)
+    return dataSourceId
+  } catch (error) {
+    console.error(`Failed to get data source ID for database ${databaseId}:`, error)
+    throw error
+  }
+}
 
 /**
  * Notion Projects Database에서 모든 프로젝트 조회
@@ -21,7 +63,14 @@ const notion = new Client({
  */
 export async function getProjects(): Promise<Project[]> {
   try {
-    const response = await fetch('https://api.notion.com/v1/databases/' + process.env.NOTION_PROJECTS_DB_ID + '/query', {
+    const databaseId = process.env.NOTION_PROJECTS_DB_ID
+    if (!databaseId) {
+      throw new Error('NOTION_PROJECTS_DB_ID environment variable is not set')
+    }
+
+    const dataSourceId = await getDataSourceId(databaseId)
+
+    const response = await fetch(`https://api.notion.com/v1/data_sources/${dataSourceId}/query`, {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${process.env.NOTION_API_KEY}`,
@@ -48,10 +97,10 @@ export async function getProjects(): Promise<Project[]> {
       throw new Error(`Notion API error: ${response.status}`)
     }
 
-    const data = (await response.json()) as any
+    const data = (await response.json()) as Record<string, unknown>
 
     // 타입 가드: PageObjectResponse인 항목만 매핑
-    return (data.results as unknown[])
+    return ((data.results || data.page_or_data_source) as unknown[])
       .filter((result): result is PageObjectResponse => {
         return typeof result === 'object' && result !== null && 'properties' in result
       })
@@ -87,7 +136,14 @@ export async function getResumeData(): Promise<{
   certificates: ExperienceEntry[]
 }> {
   try {
-    const response = await fetch('https://api.notion.com/v1/databases/' + process.env.NOTION_RESUME_DB_ID + '/query', {
+    const databaseId = process.env.NOTION_RESUME_DB_ID
+    if (!databaseId) {
+      throw new Error('NOTION_RESUME_DB_ID environment variable is not set')
+    }
+
+    const dataSourceId = await getDataSourceId(databaseId)
+
+    const response = await fetch(`https://api.notion.com/v1/data_sources/${dataSourceId}/query`, {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${process.env.NOTION_API_KEY}`,
@@ -108,10 +164,10 @@ export async function getResumeData(): Promise<{
       throw new Error(`Notion API error: ${response.status}`)
     }
 
-    const data = (await response.json()) as any
+    const data = (await response.json()) as Record<string, unknown>
 
     // 타입 가드: PageObjectResponse인 항목만 매핑
-    const entries = (data.results as unknown[])
+    const entries = ((data.results || data.page_or_data_source) as unknown[])
       .filter((result): result is PageObjectResponse => {
         return typeof result === 'object' && result !== null && 'properties' in result
       })

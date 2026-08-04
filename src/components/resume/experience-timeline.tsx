@@ -5,14 +5,15 @@ import { Separator } from '@/components/ui/separator'
 interface ExperienceTimelineProps {
   items: ExperienceEntry[]
   title: string
+  limit?: number
 }
 
-export function ExperienceTimeline({ items, title }: ExperienceTimelineProps) {
+export function ExperienceTimeline({ items, title, limit }: ExperienceTimelineProps) {
   const sortedItems = [...items].sort((a, b) => {
     const dateA = new Date(a.period.start).getTime()
     const dateB = new Date(b.period.start).getTime()
     return dateB - dateA
-  })
+  }).slice(0, limit ? limit : undefined)
 
   return (
     <section className="resume-section">

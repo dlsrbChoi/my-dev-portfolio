@@ -14,10 +14,10 @@ export function Footer() {
               <Link href="/" className="hover:text-foreground transition-colors">
                 홈
               </Link>
-              <Link href="/about" className="block hover:text-foreground transition-colors">
+              <Link href="/#about" className="block hover:text-foreground transition-colors">
                 소개
               </Link>
-              <Link href="/projects" className="block hover:text-foreground transition-colors">
+              <Link href="/#projects" className="block hover:text-foreground transition-colors">
                 프로젝트
               </Link>
             </nav>
@@ -36,9 +36,9 @@ export function Footer() {
           <div>
             <h3 className="font-semibold text-foreground">이력서</h3>
             <nav className="mt-4 space-y-2 text-sm text-muted-foreground">
-              <a href="/resume" className="hover:text-foreground transition-colors">
-                다운로드
-              </a>
+              <Link href="/#resume" className="hover:text-foreground transition-colors">
+                보기
+              </Link>
             </nav>
           </div>
         </div>

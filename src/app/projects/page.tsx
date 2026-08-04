@@ -15,7 +15,12 @@ export const metadata: Metadata = {
 }
 
 export default async function ProjectsPage() {
-  const projects = await getProjects()
+  let projects: Awaited<ReturnType<typeof getProjects>> = []
+  try {
+    projects = await getProjects()
+  } catch (error) {
+    console.error('Failed to fetch projects:', error)
+  }
 
   return (
     <>

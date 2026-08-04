@@ -13,8 +13,13 @@ import { ExternalLink } from 'lucide-react'
 import { siteConfig } from '@/lib/site-config'
 
 export async function generateStaticParams() {
-  const projects = await getProjects()
-  return projects.map((p) => ({ slug: p.slug }))
+  try {
+    const projects = await getProjects()
+    return projects.map((p) => ({ slug: p.slug }))
+  } catch (error) {
+    console.error('Failed to generate static params for projects:', error)
+    return []
+  }
 }
 
 export async function generateMetadata({

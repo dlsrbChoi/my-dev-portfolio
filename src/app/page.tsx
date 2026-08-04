@@ -1,26 +1,30 @@
 import type { Metadata } from 'next'
-import { Hero } from '@/components/patterns/hero'
+import { HeroSection } from '@/components/sections/hero-section'
+import { AboutSection } from '@/components/sections/about-section'
+import { ProjectsSection } from '@/components/sections/projects-section'
+import { ResumeSection } from '@/components/sections/resume-section'
+import { ContactSection } from '@/components/sections/contact-section'
+import { SectionNav } from '@/components/layout/section-nav'
 import { siteConfig } from '@/lib/site-config'
 
 export const metadata: Metadata = {
   title: '홈',
-  description: siteConfig.description,
+  description: '프론트엔드에서 풀스택으로 성장한 개발자 최인규의 포트폴리오. 프로젝트, 경력, 기술 스택을 한 페이지에서 확인하세요.',
   openGraph: {
     title: `${siteConfig.name} | 개발자 포트폴리오`,
-    description: siteConfig.description,
+    description: '프론트엔드 UI/UX 구현에서 출발해 공공 프로젝트의 풀스택 개발까지 확장한 성장형 개발자입니다.',
   },
 }
 
 export default function Home() {
   return (
-    <Hero
-      title="프론트엔드에서 풀스택으로"
-      subtitle="UI/UX 구현 능력에서 출발해 공공 프로젝트의 백엔드 로직과 데이터 흐름까지 이해 범위를 넓혀온 성장형 개발자입니다"
-      description="인천지갑 앱에서는 서로 다른 언어와 프레임워크를 표준화하며 통합을 리드했고, 전국 지자체 통합주차포털에서는 Vue.js 마이그레이션과 결제 모듈 흐름 제어를 맡았습니다."
-      cta={[
-        { label: '프로젝트 보기', href: '/projects' },
-        { label: '이력서 다운로드', href: '/resume', variant: 'outline' },
-      ]}
-    />
+    <>
+      <SectionNav />
+      <HeroSection />
+      <AboutSection />
+      <ProjectsSection />
+      <ResumeSection />
+      <ContactSection />
+    </>
   )
 }

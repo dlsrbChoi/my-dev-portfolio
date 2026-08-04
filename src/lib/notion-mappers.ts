@@ -9,21 +9,47 @@ import type { Project, ExperienceEntry } from '@/types/notion'
  * @returns 변환된 Project 객체
  */
 export function mapNotionProjectToApp(page: PageObjectResponse): Project {
-  const props = page.properties
+  const props = page.properties as Record<string, unknown>
+
+  // Notion에서 공백이 붙을 수 있으므로 양쪽 다 체크하는 헬퍼
+  const getField = (key: string) => (props[key] || props[`${key} `]) as Record<string, unknown> | undefined
 
   // 각 프로퍼티 타입을 명시적으로 캐스팅하여 strict 모드 준수
-  const nameTitle = 'title' in props.Name ? props.Name.title : []
-  const slugText = 'rich_text' in props.Slug ? props.Slug.rich_text : []
-  const summaryText = 'rich_text' in props.Summary ? props.Summary.rich_text : []
-  const periodDate = 'date' in props.Period ? props.Period.date : null
-  const roleMultiSelect = 'multi_select' in props.Role ? props.Role.multi_select : []
-  const techStackMultiSelect = 'multi_select' in props.TechStack ? props.TechStack.multi_select : []
-  const impactMetricsText = 'rich_text' in props.ImpactMetrics ? props.ImpactMetrics.rich_text : []
-  const coverImageFiles = 'files' in props.CoverImage ? props.CoverImage.files : []
-  const statusSelect = 'select' in props.Status ? props.Status.select : null
-  const displayOrderNumber = 'number' in props.DisplayOrder ? props.DisplayOrder.number : 0
-  const projectTypeSelect = 'select' in props.ProjectType ? props.ProjectType.select : null
-  const externalLinkUrl = 'url' in props.ExternalLink ? props.ExternalLink.url : null
+  const nameField = getField('Name')
+  const nameTitle = nameField && 'title' in nameField ? (nameField as any).title : []
+
+  const slugField = getField('Slug')
+  const slugText = slugField && 'rich_text' in slugField ? (slugField as any).rich_text : []
+
+  const summaryField = getField('Summary')
+  const summaryText = summaryField && 'rich_text' in summaryField ? (summaryField as any).rich_text : []
+
+  const periodField = getField('Period')
+  const periodDate = periodField && 'date' in periodField ? (periodField as any).date : null
+
+  const roleField = getField('Role')
+  const roleMultiSelect = roleField && 'multi_select' in roleField ? (roleField as any).multi_select : []
+
+  const techStackField = getField('TechStack')
+  const techStackMultiSelect = techStackField && 'multi_select' in techStackField ? (techStackField as any).multi_select : []
+
+  const impactMetricsField = getField('ImpactMetrics')
+  const impactMetricsText = impactMetricsField && 'rich_text' in impactMetricsField ? (impactMetricsField as any).rich_text : []
+
+  const coverImageField = getField('CoverImage')
+  const coverImageFiles = coverImageField && 'files' in coverImageField ? (coverImageField as any).files : []
+
+  const statusField = getField('Status')
+  const statusSelect = statusField && 'select' in statusField ? (statusField as any).select : null
+
+  const displayOrderField = getField('DisplayOrder')
+  const displayOrderNumber = displayOrderField && 'number' in displayOrderField ? (displayOrderField as any).number : 0
+
+  const projectTypeField = getField('ProjectType')
+  const projectTypeSelect = projectTypeField && 'select' in projectTypeField ? (projectTypeField as any).select : null
+
+  const externalLinkField = getField('ExternalLink')
+  const externalLinkUrl = externalLinkField && 'url' in externalLinkField ? (externalLinkField as any).url : null
 
   // 프로젝트 상태 (status)
   const status = statusSelect?.name?.toLowerCase() === 'published' ? 'published' : 'draft'
@@ -55,8 +81,8 @@ export function mapNotionProjectToApp(page: PageObjectResponse): Project {
       start: periodDate?.start || '',
       end: periodDate?.end || '',
     },
-    role: roleMultiSelect.map((m) => m.name),
-    techStack: techStackMultiSelect.map((m) => m.name),
+    role: roleMultiSelect.map((m: any) => m.name),
+    techStack: techStackMultiSelect.map((m: any) => m.name),
     impactMetrics:
       impactMetricsText[0]?.plain_text?.split('\n').filter(Boolean) || [],
     coverImage,
@@ -73,15 +99,31 @@ export function mapNotionProjectToApp(page: PageObjectResponse): Project {
  * @returns 변환된 ExperienceEntry 객체
  */
 export function mapNotionExperienceToApp(page: PageObjectResponse): ExperienceEntry {
-  const props = page.properties
+  const props = page.properties as Record<string, unknown>
 
-  const nameTitle = 'title' in props.Name ? props.Name.title : []
-  const entryTypeSelect = 'select' in props.EntryType ? props.EntryType.select : null
-  const organizationText = 'rich_text' in props.Organization ? props.Organization.rich_text : []
-  const positionText = 'rich_text' in props.Position ? props.Position.rich_text : []
-  const periodDate = 'date' in props.Period ? props.Period.date : null
-  const descriptionText = 'rich_text' in props.Description ? props.Description.rich_text : []
-  const displayOrderNumber = 'number' in props.DisplayOrder ? props.DisplayOrder.number : 0
+  // Notion에서 공백이 붙을 수 있으므로 양쪽 다 체크하는 헬퍼
+  const getField = (key: string) => (props[key] || props[`${key} `]) as Record<string, unknown> | undefined
+
+  const nameField = getField('Name')
+  const nameTitle = nameField && 'title' in nameField ? (nameField as any).title : []
+
+  const entryTypeField = getField('EntryType')
+  const entryTypeSelect = entryTypeField && 'select' in entryTypeField ? (entryTypeField as any).select : null
+
+  const organizationField = getField('Organization')
+  const organizationText = organizationField && 'rich_text' in organizationField ? (organizationField as any).rich_text : []
+
+  const positionField = getField('Position')
+  const positionText = positionField && 'rich_text' in positionField ? (positionField as any).rich_text : []
+
+  const periodField = getField('Period')
+  const periodDate = periodField && 'date' in periodField ? (periodField as any).date : null
+
+  const descriptionField = getField('Description')
+  const descriptionText = descriptionField && 'rich_text' in descriptionField ? (descriptionField as any).rich_text : []
+
+  const displayOrderField = getField('DisplayOrder')
+  const displayOrderNumber = displayOrderField && 'number' in displayOrderField ? (displayOrderField as any).number : 0
 
   const entryType = entryTypeSelect?.name?.toLowerCase() as
     | 'experience'
