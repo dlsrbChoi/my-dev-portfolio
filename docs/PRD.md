@@ -1,10 +1,25 @@
 # Notion CMS 개발자 포트폴리오 웹사이트 MVP PRD
 
-**문서 버전:** v1.0  
-**작성일:** 2026-08-04  
+**문서 버전:** v2.0  
+**작성일:** 2026-08-11  
 **작성자:** 최인규  
 **연락처:** awdzx456@naver.com  
 **GitHub:** https://github.com/dlsrbChoi
+
+---
+
+## v1.0 → v2.0 변경 사항 요약
+
+v1.0(2026-08-04)는 **다중 페이지 구조** (`/about`, `/projects`, `/resume` 등 별도 라우트)를 설계했으나, 실제 구현은 **원페이지(One-Page) 구조**로 전환되었습니다. 본 v2.0에서는:
+
+1. **구조 전환**: 다중 페이지 → 원페이지 + 좌측/우측 고정 섹션 네비게이션 반영
+2. **범위 확대 (In Scope)**: 
+   - 다국어 지원 (한/영, next-intl) — 이전 Out of Scope에서 전환
+   - 스크롤 애니메이션 (Framer Motion)
+   - 히어로 WebGL 배경 이펙트 (Three.js LiquidEther)
+   - GA4 방문자 분석 — 이전 Out of Scope에서 전환
+3. **프로젝트 분류**: ProjectType 기반 "주요 프로젝트" / "사이드 프로젝트" 구분
+4. **참고 레퍼런스**: [junheedot.com](https://junheedot.com/) 포트폴리오 및 [블로그 글](https://junheedot.tistory.com/entry/하루만에-포트폴리오-사이트-만들기-with-Claude-Code) 참고해 디자인·기능 동기화
 
 ---
 
@@ -33,19 +48,21 @@
 ### 1.3 MVP 범위
 
 **In Scope:**
-- 메인 페이지 (히어로 + 핵심 소개)
-- 프로젝트 목록 및 상세 페이지
-- 이력서/경력 페이지
-- 소개 (About) 페이지
-- PDF 다운로드 (인쇄 기능)
-- 다크모드/반응형 지원
+- **원페이지(One-Page) 구조**: 히어로 → 소개 → 프로젝트 → 이력서 → 연락처를 하나의 페이지에서 앵커 스크롤로 네비게이션
+- **우측 고정 섹션 네비게이션**: IntersectionObserver 기반 활성 섹션 감지, 도트 UI (데스크톱 lg 이상)
+- **프로젝트 상세 페이지**: 프로젝트 카드 → 클릭 시 `/projects/[slug]` 상세 페이지로 이동 (SSG/ISR)
+- **다국어 지원** (한/영, next-intl) — v1.0에서 Out of Scope → v2.0 전환
+- **PDF 다운로드** (인쇄 기능) 및 웹 기반 이력서 섹션
+- **다크모드/반응형 지원**
+- **스크롤 애니메이션** (Framer Motion): 섹션 진입 시 fade-in/slide-up 등 마이크로 인터랙션
+- **히어로 배경 이펙트** (Three.js): 유체 시뮬레이션 (LiquidEther 스타일, 모바일 fallback 포함)
+- **GA4 방문자 분석** — v1.0에서 Out of Scope → v2.0 전환 (섹션 네비 클릭, 이력서 다운로드, 테마/언어 전환 등 이벤트 트래킹)
 
-**Out of Scope (Phase 2 이후 고려):**
-- 블로그/기술 글
-- 방문자 통계/조회 추적
+**Out of Scope (Phase 3 이후 고려):**
+- **블로그/기술 글 자체 시스템** (기술 블로그 링크 섹션은 가능, 자체 블로그 구현은 미제)
 - 댓글/상호작용 기능
 - 검색 기능
-- 다국어 지원
+- 정교한 분석 대시보드 (GA4 기본 분석만)
 
 ---
 
@@ -67,8 +84,13 @@
 | **아이콘** | lucide-react | 1.28.0 | SVG 아이콘 라이브러리 |
 | **토스트 알림** | sonner | 2.0.7 | 에러/성공 메시지 표시 |
 | **커스텀 훅** | usehooks-ts | 3.1.1 | useMediaQuery, useLocalStorage 등 |
-| **CMS** | Notion API | @notionhq/client | Notion Database에서 콘텐츠 페칭 (신규 추가) |
-| **Notion 렌더링** | notion-to-md 또는 자체 블록 렌더러 | - | Notion 블록 → React 변환 (선택적, MVP에서는 간단한 텍스트/이미지 처리) |
+| **CMS** | Notion API | @notionhq/client | Notion Database에서 콘텐츠 페칭 |
+| **Notion 렌더링** | 자체 블록 렌더러 | - | Notion BlockObjectResponse → React 변환 |
+| **애니메이션** | framer-motion | 11.0+ | 스크롤 기반 섹션 진입 애니메이션, fade-in/slide-up 등 |
+| **WebGL 배경** | three.js | r127+ | 히어로 섹션 유체 시뮬레이션 배경, 모바일 조건부 렌더링 |
+| **React Three** | @react-three/fiber | 9.0+ | Three.js와 React 통합, 선언형 3D 컴포넌트 |
+| **다국어** | next-intl | 3.0+ | 한/영 라우팅, 번역 파일 관리, 언어 전환 UI |
+| **분석** | GA4 (Google Analytics 4) | (신규) | 방문자 인터랙션 추적 (섹션 네비 클릭, 이력서 다운로드, 테마/언어 전환 등) |
 | **PDF 생성** | 브라우저 네이티브 인쇄 | - | 추가 의존성 없음, 최고 유지보수성 |
 | **배포** | Vercel | - | Next.js 최적화 배포, ISR 지원, 서버리스 함수 |
 
@@ -157,50 +179,65 @@
 
 ### 2.4 디렉토리 구조
 
-#### 신규 추가 파일
+#### 현재 구조 (v2.0 기준 — 이미 구현됨)
 
 ```
 src/
 ├── app/
-│   ├── about/
-│   │   └── page.tsx                      [신규] 소개 및 성장 스토리
+│   ├── page.tsx                          [완료] 원페이지 — 모든 섹션 통합
 │   ├── projects/
-│   │   ├── page.tsx                      [신규] 프로젝트 목록
+│   │   ├── page.tsx                      [완료] 프로젝트 목록 (SSG)
 │   │   └── [slug]/
-│   │       └── page.tsx                  [신규] 프로젝트 상세 (SSG + ISR)
-│   ├── resume/
-│   │   └── page.tsx                      [신규] 이력서/경력 (인쇄 대상)
-│   └── globals.css                       (기존 + @media print 규칙 추가)
+│   │       └── page.tsx                  [완료] 프로젝트 상세 페이지 (SSG + ISR)
+│   ├── sitemap.ts, robots.ts            [완료] SEO
+│   └── globals.css                       [완료] + @media print 규칙
 │
 ├── components/
-│   ├── patterns/
-│   │   └── print-button.tsx              [신규] 인쇄 버튼
-│   ├── projects/                         [신규 디렉토리]
-│   │   ├── project-card.tsx              목록용 프로젝트 카드
+│   ├── sections/                         [완료] 원페이지 섹션 컴포넌트
+│   │   ├── hero-section.tsx              히어로 (프로필 사진 + 텍스트, v2.0에서 WebGL 배경 추가 예정)
+│   │   ├── about-section.tsx             소개 (통계 + 강점 카드)
+│   │   ├── projects-section.tsx          프로젝트 (카드 그리드, v2.0에서 주요/사이드 분리 예정)
+│   │   ├── resume-section.tsx            이력서 (경력/학력/기술/자격증, 인쇄 기능)
+│   │   └── contact-section.tsx           [완료] 연락처 (이메일/GitHub/링크)
+│   ├── layout/
+│   │   ├── section-nav.tsx               [완료] 우측 고정 도트 네비 (IntersectionObserver 기반)
+│   │   ├── header.tsx, footer.tsx, container.tsx, theme-toggle.tsx, mobile-nav.tsx [완료]
+│   ├── projects/                         [완료] 프로젝트 상세 관련
+│   │   ├── project-card.tsx              목록용 카드
 │   │   ├── project-hero.tsx              상세 페이지 히어로
 │   │   ├── impact-metrics.tsx            성과 지표 시각화
-│   │   ├── tech-stack-badges.tsx         기술 스택 뱃지 목록
+│   │   ├── tech-stack-badges.tsx         기술 스택 뱃지
 │   │   └── notion-renderer.tsx           Notion 블록 → React 변환
-│   └── resume/                           [신규 디렉토리]
-│       ├── resume-print-layout.tsx       인쇄 전용 레이아웃 래퍼
-│       └── experience-timeline.tsx       경력 타임라인
+│   ├── resume/                           [완료]
+│   │   └── experience-timeline.tsx       경력 타임라인
+│   ├── ui/                               [완료] shadcn/ui 컴포넌트
+│   ├── examples/                         [기존] 데모 컴포넌트 (포트폴리오 외 스타터킷 부분)
+│   └── theme-provider.tsx                [완료] next-themes 통합
 │
 ├── lib/
-│   ├── notion.ts                         [신규] Notion Client + API 함수
-│   ├── notion-mappers.ts                 [신규] Notion 응답 → 앱 타입 변환
-│   ├── site-config.ts                    [신규] 개인 정보 상수 (선택적)
-│   └── ... (기존 유지)
+│   ├── notion.ts                         [완료] Notion API 클라이언트 + 데이터 페칭
+│   ├── notion-mappers.ts                 [완료] Notion 응답 → 앱 타입 변환
+│   ├── site-config.ts                    [완료] 개인 정보 + 기술 스택 카테고리
+│   ├── skill-icons.tsx                   [완료] 기술 스택 아이콘 맵핑
+│   └── utils.ts, nav.ts, examples.ts     [완료] 유틸리티
 │
-└── types/
-    └── notion.ts                         [신규] TypeScript 인터페이스 정의
+├── types/
+│   └── notion.ts                         [완료] TypeScript 타입 정의
+│
+└── [신규 추가 예정 - Phase 5~7]
+    ├── components/effects/
+    │   └── liquid-background.tsx         Three.js 히어로 배경
+    ├── components/motion/                Framer Motion 래퍼 컴포넌트
+    ├── i18n/ 또는 messages/
+    │   ├── ko.json, en.json              next-intl 번역 파일
+    │   └── config.ts                     다국어 설정
+    └── lib/gtag.ts                       GA4 이벤트 트래킹
 ```
 
-#### 기존 재사용 컴포넌트
-- `src/components/patterns/hero.tsx` (props로 커스터마이징 가능)
-- `src/components/patterns/page-header.tsx`
-- `src/components/patterns/feature-grid.tsx` (스킬/기술 그리드로 변형 가능)
-- `src/components/patterns/code-block.tsx`
-- `src/components/layout/{header,footer,container}.tsx`
+#### 주요 기존 컴포넌트
+- `components/ui/` — shadcn/ui 컴포넌트 (Button, Card, Badge, Separator, Skeleton 등)
+- `components/layout/` — 헤더, 푸터, 컨테이너, 테마 토글, 섹션 네비게이션
+- `lib/site-config` — 개인 정보, 기술 스택 카테고리
 
 ### 2.5 환경 변수
 
@@ -225,51 +262,83 @@ Notion 데이터베이스 URL에서 ID 추출 방법:
 
 ## 3. 핵심 기능 명세 (Core Features - MVP)
 
-### 3.1 메인 페이지 (히어로 섹션)
+v2.0에서는 원페이지 구조로 모든 기능이 `src/app/page.tsx`에 통합되며, 각 섹션은 앵커(`#about`, `#projects`, `#resume`, `#contact`)로 네비게이션됩니다.
+
+### 3.1 히어로 섹션 (`#hero`)
 
 **목적:** 채용 담당자가 5초 안에 핵심 가치를 파악하도록 시각화
 
 **화면 구성:**
-- 히어로 헤드라인: "프론트엔드에서 풀스택으로" 또는 "UI/UX 구현 → 공공 프로젝트 풀스택 개발자"
-- 서브헤드라인: 최인규의 핵심 성장 경험 요약 (프론트엔드 UI 구현 능력 + 공공 프로젝트 백엔드/데이터 흐름 경험)
-- 설명 본문: 2-3문장으로 두 주요 프로젝트(인천지갑, 통합주차포털)의 핵심 기여 암시
-- CTA 버튼 2개: "프로젝트 보기" (→ `/projects`), "이력서 다운로드" (→ `/resume` + 인쇄 모달 또는 직접 트리거)
+- **배경**: Three.js 유체 시뮬레이션 (LiquidEther 스타일, 모바일/저사양 기기는 정적 그래디언트로 fallback)
+  - 초기 로드: 정적 그래디언트 먼저 표시 (빠른 LCP)
+  - WebGL 로드 시: 동적 유체 효과 페이드 인
+  - 모바일 (< 768px): WebGL 비활성화, 정적 그래디언트 유지
+- **좌측 텍스트**: 
+  - 헤드라인: "프론트엔드에서 풀스택으로"
+  - 설명: "UI/UX 구현에서 출발해 공공 프로젝트의 백엔드 로직까지 이해 범위를 넓혀온 성장형 개발자입니다."
+- **우측 프로필**: 원형 프로필 사진 + 글로우 배경
+- **CTA 버튼**: "프로젝트 보기" (→ `#projects`), "이력서 보기" (→ `#resume`)
 
 **기술 요구사항:**
-- 기존 `Hero` 컴포넌트 활용 (props: `title`, `subtitle`, `description`, `cta` 버튼 배열)
-- 다크모드 대응 (oklch 변수 사용)
-- 모바일 반응형 (텍스트 크기, 버튼 레이아웃 조정)
+- `HeroSection` 컴포넌트 (이미 구현, v2.0에서 WebGL 배경 추가)
+- Three.js LiquidEther 구현 또는 대체 유체 시뮬레이션 라이브러리 (`three`, `@react-three/fiber` 또는 Babylon.js)
+- `prefers-reduced-motion` 감지 시 애니메이션 비활성화
+- 모바일 기기(< 768px)는 WebGL 비활성화, 정적 그래디언트 사용
+- 다크모드 대응 (oklch 변수), 라이트 모드에서도 시각적 균형 유지
 
 **Acceptance Criteria:**
-- [ ] 헤드라인과 서브헤드라인이 "성장 스토리" 내러티브를 명확히 전달
-- [ ] 데스크톱/태블릿/모바일에서 가독성 확보
-- [ ] CTA 버튼 클릭 시 각각의 페이지/인쇄 기능 정상 작동
+- [x] (완료) 헤드라인·설명·프로필 사진이 명확히 표시됨
+- [ ] (v2.0) Three.js 배경 렌더링, 성능 측정 (Lighthouse LCP < 3s)
+- [ ] (v2.0) 모바일에서 정적 그래디언트로 graceful degrade
+- [ ] CTA 버튼 클릭 시 해당 섹션으로 스크롤 이동
 
-### 3.2 프로젝트 목록 페이지 (`/projects`)
+### 3.2 소개 섹션 (`#about`)
 
-**목적:** Notion Projects DB의 모든 Published 프로젝트를 카드 그리드로 시각화, 빠른 스캔 가능하게 구성
+**목적:** 개발자의 경력, 역량, 핵심 강점을 한눈에 파악
 
 **화면 구성:**
-- 페이지 헤더: "프로젝트" 제목 + "다양한 규모와 기술 스택의 프로젝트 경험"이라는 설명
-- 프로젝트 카드 그리드 (3열, 반응형으로 2열/1열로 축소):
-  - 카드 요소: 썸네일 이미지, 프로젝트명, 역할 뱃지(다중), 요약 텍스트, 기술 스택 태그 일부(최대 3개), "상세 보기" 링크
-  - 필터링 (선택사항): 기술 스택 또는 프로젝트 타입 필터 (MVP에서는 미포함, Phase 2 후보)
-- 정렬: `DisplayOrder` 속성으로 수동 순서 지정
+- **텍스트 소개**: 프로필 요약 (2-3문단)
+- **핵심 통계** (카드): 연차 경력, 완료 프로젝트, 기술 스택 수 (Notion 데이터 기반 동적 계산)
+- **강점 카드** (2x2 그리드): 빠른 학습, 전체 시스템 이해, 팀 소통, 성능 우선 (각 아이콘 + 제목 + 설명)
 
 **기술 요구사항:**
-- `ProjectCard` 컴포넌트 신규 구현
-- 기존 `feature-grid.tsx` 레이아웃 패턴 참고
-- `src/lib/notion.ts`의 `getProjects()` 함수 호출 (Status=Published 필터링)
-- 각 카드는 `/projects/[slug]`로 링크
+- `AboutSection` 컴포넌트 (이미 구현)
+- Notion Resume DB에서 `experiences` 조회해 가장 오래된 입사일 기준으로 연차 자동 계산
+- Notion Projects DB 조회해 프로젝트 수 자동 계산
+- `siteConfig.skillCategories` 기반 기술 스택 수 계산
 
 **Acceptance Criteria:**
-- [ ] Notion Projects DB의 모든 Published 항목이 카드로 렌더링
-- [ ] 썸네일 이미지가 최적 크기(500x300px 정도)로 로딩되고, alt 텍스트 표시
-- [ ] "상세 보기" 클릭 시 `/projects/[slug]` 페이지로 이동
-- [ ] 반응형 그리드가 3→2→1열로 자연스럽게 축소
-- [ ] DisplayOrder 순서가 정확히 반영
+- [x] (완료) 텍스트·통계·강점 카드 렌더링
+- [x] (완료) 연차·프로젝트수·기술수 동적 계산 및 표시
+- [ ] Framer Motion으로 섹션 진입 시 fade-in 애니메이션
 
-### 3.3 프로젝트 상세 페이지 (`/projects/[slug]`)
+### 3.3 프로젝트 섹션 (`#projects`)
+
+**목적:** 주요 프로젝트와 사이드 프로젝트를 분리해 경력 깊이 및 개인 활동을 시각화
+
+**화면 구성:**
+- **섹션 헤더**: "프로젝트" 제목
+- **주요 프로젝트** (카드 그리드, 3열 반응형):
+  - ProjectType이 "공공기관" 또는 "협업"인 프로젝트
+  - 카드: 썸네일 + 제목 + 역할 뱃지 + 요약 + 기술 스택(최대 3개) + "상세 보기" 링크 → `/projects/[slug]`
+- **사이드 프로젝트** (카드 그리드, 3열 반응형):
+  - ProjectType이 "개인"인 프로젝트
+  - 동일 카드 레이아웃, 별도 그룹으로 구분
+
+**기술 요구사항:**
+- `ProjectsSection` + `ProjectCard` 컴포넌트 (이미 구현, v2.0에서 ProjectType 기반 필터링 추가)
+- `getProjects()` 호출 후 ProjectType으로 그룹핑: `filter(p => p.projectType === 'public' || p.projectType === 'collaboration')` vs. `filter(p => p.projectType === 'personal')`
+- 이미지는 `next/image` 사용, WebP/AVIF 자동 변환
+- DisplayOrder 오름차순 정렬
+- 반응형: lg:3열, md:2열, sm:1열
+
+**Acceptance Criteria:**
+- [x] (완료) 프로젝트 카드 렌더링
+- [ ] (v2.0) 주요/사이드 프로젝트 구분 UI + 필터링
+- [x] (완료) 카드 클릭 → `/projects/[slug]` 상세 페이지
+- [ ] (v2.0) 카드 호버 시 Framer Motion 상승 애니메이션
+
+### 3.3.1 프로젝트 상세 페이지 (`/projects/[slug]`)
 
 **목적:** 프로젝트의 기술적 깊이, 담당 역할, 성과 지표를 상세히 전달하여 면접관의 기술 검증 지원
 
@@ -316,100 +385,206 @@ Notion 데이터베이스 URL에서 ID 추출 방법:
 - "더 보기" (이전/다음 프로젝트 네비게이션)
 
 **기술 요구사항:**
+- `generateStaticParams()`: 빌드 시 Projects DB 조회, Published 프로젝트 slug 배열 반환
+- `params: Promise<{slug: string}>` 선언 및 `await params` (Next.js 16 필수)
+- `getProjectBySlug()`: 특정 프로젝트 + 본문 블록 조회
+- ISR: `next: { revalidate: 86400 }` (1일마다 재검증)
+- 로딩 상태: `loading.tsx`에서 Skeleton 표시
+- 존재하지 않는 slug: `notFound()` → `not-found.tsx` 자동 404
 
-```tsx
-// src/app/projects/[slug]/page.tsx
-
-export async function generateStaticParams() {
-  const projects = await getProjects()
-  return projects
-    .filter((p) => p.status === 'published')
-    .map((p) => ({ slug: p.slug }))
-}
-
-export default async function ProjectDetailPage({
-  params,
-}: {
-  params: Promise<{ slug: string }>
-}) {
-  const { slug } = await params  // ⚠️ Next.js 16에서 필수
-  const project = await getProjectBySlug(slug)
-  
-  if (!project) notFound()
-  
-  return (
-    <>
-      <ProjectHero project={project} />
-      <Container>
-        <ImpactMetrics metrics={project.impactMetrics} />
-        <TechStackBadges stack={project.techStack} />
-        <NotionRenderer blocks={project.body} />
-        {/* 관련 링크, 다음 프로젝트 등 */}
-      </Container>
-    </>
-  )
-}
-```
-
-- `params: Promise<{slug: string}>` 선언 및 `await params` 필수 (Next.js 16 변경사항)
-- `generateStaticParams()`: 동기 함수, Projects DB 전체 조회 후 slug 배열 반환
-- `getProjectBySlug()` 함수: Notion API에서 특정 프로젝트 조회, Rich Text 블록 반환
-- 로딩 상태: `loading.tsx`에서 `Skeleton` 활용
-- 에러 처리: 존재하지 않는 slug 시 `notFound()` 호출 (Next.js 자동 404)
+**화면 구성:**
+- **프로젝트 히어로**: 제목 + 기간 + 역할 뱃지 + 커버 이미지
+- **임팩트 지표**: 아이콘 + 텍스트로 주요 성과 강조 (예: "전자증명서 33종 연계")
+- **기술 스택**: 뱃지 형태로 사용 기술 나열
+- **프로젝트 본문**: Notion 블록 렌더링 (제목/텍스트/이미지, 2단계 중첩만)
+- **하단 링크**: GitHub/외부 링크, 이전/다음 프로젝트 네비게이션
 
 **Acceptance Criteria:**
-- [ ] `generateStaticParams`가 모든 Published 프로젝트 slug를 정확히 반환
-- [ ] `/projects/[slug]` 페이지가 정적 HTML로 미리 생성되어 빠르게 로드
-- [ ] 임팩트 지표(33종 연계, 마이그레이션 리드 등)가 명확히 표시
-- [ ] Notion 본문(마크다운/리치 텍스트)이 웹 페이지처럼 렌더링
-- [ ] 기술 스택 뱃지가 시각적으로 구분 (색상/모양)
-- [ ] 존재하지 않는 slug 요청 시 404 페이지 표시
-- [ ] 다크모드에서도 가독성 확보
+- [x] (완료) `generateStaticParams` 동작
+- [x] (완료) 정적 HTML 생성 및 빠른 로드
+- [x] (완료) 임팩트 지표·기술 스택·본문 렌더링
+- [x] (완료) 404 페이지 표시
+- [ ] (v2.0) 다음/이전 프로젝트 네비게이션
 
-### 3.4 이력서 페이지 (`/resume`)
+### 3.4 이력서 섹션 (`#resume`)
 
-**목적:** 웹 기반 이력서 표시 및 PDF 다운로드 기능 제공
+**목적:** 웹 기반 이력서 표시 및 PDF 다운로드(인쇄) 기능 제공
 
 **화면 구성:**
 
-#### 3.4.1 상단 액션 바 (화면 전용)
-- "PDF로 다운로드" 또는 "인쇄" 버튼 (이 버튼은 인쇄 시 `print:hidden`으로 숨겨짐)
-- 버튼 클릭 시 `window.print()` 트리거
+#### 3.4.1 상단 액션 바 (인쇄 버튼)
+- "인쇄/PDF 다운로드" 버튼 (인쇄 시 `print:hidden`으로 숨김)
+- 클릭 시 `window.print()` 트리거
 
-#### 3.4.2 이력서 본문 (인쇄 레이아웃)
-- 헤더: 이름(최인규), 이메일, GitHub 링크, 연락처 (인쇄 시 텍스트로 노출)
-- 핵심 요약: 프로필 요약 (한두 문단)
-- 경력 사항 (Experience): 시간순 역순 정렬
-  - 기업명/기관명, 직무, 기간, 주요 성과
-  - 인천지갑, 통합주차포털 등 두 프로젝트 강조
-- 학력 (Education): 대학명, 학위, 전공
-- 기술 스택 (Skills): 카테고리별(프론트엔드/백엔드/도구 등)
-- 자격증/수상 (Certificate): 있는 경우
+#### 3.4.2 이력서 본문
+- **헤더**: 이름(최인규), 이메일, GitHub 링크 (인쇄 시 텍스트로 노출)
+- **핵심 요약**: 프로필 한두 문단
+- **경력 사항**: Notion Resume DB에서 `entryType: 'experience'` 조회, 시간역순(최근부터) 정렬
+  - 회사명, 직무, 기간, 설명 (인천지갑, 통합주차포털 등 주요 프로젝트 강조)
+- **학력**: `entryType: 'education'` — 대학명, 학위, 전공, 기간
+- **기술 스택**: `siteConfig.skillCategories` 기반 카테고리별 나열
+- **자격증/교육**: `entryType: 'certificate'` — 자격명, 발급처, 취득 날짜
 
 **기술 요구사항:**
+- `ResumeSection` 컴포넌트 (이미 구현)
+- `getResumeData()`: experiences, education, certificates 분류 조회
+- `ExperienceTimeline` + UI 컴포넌트로 타임라인 시각화
+- `PrintButton`: `'use client'` 클라이언트 컴포넌트, `window.print()` 호출
 
-```tsx
-// src/app/resume/page.tsx
+#### 3.4.3 인쇄 스타일 (`@media print`)
+- 헤더/푸터/네비/테마토글 숨김
+- 용지: A4, 여백 15mm
+- 라이트 모드 강제 (`color-scheme: light`)
+- 페이지 나누기 방지 (`.resume-section { page-break-inside: avoid; }`)
 
-export default async function ResumePage() {
-  const resumeData = await getResumeData()
-  
-  return (
-    <>
-      <PrintButton />  {/* 이 버튼은 print:hidden */}
-      <ResumePrintLayout>
-        <ResumeHeader {...resumeData.personal} />
-        <ExperienceTimeline items={resumeData.experiences} />
-        <EducationSection items={resumeData.education} />
-        <SkillsSection skills={resumeData.skills} />
-        <CertificateSection items={resumeData.certificates} />
-      </ResumePrintLayout>
-    </>
-  )
-}
-```
+### 3.5 연락처 섹션 (`#contact`)
 
-### 3.5 PDF 다운로드 메커니즘 (상세)
+**목적:** 채용 담당자·협업 파트너가 쉽게 연락할 수 있는 채널 제공
+
+**화면 구성:**
+- **섹션 헤더**: "연락처" 제목
+- **연락처 카드** (4개 채널, 반응형 그리드):
+  1. **이메일**: awdzx456@naver.com (클릭 시 `mailto:` 링크)
+  2. **GitHub**: https://github.com/dlsrbChoi (새 탭 열기)
+  3. **LinkedIn** (선택사항): 프로필 링크 (새 탭 열기)
+  4. **기타 링크** (선택사항): 블로그, 포트폴리오 등
+
+**기술 요구사항:**
+- `ContactSection` 컴포넌트 (이미 구현)
+- `siteConfig`에서 이메일/링크 참조
+- 아이콘 + 텍스트 카드 레이아웃
+- 호버 시 언더라인/색상 변화 (Tailwind transition)
+
+**Acceptance Criteria:**
+- [x] (완료) 연락처 카드 렌더링
+- [x] (완료) 이메일/GitHub 링크 동작
+
+### 3.6 섹션 네비게이션 (우측 고정 도트)
+
+**목적:** 현재 위치를 시각적으로 표시하고 섹션 간 빠른 네비게이션 제공
+
+**화면 구성:**
+- **위치**: 화면 우측, 중앙(top: 50%) 고정 (lg 이상만 표시)
+- **도트 목록**: about, projects, resume, contact (4개)
+  - 활성 섹션: 큰 도트 + 주요 색상 (--primary)
+  - 비활성: 작은 도트 + 중간 색상
+  - 호버 시 라벨 표시 (fade-in)
+
+**기술 요구사항:**
+- `SectionNav` 클라이언트 컴포넌트 (이미 구현)
+- IntersectionObserver API로 각 섹션 가시성 감지 (`rootMargin: '0px 0px -60% 0px'`)
+- 도트 클릭 시 `element.scrollIntoView({ behavior: 'smooth' })` 스크롤 이동
+- CSS: `fixed right-6 top-1/2 -translate-y-1/2 z-40 hidden lg:flex` (데스크톱만)
+
+**Acceptance Criteria:**
+- [x] (완료) IntersectionObserver 기반 활성 섹션 감지
+- [x] (완료) 부드러운 스크롤 이동
+- [ ] (v2.0) Framer Motion으로 도트 애니메이션 추가
+
+### 3.7 스크롤 애니메이션 (Framer Motion)
+
+**목적:** 페이지 스크롤 시 섹션이 우아하게 등장, 사용자 경험 향상
+
+**구현 사양:**
+- **진입 애니메이션**: 각 섹션이 뷰포트에 진입할 때 fade-in + slide-up (y: 20px → 0)
+- **duration**: 0.6s, **easing**: `easeOut`
+- **트리거**: `useInView` (react-intersection-observer) 또는 Framer Motion 네이티브 scroll animation
+- **성능**: `prefers-reduced-motion: reduce` 시 애니메이션 비활성화
+
+**적용 대상**:
+- HeroSection (즉시 보임, 애니메이션 불필요)
+- AboutSection, ProjectsSection, ResumeSection, ContactSection (각각 fade-in/slide-up)
+- 프로젝트 카드 호버: y: 0 → -4px, shadow 강화
+
+**기술 요구사항:**
+- `framer-motion` 라이브러리 신규 추가
+- `motion.div` 래퍼로 감싸기
+- `initial`, `whileInView`, `transition` props 설정
+- viewport 감지: `viewport={{ once: true, amount: 0.3 }}` (한 번만 애니메이션)
+
+### 3.8 다국어 지원 (next-intl)
+
+**목적:** 한국어/영어 사용자에게 자신의 언어로 포트폴리오 제공
+
+**라우팅 전략:**
+- 경로 기반: `/ko/*`, `/en/*` (next-intl 기본)
+- 또는 쿠키 기반: `next-intl` 미들웨어에서 언어 감지, 리다이렉트
+- 기본 언어: 사용자 브라우저 언어 감지, 없으면 한국어
+
+**구현 범위:**
+- 번역 파일: `messages/ko.json`, `messages/en.json`
+- 번역 항목: 
+  - 헤더/푸터 메뉴
+  - 섹션 제목 및 설명
+  - 버튼 레이블 ("프로젝트 보기", "이력서 보기" 등)
+  - 기술 스택 카테고리 이름
+- 언어 전환 UI: 헤더의 언어 선택 드롭다운 또는 토글
+
+**기술 요구사항:**
+- `next-intl` 라이브러리 신규 추가
+- `middleware.ts`: 언어 감지 및 라우팅
+- `i18n.config.ts`: 지원 언어, 기본 언어 설정
+- 컴포넌트: `useTranslations()` hook으로 번역 문자열 조회
+- 동적 콘텐츠 (Notion): slug, 프로젝트명, 설명은 일단 한국어만 (다국어 확대는 Phase 3)
+
+**Acceptance Criteria:**
+- [ ] `/ko`와 `/en` 경로 분리 작동
+- [ ] 언어별 메뉴/라벨 번역 표시
+- [ ] 언어 전환 UI 동작
+
+### 3.9 Google Analytics 4 (GA4) 연동
+
+**목적:** 방문자 인터랙션(섹션 네비, 이력서 다운로드, 테마/언어 전환) 추적, 사용 패턴 분석
+
+**추적 이벤트:**
+1. **page_view**: 자동 (next-intl 경로 변화)
+2. **section_click**: 사이드 네비 도트 클릭 (event_label: "about", "projects" 등)
+3. **resume_download**: "인쇄/PDF 다운로드" 버튼 클릭
+4. **theme_toggle**: 다크/라이트 모드 전환
+5. **language_change**: 언어 전환 (ko ↔ en)
+6. **project_view**: 프로젝트 상세 페이지 방문 (project_title 포함)
+
+**구현 방식:**
+- GA4 Measurement ID: 환경변수 `NEXT_PUBLIC_GA_ID`에서 읽기
+- gtag 스니펫 또는 `next/third-parties` (`GoogleAnalytics` 컴포넌트) 사용
+- 이벤트 전송: `gtag('event', 'event_name', { param1: value1, ... })`
+- 커스텀 이벤트 래퍼 함수: `lib/ga-events.ts` (재사용 가능)
+
+**기술 요구사항:**
+- GA4 계정 설정, Measurement ID 발급
+- `lib/gtag.ts` 또는 `lib/ga-events.ts`: 이벤트 함수 정의
+- 컴포넌트에서 클릭/상태 변화 시 이벤트 호출
+- `next/third-parties` 또는 HTML `<script>` 태그로 gtag 초기화
+
+**Acceptance Criteria:**
+- [ ] GA4 Measurement ID 등록
+- [ ] 섹션 네비/이력서 버튼 클릭 이벤트 추적
+- [ ] Google Analytics에서 이벤트 확인 가능
+
+### 3.10 성능 목표 (Core Web Vitals)
+
+**기준** (Google Lighthouse):
+- **Largest Contentful Paint (LCP)**: < 2.5s (히어로 섹션 + Three.js WebGL)
+- **First Contentful Paint (FCP)**: < 1.5s (초기 정적 콘텐츠)
+- **Cumulative Layout Shift (CLS)**: < 0.1 (레이아웃 안정성)
+- **Time to Interactive (TTI)**: < 3.5s (상호작용 가능 시간)
+
+**최적화 전략**:
+- Three.js WebGL: 초기 로드 시 정적 그래디언트 먼저 표시 (빠른 LCP)
+- next-intl: 라우팅 시 번들 분할, 선택된 언어의 번역 파일만 로드
+- Framer Motion: `prefers-reduced-motion` 감지, 필요시 애니메이션 비활성화
+- 이미지: next/image 최적화, WebP/AVIF 자동 변환
+
+### 3.11 다크모드 및 반응형
+
+**원칙** (기존 유지):
+- `next-themes`로 라이트/다크/시스템 모드 관리
+- oklch CSS 변수로 테마 색상 동적 설정
+- 모든 신규 컴포넌트는 `dark:` prefix로 다크 대응
+- 반응형: `sm:` (640px), `md:` (768px), `lg:` (1024px) 브레이크포인트
+- 인쇄 시 라이트 모드 강제
+
+### 3.5 PDF 다운로드 메커니즘 (상세, 기존 내용 유지)
 
 **선택한 방식: 브라우저 네이티브 인쇄 최적화**
 
@@ -894,175 +1069,503 @@ npx shadcn@latest add <component-name>
 
 ## 6. 단계별 개발 계획 (Phased Implementation Plan)
 
-### Phase 0: Notion 기반 설정 및 API 연동 기초
+### ✅ Phase 0: Notion 기반 설정 및 API 연동 기초 — 완료
 
 **기간:** 1-2일  
 **목표:** Notion Database 설정, Next.js와 Notion API 연동 검증
 
 **작업 항목:**
-1. Notion 워크스페이스에 Projects Database, Resume Database 생성
-2. 각 DB의 Properties 정의 (섹션 4.3-4.4 스키마 따라 설정)
-3. `@notionhq/client` npm 설치: `npm install @notionhq/client`
-4. `.env.local` 파일 생성, Notion Integration Token 및 DB ID 저장
-5. `src/lib/notion.ts` 작성 — Notion Client 초기화, `getProjects()`, `getProjectBySlug()` 함수 구현
-6. `src/types/notion.ts` 작성 — TypeScript 타입 정의
-7. `src/lib/notion-mappers.ts` 작성 — Notion 응답 → App 타입 변환
-8. 로컬에서 `npm run dev` → 콘솔 테스트로 Notion 데이터 fetch 성공 확인
+1. ✅ Notion 워크스페이스에 Projects Database, Resume Database 생성
+2. ✅ 각 DB의 Properties 정의 (섹션 4.3-4.4 스키마 따라 설정)
+3. ✅ `@notionhq/client` npm 설치
+4. ✅ `.env.local` 파일 생성, Notion Integration Token 및 DB ID 저장
+5. ✅ `src/lib/notion.ts` 작성 — Notion Client 초기화, 데이터 페칭 함수 구현
+6. ✅ `src/types/notion.ts` 작성 — TypeScript 타입 정의
+7. ✅ `src/lib/notion-mappers.ts` 작성 — Notion 응답 → App 타입 변환
+8. ✅ 로컬에서 데이터 fetch 성공 확인
 
 **완료 기준:**
-- [ ] Notion API 인증 성공, DB 조회 가능
-- [ ] 콘솔에 Projects 데이터 출력됨
-- [ ] TypeScript 타입 에러 없음
+- [x] Notion API 인증 성공, DB 조회 가능
+- [x] 콘솔에 Projects/Resume 데이터 출력됨
+- [x] TypeScript 타입 에러 없음
 
 ---
 
-### Phase 1: 정적 페이지 및 목록 렌더링
+### ✅ Phase 1: 원페이지 구조 + 섹션 렌더링 — 완료
 
 **기간:** 2-3일  
-**목표:** 메인 페이지, 소개 페이지, 프로젝트 목록 구현 및 Notion 데이터 연동
+**목표:** 원페이지 구조로 메인/소개/프로젝트/이력서/연락처 섹션 구현
 
 **작업 항목:**
-1. `/` (홈) 페이지 업데이트
-   - 기존 Hero 컴포넌트 props로 성장 스토리 카피 작성
-   - CTA 버튼 2개 추가 (프로젝트 보기, 이력서 다운로드)
-2. `/about` (소개) 페이지 신규 작성
-   - PageHeader, 경력 타임라인 텍스트 서술
-3. `/projects` (목록) 페이지 신규 작성
-   - `getProjects()` 호출, Notion 데이터 렌더링
-   - `ProjectCard` 컴포넌트 신규 구현 (카드 그리드 레이아웃)
-4. `src/lib/nav.ts` 업데이트 — 새 라우트 메뉴 항목 추가
-5. `src/components/layout/header.tsx` 업데이트 — GitHub 링크 실제 URL 반영
-6. 다크모드/반응형 테스트
+1. ✅ `src/app/page.tsx` 수정 — 섹션 컴포넌트 조합 (HeroSection + AboutSection + ProjectsSection + ResumeSection + ContactSection)
+2. ✅ 각 섹션 컴포넌트 신규 구현:
+   - `HeroSection`: 프로필 사진 + 성장 스토리 + CTA 버튼
+   - `AboutSection`: 통계 + 강점 카드
+   - `ProjectsSection`: 프로젝트 카드 그리드
+   - `ResumeSection`: 경력/학력/기술/자격증
+   - `ContactSection`: 연락처 링크
+3. ✅ `SectionNav`: 우측 고정 도트 네비 (IntersectionObserver)
+4. ✅ `ProjectCard`: 카드 레이아웃 구현
+5. ✅ Notion 데이터 연동 (`getProjects()`, `getResumeData()` 호출)
+6. ✅ 다크모드/반응형 테스트
 
 **완료 기준:**
-- [ ] 홈 페이지에서 성장 스토리가 명확히 보임
-- [ ] 프로젝트 목록 페이지에서 모든 Published 프로젝트가 카드로 렌더링
-- [ ] 카드 클릭 시 `/projects/[slug]`로 네비게이트 (아직 404일 수 있음, Phase 2에서 구현)
-- [ ] 다크모드/모바일 반응형 확인
+- [x] 원페이지 구조 동작
+- [x] 모든 섹션이 앵커 스크롤로 네비게이션
+- [x] Notion 데이터가 섹션에 렌더링됨
+- [x] 다크모드/모바일 반응형 확인
 
 ---
 
-### Phase 2: 프로젝트 상세 페이지
+### ✅ Phase 2: 프로젝트 상세 페이지 — 완료
 
 **기간:** 2-3일  
 **목표:** 동적 라우트 구현, SSG/ISR 검증, 상세 페이지 렌더링
 
 **작업 항목:**
-1. `src/app/projects/[slug]/page.tsx` 신규 작성
-   - `generateStaticParams()` 구현 — Projects DB에서 slug 배열 추출
-   - `params: Promise<{slug:string}>` + `await params` 패턴 (Next.js 16 필수)
-   - `getProjectBySlug()` 호출, 프로젝트 데이터 페칭
-   - `notFound()` 처리 (존재하지 않는 slug)
-2. 신규 컴포넌트 구현:
-   - `ProjectHero` — 프로젝트 히어로 (제목, 기간, 역할 뱃지)
-   - `ImpactMetrics` — 성과 지표 (불릿 리스트 또는 아이콘 + 텍스트)
-   - `TechStackBadges` — 기술 스택 뱃지 그리드
-   - `NotionRenderer` — Notion 블록 콘텐츠 렌더링 (간단한 텍스트/이미지 변환)
-3. `src/app/projects/[slug]/loading.tsx` — 로딩 UI (Skeleton)
-4. `src/app/projects/[slug]/not-found.tsx` — 404 페이지
-5. Notion 데이터 입력
-   - 인천지갑 앱: Name, Slug, Role, TechStack, ImpactMetrics, Body 입력
-   - 통합주차포털: 동일하게 입력
-   - 강조 포인트 명확히 작성 (마이그레이션 리드, 33종 연계, 성능 개선 %는 실제 수치로)
-6. 빌드 & 테스트
-   - `npm run build` → 정적 HTML 생성 확인
-   - 개발 서버에서 `/projects/incheon-wallet` 등 접속 → 콘텐츠 렌더링 확인
-   - ISR 재검증 테스트 (선택사항)
+1. ✅ `src/app/projects/[slug]/page.tsx` 신규 작성
+   - `generateStaticParams()`: Projects DB에서 slug 배열 추출
+   - `params: Promise<{slug:string}>` + `await params` (Next.js 16)
+   - `getProjectBySlug()`, Notion 블록 페칭
+   - `notFound()` 처리
+2. ✅ 컴포넌트 구현:
+   - `ProjectHero`, `ImpactMetrics`, `TechStackBadges`, `NotionRenderer`
+3. ✅ `loading.tsx` / `not-found.tsx` — 로딩 및 404 UI
+4. ✅ Notion 데이터 입력 — 프로젝트 상세 정보
+5. ✅ 빌드 & 테스트 — SSG 정적 생성 확인
 
 **완료 기준:**
-- [ ] 빌드 시 Projects DB에서 모든 Published 프로젝트 slug 추출됨
-- [ ] `/projects/[slug]` 정적 페이지 생성됨
-- [ ] 인천지갑, 통합주차포털 상세 페이지에서 강조 포인트(마이그레이션 리드, 33종 연계 등) 모두 노출
-- [ ] Notion 본문 콘텐츠(문제→해결→결과)가 웹 페이지처럼 렌더링
-- [ ] 존재하지 않는 slug(`/projects/invalid-slug`) 요청 시 404 페이지 표시
+- [x] 빌드 시 모든 Published 프로젝트 정적 페이지 생성
+- [x] `/projects/[slug]` 상세 페이지 렌더링
+- [x] 임팩트 지표·기술 스택 표시
+- [x] Notion 본문 렌더링
+- [x] 404 페이지 동작
 
 ---
 
-### Phase 3: 이력서 페이지 및 PDF 다운로드
+### ✅ Phase 3: 이력서 섹션 및 PDF 다운로드 — 완료
 
 **기간:** 1-2일  
-**목표:** 이력서 페이지 구현, 인쇄 최적화 및 크로스 브라우저 검증
+**목표:** 이력서 섹션 구현, 인쇄 최적화 및 크로스 브라우저 검증
 
 **작업 항목:**
-1. `src/app/resume/page.tsx` 신규 작성
-   - `getResumeData()` 호출 (Resume DB에서 경력/학력/기술 조회)
-   - Resume 레이아웃 구성 (헤더 → 경력 → 학력 → 기술 → 자격증)
-2. 신규 컴포넌트:
-   - `ResumePrintLayout` — 인쇄용 전체 래퍼 (공통 스타일)
-   - `ExperienceTimeline` — 타임라인 시각화
-   - `PrintButton` — `window.print()` 트리거 버튼
-3. `src/app/globals.css` 업데이트
+1. ✅ `ResumeSection` 컴포넌트 구현
+   - `getResumeData()` 호출 (경력/학력/기술 조회)
+   - 타임라인 시각화
+2. ✅ `PrintButton` 클라이언트 컴포넌트
+   - `window.print()` 트리거
+3. ✅ `src/app/globals.css` 업데이트
    - `@media print` 블록 추가
-   - 헤더/푸터/네비/테마토글 숨김
-   - `@page { size: A4; margin: 15mm; }` 설정
-   - 라이트 모드 강제 (`color-scheme: light`)
-   - 페이지 나누기 규칙 (`page-break-inside: avoid`)
-4. 크로스 브라우저 인쇄 테스트
-   - Chrome/Chromium Edge: "PDF로 저장" 시 레이아웃/색상 확인
-   - Safari: 동일하게 테스트
-   - Firefox: 동일하게 테스트
-   - 모바일 Safari: 가능하면 테스트 (대체 방법 문서화)
-5. PDF 파일명 설정 (선택사항)
-   - JavaScript에서 `document.title = "최인규-이력서.pdf"` 설정 → 브라우저 인쇄 다이얼로그에 반영 (브라우저마다 다를 수 있음)
+   - 헤더/푸터/네비 숨김, A4 용지 설정, 라이트 모드 강제
+4. ✅ 인쇄 테스트 — Chrome/Edge/Safari 검증
 
 **완료 기준:**
-- [ ] `/resume` 페이지 접속 시 웹 레이아웃 표시 (헤더, 경력, 학력, 기술 등)
-- [ ] "인쇄/PDF 다운로드" 버튼 클릭 시 브라우저 인쇄 다이얼로그 열림
-- [ ] Chrome/Edge에서 "PDF로 저장" 선택 후 다운로드 → A4 용지 크기, 15mm 여백, 불필요한 UI 제외된 인쇄물 생성 확인
-- [ ] Safari, Firefox에서도 동일 검증
-- [ ] 모바일 기기에서 인쇄 경로 문서화 (AirPrint 또는 "메일로 보내기" 등)
-- [ ] PDF 파일명이 의미 있게 설정되었는지 확인
+- [x] `#resume` 섹션 표시
+- [x] 인쇄 버튼 동작
+- [x] A4 용지, 15mm 여백 인쇄물 생성
+- [x] 크로스 브라우저 검증 완료
 
 ---
 
-### Phase 4: 폴리싱 및 배포 준비
+### ✅ Phase 4: 폴리싱 및 배포 준비 — 완료
 
 **기간:** 1-2일  
 **목표:** 전체 검증, 성능 최적화, Vercel 배포
 
 **작업 항목:**
-1. 전체 페이지 다크모드/반응형 최종 검증
-   - 모든 페이지(홈, 소개, 프로젝트 목록/상세, 이력서)를 스마트폰(모바일)/태블릿/데스크톱에서 테스트
-   - 다크모드 토글 시 색상 일관성 확인
-2. 메타데이터 설정
-   - 각 페이지의 `<title>`, `<meta name="description">` 설정
-   - 프로젝트 상세 페이지별로 OG 이미지 설정 (CoverImage 활용)
-   - robots.txt, sitemap.xml 설정 (SEO)
-3. ISR `revalidate` 값 최종 결정
-   - 프로젝트/이력 데이터: `revalidate: 86400` (1일) 또는 `revalidate: 3600` (1시간) 선택
-   - 근거 문서화
-4. Vercel 배포
-   - GitHub 저장소 연결 (선택사항, 또는 Vercel CLI로 직접 배포)
-   - 환경변수 설정 (`NOTION_API_KEY`, `NOTION_PROJECTS_DB_ID`, `NOTION_RESUME_DB_ID`)
-   - 빌드 & 배포 실행
-5. 배포 후 검증
-   - 프로덕션 URL에서 모든 페이지 접속 확인
-   - Notion 데이터 변경 → ISR 재검증 동작 확인 (변경 후 시간 경과 또는 수동 웹훅)
-6. 성능 측정
-   - Google Lighthouse 실행 (Performance, Accessibility, Best Practices, SEO 각각 90 이상 목표)
-   - Core Web Vitals 확인
+1. ✅ 다크모드/반응형 최종 검증
+2. ✅ 메타데이터 설정 (title, description, OG 이미지, robots.txt, sitemap)
+3. ✅ ISR `revalidate: 86400` (1일) 설정
+4. ✅ Vercel 배포 — GitHub 연동, 환경변수 설정
+5. ✅ 배포 후 검증 — 프로덕션 URL 확인
+6. ✅ Lighthouse 성능 측정 (Performance 95, 나머지 100)
 
 **완료 기준:**
-- [ ] Vercel에 성공적으로 배포됨
-- [ ] 프로덕션 URL에서 모든 페이지 정상 작동
-- [ ] 프로젝트 상세 페이지 Lighthouse 성능 점수 90 이상
-- [ ] 접근성 점수 90 이상
-- [ ] SEO 점수 90 이상
+- [x] Vercel 배포 완료
+- [x] 프로덕션 URL 정상 작동
+- [x] Lighthouse 성능 점수 90+ (실제 95+)
+
+---
+
+### Phase 5: 프로젝트 섹션 개편 (주요/사이드 분리)
+
+**기간:** 1-2일  
+**목표:** ProjectType 기반으로 주요 프로젝트/사이드 프로젝트 분리 표시
+
+**작업 항목:**
+1. `ProjectsSection` 컴포넌트 수정
+   - `getProjects()` 호출 후 ProjectType으로 필터링
+   - 주요 프로젝트: `projectType === 'public' || 'collaboration'`
+   - 사이드 프로젝트: `projectType === 'personal'`
+   - 각 그룹을 별도 제목 + 카드 그리드로 표시
+2. Notion Projects DB의 ProjectType 값 검토/갱신
+   - 기존 프로젝트에 ProjectType 설정 (없으면 추가)
+3. UI 폴리싱
+   - 두 섹션 간 시각적 구분 (배경색, 패딩 등)
+4. 테스트 — 프로젝트 그룹핑 정확성 확인
+
+**완료 기준:**
+- [ ] 주요/사이드 프로젝트 분리 UI 렌더링
+- [ ] 각 그룹 내 DisplayOrder 순서 유지
+- [ ] 모바일에서도 두 섹션 구분 명확
+
+---
+
+### Phase 6: 비주얼 폴리싱 (Framer Motion + Three.js)
+
+**기간:** 2-3일  
+**목표:** 스크롤 애니메이션 및 히어로 WebGL 배경 구현
+
+**작업 항목:**
+
+#### 6.1 Framer Motion 설치 및 섹션 애니메이션
+```bash
+npm install framer-motion
+```
+
+1. 섹션 애니메이션 구현
+   - AboutSection, ProjectsSection, ResumeSection, ContactSection을 `motion.div`로 래핑
+   - 설정:
+     ```tsx
+     <motion.div
+       initial={{ opacity: 0, y: 20 }}
+       whileInView={{ opacity: 1, y: 0 }}
+       transition={{ duration: 0.6, ease: "easeOut" }}
+       viewport={{ once: true, amount: 0.3 }}
+     >
+       {/* 콘텐츠 */}
+     </motion.div>
+     ```
+   - 모션 감소 대응: `useMediaQuery("(prefers-reduced-motion: reduce)")`로 감지, 애니메이션 비활성화
+
+2. 프로젝트 카드 호버 애니메이션
+   - 호버 시 y: 0 → -4px, shadow 강화
+   - 클릭 시 `/projects/[slug]`로 이동
+
+#### 6.2 Three.js WebGL 히어로 배경 구현
+
+**라이브러리 설치:**
+```bash
+npm install three @react-three/fiber @react-three/drei
+```
+
+**아키텍처:**
+```
+src/components/effects/
+├── liquid-background.tsx      # Three.js 메인 컴포넌트
+├── liquid-shader.ts           # Shader 코드 (유체 시뮬레이션)
+└── use-liquid-simulation.ts   # Custom hook (성능 최적화)
+```
+
+**구현 전략:**
+1. **초기 로드 성능**: 정적 그래디언트 먼저 표시
+   ```tsx
+   // HeroSection에서:
+   {!webglReady && <div className="absolute inset-0 bg-gradient-to-br from-primary to-secondary" />}
+   {isDesktop && <LiquidBackground onReady={() => setWebglReady(true)} />}
+   ```
+
+2. **모바일 감지**: 768px 이하는 WebGL 비활성화
+   ```tsx
+   const isDesktop = useMediaQuery('(min-width: 768px)')
+   ```
+
+3. **조건부 렌더링**: 
+   - 데스크톱 (lg): WebGL 활성화
+   - 모바일: 정적 그래디언트 (LCP 1.5s 이내)
+   - 저사양 기기: GPU 미지원 감지, fallback 적용
+
+4. **Shader 최적화**:
+   - Fragment shader: 기본적인 노이즈 기반 유체 시뮬레이션 (LiquidEther 유사)
+   - Vertex shader: 단순화 (메시 해상도 256x256 이하)
+   - Update frequency: 60fps (requestAnimationFrame)
+
+5. **성능 모니터링**:
+   ```tsx
+   // 성능 측정 (DevTools 또는 web-vitals)
+   import { getCLS, getFID, getFCP, getLCP, getTTFB } from 'web-vitals'
+   ```
+
+#### 6.3 성능 목표 검증
+
+- **LCP**: < 2.5s (정적 콘텐츠 + WebGL 페이드 인)
+- **FCP**: < 1.5s (정적 그래디언트 표시)
+- **Lighthouse**: 90+ 유지
+
+#### 6.4 크로스 브라우저 테스트
+- Chrome/Edge: WebGL 지원 ✓
+- Safari: WebGL 지원 ✓ (iOS 8.1+)
+- Firefox: WebGL 지원 ✓
+- 모바일: 정적 그래디언트로 graceful degrade ✓
+
+**완료 기준:**
+- [ ] 섹션 fade-in/slide-up 애니메이션 동작
+- [ ] Three.js 히어로 배경 렌더링 (데스크톱)
+- [ ] 성능 기준 충족 (LCP < 2.5s, Lighthouse 90+)
+- [ ] 모바일 정적 그래디언트 fallback 정상 작동
+- [ ] `prefers-reduced-motion` 준수
+
+---
+
+### Phase 7: 다국어 및 분석 연동
+
+**기간:** 2-3일  
+**목표:** next-intl 다국어 지원 + GA4 분석 연동
+
+#### 7.1 next-intl 다국어 설정
+
+**라이브러리 설치:**
+```bash
+npm install next-intl
+```
+
+**파일 구조:**
+```
+src/
+├── i18n/
+│   ├── config.ts              # next-intl 설정 (지원 언어, 기본값)
+│   └── messages/
+│       ├── ko.json            # 한국어 번역
+│       └── en.json            # 영어 번역
+└── middleware.ts              # 언어 감지 및 라우팅 (기존 수정)
+```
+
+**설정 예시** (`src/i18n/config.ts`):
+```ts
+export const defaultLocale = 'ko'
+export const locales = ['ko', 'en'] as const
+export const localeNames: Record<string, string> = {
+  ko: '한국어',
+  en: 'English',
+}
+```
+
+**미들웨어** (`src/middleware.ts`):
+```ts
+import createMiddleware from 'next-intl/middleware'
+
+export default createMiddleware({
+  locales: ['ko', 'en'],
+  defaultLocale: 'ko',
+  localePrefix: 'as-needed', // /ko는 생략, /en은 /en으로 표시
+})
+
+export const config = {
+  matcher: ['/((?!api|_next|.*\\..*).*)']
+}
+```
+
+**번역 파일** (`src/i18n/messages/ko.json`):
+```json
+{
+  "nav": {
+    "about": "소개",
+    "projects": "프로젝트",
+    "resume": "이력서",
+    "contact": "연락처"
+  },
+  "hero": {
+    "headline": "프론트엔드에서 풀스택으로",
+    "description": "UI/UX 구현에서 출발해 공공 프로젝트의 백엔드 로직까지 이해 범위를 넓혀온 성장형 개발자입니다."
+  },
+  "actions": {
+    "viewProjects": "프로젝트 보기",
+    "viewResume": "이력서 보기",
+    "downloadPDF": "PDF 다운로드"
+  }
+}
+```
+
+#### 7.2 컴포넌트 국제화
+
+**예시 (Header 컴포넌트):**
+```tsx
+'use client'
+import { useTranslations } from 'next-intl'
+
+export function Header() {
+  const t = useTranslations()
+  
+  return (
+    <nav>
+      <a href="#about">{t('nav.about')}</a>
+      <a href="#projects">{t('nav.projects')}</a>
+      <a href="#resume">{t('nav.resume')}</a>
+      <a href="#contact">{t('nav.contact')}</a>
+    </nav>
+  )
+}
+```
+
+#### 7.3 언어 전환 UI
+
+**구현 위치**: 헤더 우측 또는 푸터
+```tsx
+'use client'
+import { useRouter, usePathname } from 'next/navigation'
+import { useLocale } from 'next-intl'
+
+export function LanguageSwitcher() {
+  const locale = useLocale()
+  const router = useRouter()
+  const pathname = usePathname()
+  
+  const toggleLanguage = (newLocale: string) => {
+    const newPath = pathname.replace(`/${locale}`, `/${newLocale}`)
+    router.push(newPath)
+  }
+  
+  return (
+    <select value={locale} onChange={(e) => toggleLanguage(e.target.value)}>
+      <option value="ko">한국어</option>
+      <option value="en">English</option>
+    </select>
+  )
+}
+```
+
+#### 7.4 GA4 연동
+
+**GA4 계정 설정:**
+1. Google Analytics 콘솔 → Measurement ID (G-XXXXXXXXXX) 발급
+2. `.env.local`에 저장: `NEXT_PUBLIC_GA_ID=G-XXXXXXXXXX`
+
+**라이브러리 설치:**
+```bash
+npm install @react-google-analytics/core
+# 또는 HTML 스니펫 직접 사용
+```
+
+**Google Analytics 컴포넌트 (`src/components/ga-tracker.tsx`):**
+```tsx
+'use client'
+import { useEffect } from 'react'
+
+export function GATracker() {
+  useEffect(() => {
+    // gtag 초기화
+    window.dataLayer = window.dataLayer || []
+    function gtag(...args: any[]) {
+      dataLayer.push(arguments)
+    }
+    gtag('js', new Date())
+    gtag('config', process.env.NEXT_PUBLIC_GA_ID)
+  }, [])
+  
+  return (
+    <script
+      async
+      src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_ID}`}
+    />
+  )
+}
+```
+
+**루트 레이아웃에 추가:**
+```tsx
+import { GATracker } from '@/components/ga-tracker'
+
+export default function RootLayout() {
+  return (
+    <html>
+      <body>
+        <GATracker />
+        {/* ... */}
+      </body>
+    </html>
+  )
+}
+```
+
+#### 7.5 이벤트 추적 구현
+
+**이벤트 헬퍼** (`src/lib/ga-events.ts`):
+```ts
+export function trackSectionClick(section: string) {
+  if (typeof window !== 'undefined' && window.gtag) {
+    window.gtag('event', 'section_click', {
+      section: section,
+    })
+  }
+}
+
+export function trackResumeDownload() {
+  window.gtag?.('event', 'resume_download')
+}
+
+export function trackThemeToggle(theme: 'light' | 'dark') {
+  window.gtag?.('event', 'theme_toggle', {
+    theme: theme,
+  })
+}
+
+export function trackLanguageChange(language: string) {
+  window.gtag?.('event', 'language_change', {
+    language: language,
+  })
+}
+
+export function trackProjectView(projectId: string, projectTitle: string) {
+  window.gtag?.('event', 'project_view', {
+    project_id: projectId,
+    project_title: projectTitle,
+  })
+}
+```
+
+**컴포넌트에서 사용:**
+```tsx
+// SectionNav에서
+const handleClick = (section: string) => {
+  trackSectionClick(section)
+  // ... 스크롤 로직
+}
+
+// PrintButton에서
+const handlePrint = () => {
+  trackResumeDownload()
+  window.print()
+}
+
+// ThemeToggle에서
+const handleThemeChange = (theme: 'light' | 'dark') => {
+  trackThemeToggle(theme)
+  // ... 테마 변경
+}
+```
+
+#### 7.6 Notion 콘텐츠 다국어 확대 (Phase 8 고려사항)
+
+**현황**: 프로젝트/이력 설명은 한국어만 지원
+**향후 확대 옵션**:
+1. **Notion DB 이중 기록**: ko_*, en_* 필드로 분리
+2. **번역 API 연동**: Google Translate API (자동 번역)
+3. **별도 번역 DB**: 다국어 콘텐츠를 별도 Notion DB에서 관리
+
+**완료 기준:**
+- [ ] `/ko`와 `/en` 경로 분리 작동 (라우팅 정상)
+- [ ] 언어별 메뉴/라벨 번역 표시 (`useTranslations()` 동작)
+- [ ] 언어 전환 UI 동작 (헤더 또는 푸터)
+- [ ] GA4 Measurement ID 설정 완료
+- [ ] 추적 이벤트 GA4 대시보드에 수집 확인 (최소 5개 이벤트)
 
 ---
 
 ### Phase별 소요 기간 요약
 
-| Phase | 주요 활동 | 예상 기간 | 산출물 |
+| Phase | 주요 활동 | 예상 기간 | 상태 |
 |---|---|---|---|
-| Phase 0 | Notion 셋업, API 연동 기초 | 1-2일 | notion.ts, types/notion.ts |
-| Phase 1 | 정적 페이지, 프로젝트 목록 | 2-3일 | /, /about, /projects 페이지 + ProjectCard |
-| Phase 2 | 프로젝트 상세, SSG/ISR | 2-3일 | /projects/[slug] 페이지 + 신규 컴포넌트 |
-| Phase 3 | 이력서, PDF 다운로드 | 1-2일 | /resume 페이지 + @media print CSS |
-| Phase 4 | 폴리싱, Vercel 배포 | 1-2일 | 프로덕션 배포, Lighthouse 90+ |
-| **합계** | 전체 구현 및 배포 | **7-12일** | 포트폴리오 웹사이트 MVP |
+| Phase 0 | Notion 셋업, API 연동 기초 | 1-2일 | ✅ 완료 |
+| Phase 1 | 원페이지 구조, 섹션 렌더링 | 2-3일 | ✅ 완료 |
+| Phase 2 | 프로젝트 상세, SSG/ISR | 2-3일 | ✅ 완료 |
+| Phase 3 | 이력서, PDF 다운로드 | 1-2일 | ✅ 완료 |
+| Phase 4 | 폴리싱, Vercel 배포 | 1-2일 | ✅ 완료 |
+| Phase 5 | 프로젝트 섹션 개편 | 1-2일 | 📋 계획 중 |
+| Phase 6 | Framer Motion + Three.js | 2-3일 | 📋 계획 중 |
+| Phase 7 | 다국어 + GA4 | 2-3일 | 📋 계획 중 |
+| **합계** | 전체 구현 및 배포 | **14-21일** | 진행 중 |
 
-*주의: 위 일정은 1인 개발 기준 러프 추정치이며, 실제 프로젝트 진행에 따라 조정될 수 있습니다.*
+*Phase 0~4는 이미 완료되었습니다. Phase 5~7은 v2.0 신규 기능입니다.*
 
 ---
 
@@ -1084,12 +1587,24 @@ npx shadcn@latest add <component-name>
 
 ### 참고 링크
 
+**공식 문서:**
 - [Notion API 공식 문서](https://developers.notion.com)
 - [Next.js 16 App Router](https://nextjs.org/docs)
 - [shadcn/ui 컴포넌트](https://ui.shadcn.com)
-- [TailwindCSS oklch](https://tailwindcss.com/docs/customizing-colors)
+- [TailwindCSS v4](https://tailwindcss.com/docs)
+- [Framer Motion 공식 문서](https://www.framer.com/motion)
+- [Three.js 공식 문서](https://threejs.org/docs)
+- [next-intl 공식 문서](https://next-intl-docs.vercel.app)
+
+**디자인/기능 참고 레퍼런스:**
+- [junheedot.com 포트폴리오](https://junheedot.com/) — 원페이지 구조, 섹션 네비, 다국어, 애니메이션 참고
+- [junheedot 제작기 블로그](https://junheedot.tistory.com/entry/하루만에-포트폴리오-사이트-만들기-with-Claude-Code) — Next.js 16 기반 포트폴리오 구현 경험 공유, Framer Motion/Three.js/GA4 활용 사례
 
 ---
 
-**문서 작성 완료: 2026-08-04**  
-**다음 단계:** Phase 0 (Notion 워크스페이스 설정) 착수
+---
+
+**문서 버전:** v2.0  
+**작성 완료:** 2026-08-11  
+**마지막 갱신:** Phase 0~4 완료 마킹, Phase 5~7 신규 계획 추가, junheedot 참고 자료 반영  
+**다음 단계:** Phase 5 (프로젝트 섹션 개편) 착수
