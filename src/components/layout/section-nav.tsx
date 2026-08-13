@@ -1,5 +1,7 @@
 'use client'
 
+import { motion } from 'framer-motion'
+import { useMediaQuery } from 'usehooks-ts'
 import { useEffect, useState } from 'react'
 
 interface SectionItem {
@@ -16,6 +18,10 @@ const sections: SectionItem[] = [
 
 export function SectionNav() {
   const [activeSection, setActiveSection] = useState<string | null>(null)
+  // 서버와 클라이언트 첫 렌더 결과를 일치시켜 하이드레이션 불일치를 방지 (initializeWithValue: false)
+  const prefersReducedMotion = useMediaQuery('(prefers-reduced-motion: reduce)', {
+    initializeWithValue: false,
+  })
 
   useEffect(() => {
     // 각 섹션 활성화 상태 추적
@@ -69,9 +75,18 @@ export function SectionNav() {
           </span>
 
           {/* 도트 버튼 */}
-          <button
+          <motion.button
             onClick={() => handleSectionClick(section.id)}
             aria-label={section.label}
+            animate={
+              prefersReducedMotion
+                ? undefined
+                : {
+                    scale: activeSection === section.id ? 1.2 : 1,
+                    opacity: activeSection === section.id ? 1 : 0.6,
+                  }
+            }
+            transition={{ duration: 0.3, ease: 'easeOut' }}
             className={`rounded-full transition-all duration-300 ${
               activeSection === section.id
                 ? 'w-3.5 h-3.5 bg-primary border-2 border-primary'

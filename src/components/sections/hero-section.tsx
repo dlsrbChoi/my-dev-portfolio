@@ -1,7 +1,14 @@
+'use client'
+
+import dynamic from 'next/dynamic'
 import Link from 'next/link'
 import Image from 'next/image'
 import { Button } from '@/components/ui/button'
 import { ArrowRight } from 'lucide-react'
+
+const LiquidBackground = dynamic(() => import('@/components/effects/liquid-background').then(mod => ({ default: mod.LiquidBackground })), {
+  ssr: false,
+})
 
 export function HeroSection() {
   return (
@@ -43,8 +50,8 @@ export function HeroSection() {
         {/* 우측: 프로필 사진 */}
         <div className="flex items-center justify-center">
           <div className="relative w-64 h-64 sm:w-80 sm:h-80">
-            {/* 배경 글로우 */}
-            <div className="absolute inset-0 rounded-full bg-gradient-to-br from-primary/30 to-primary/10 blur-3xl" />
+            {/* 배경 글로우 (LiquidBackground WebGL) */}
+            <LiquidBackground className="absolute inset-0 rounded-full blur-3xl" />
 
             {/* 원형 프레임 + 이미지 */}
             <Image

@@ -1,3 +1,7 @@
+'use client'
+
+import { motion } from 'framer-motion'
+import { useMediaQuery } from 'usehooks-ts'
 import Image from 'next/image'
 import Link from 'next/link'
 import type { Project } from '@/types/notion'
@@ -13,8 +17,17 @@ interface ProjectCardProps {
 }
 
 export function ProjectCard({ project, className }: ProjectCardProps) {
+  // 서버와 클라이언트 첫 렌더 결과를 일치시켜 하이드레이션 불일치를 방지 (initializeWithValue: false)
+  const prefersReducedMotion = useMediaQuery('(prefers-reduced-motion: reduce)', {
+    initializeWithValue: false,
+  })
+
   return (
-    <Card className={cn('flex flex-col overflow-hidden', className)}>
+    <motion.div
+      whileHover={!prefersReducedMotion ? { y: -4 } : undefined}
+      transition={{ duration: 0.3, ease: 'easeOut' }}
+    >
+      <Card className={cn('flex flex-col overflow-hidden transition-shadow duration-300 hover:shadow-lg', className)}>
       {/* 썸네일 이미지 */}
       {project.coverImage && (
         <div className="relative w-full h-48 overflow-hidden bg-muted">
@@ -72,5 +85,6 @@ export function ProjectCard({ project, className }: ProjectCardProps) {
         </Button>
       </CardContent>
     </Card>
+    </motion.div>
   )
 }

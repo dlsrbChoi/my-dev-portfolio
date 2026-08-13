@@ -5,6 +5,7 @@ import { ProjectsSection } from '@/components/sections/projects-section'
 import { ResumeSection } from '@/components/sections/resume-section'
 import { ContactSection } from '@/components/sections/contact-section'
 import { SectionNav } from '@/components/layout/section-nav'
+import { FadeInSection } from '@/components/motion/fade-in-section'
 import { siteConfig } from '@/lib/site-config'
 
 export const metadata: Metadata = {
@@ -21,10 +22,18 @@ export default function Home() {
     <>
       <SectionNav />
       <HeroSection />
-      <AboutSection />
-      <ProjectsSection />
-      <ResumeSection />
-      <ContactSection />
+      <FadeInSection>
+        <AboutSection />
+      </FadeInSection>
+      <FadeInSection delay={100}>
+        <ProjectsSection />
+      </FadeInSection>
+      <FadeInSection delay={200}>
+        <ResumeSection />
+      </FadeInSection>
+      <FadeInSection delay={300}>
+        <ContactSection />
+      </FadeInSection>
     </>
   )
 }
