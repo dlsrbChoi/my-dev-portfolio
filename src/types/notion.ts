@@ -1,5 +1,7 @@
 // Notion 데이터 모델 타입 정의
 
+export type ProjectType = 'public' | 'personal' | 'collaboration'
+
 export interface Project {
   id: string
   name: string
@@ -12,7 +14,7 @@ export interface Project {
   coverImage?: { url: string; alt: string }
   status: 'draft' | 'published'
   displayOrder: number
-  projectType: string
+  projectType: ProjectType
   externalLink?: string
 }
 

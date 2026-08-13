@@ -1,7 +1,23 @@
 // Notion 응답 → App 타입 변환 매퍼 함수
 
 import { PageObjectResponse } from '@notionhq/client/build/src/api-endpoints'
-import type { Project, ExperienceEntry } from '@/types/notion'
+import type { Project, ExperienceEntry, ProjectType } from '@/types/notion'
+
+// ProjectType 정규화: Notion의 한글 값을 영문 enum으로 변환
+const projectTypeMap: Record<string, ProjectType> = {
+  '공공기관': 'public',
+  '협업': 'collaboration',
+  '개인': 'personal',
+}
+
+/**
+ * Notion Select 값을 ProjectType으로 정규화
+ * 미지정 또는 알 수 없는 값은 'personal'로 폴백
+ */
+function normalizeProjectType(value: string | undefined): ProjectType {
+  if (!value) return 'personal'
+  return projectTypeMap[value] || 'personal'
+}
 
 /**
  * Notion Project Page를 앱 Project 타입으로 변환
@@ -88,7 +104,7 @@ export function mapNotionProjectToApp(page: PageObjectResponse): Project {
     coverImage,
     status,
     displayOrder: displayOrderNumber || 0,
-    projectType: projectTypeSelect?.name || '',
+    projectType: normalizeProjectType(projectTypeSelect?.name),
     externalLink: externalLinkUrl || undefined,
   }
 }

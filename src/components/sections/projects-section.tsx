@@ -1,12 +1,9 @@
-import Link from 'next/link'
 import { getProjects } from '@/lib/notion'
 import type { Project } from '@/types/notion'
+import { groupProjectsByType } from '@/lib/project-utils'
 import { ProjectCard } from '@/components/projects/project-card'
 import { EmptyState } from '@/components/patterns/empty-state'
-import { Button } from '@/components/ui/button'
-import { Briefcase, ArrowRight } from 'lucide-react'
-
-const PROJECTS_LIMIT = 6
+import { Briefcase } from 'lucide-react'
 
 export async function ProjectsSection() {
   let projects: Project[] = []
@@ -16,8 +13,8 @@ export async function ProjectsSection() {
     console.error('Failed to fetch projects:', error)
   }
 
-  const displayedProjects = projects.slice(0, PROJECTS_LIMIT)
-  const hasMoreProjects = projects.length > PROJECTS_LIMIT
+  const { main, side } = groupProjectsByType(projects)
+  const hasAnyProjects = main.length > 0 || side.length > 0
 
   return (
     <section id="projects" className="-scroll-mt-5 py-20 sm:py-28">
@@ -31,36 +28,44 @@ export async function ProjectsSection() {
         </div>
 
         {/* 콘텐츠 */}
-        {displayedProjects.length === 0 ? (
+        {!hasAnyProjects ? (
           <EmptyState
             icon={Briefcase}
             title="프로젝트가 없습니다"
             description="곧 프로젝트가 추가될 예정입니다"
           />
         ) : (
-          <>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {displayedProjects.map((project) => (
-                <ProjectCard key={project.id} project={project} />
-              ))}
-            </div>
-
-            {/* 전체 보기 버튼 */}
-            {hasMoreProjects && (
-              <div className="flex justify-center pt-4">
-                <Button
-                  size="lg"
-                  variant="outline"
-                  className="rounded-full"
-                  nativeButton={false}
-                  render={<Link href="/projects" />}
-                >
-                  전체 프로젝트 보기
-                  <ArrowRight className="ml-2 h-4 w-4" />
-                </Button>
+          <div className="space-y-12">
+            {/* 주요 프로젝트 그룹 */}
+            {main.length > 0 && (
+              <div className="space-y-4">
+                <div className="space-y-2">
+                  <h3 className="text-2xl font-bold tracking-tight">주요 프로젝트</h3>
+                  <p className="text-base text-muted-foreground">핵심 프로젝트 경험</p>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {main.map((project) => (
+                    <ProjectCard key={project.id} project={project} />
+                  ))}
+                </div>
               </div>
             )}
-          </>
+
+            {/* 사이드 프로젝트 그룹 */}
+            {side.length > 0 && (
+              <div className="space-y-4">
+                <div className="space-y-2">
+                  <h3 className="text-2xl font-bold tracking-tight">사이드 프로젝트</h3>
+                  <p className="text-base text-muted-foreground">개인 프로젝트 및 실험</p>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {side.map((project) => (
+                    <ProjectCard key={project.id} project={project} />
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
         )}
       </div>
     </section>
