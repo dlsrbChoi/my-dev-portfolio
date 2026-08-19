@@ -1,8 +1,10 @@
 import type { Metadata } from 'next'
 import { HeroSection } from '@/components/sections/hero-section'
 import { AboutSection } from '@/components/sections/about-section'
+import { ExperienceSection } from '@/components/sections/experience-section'
+import { EducationSection } from '@/components/sections/education-section'
 import { ProjectsSection } from '@/components/sections/projects-section'
-import { ResumeSection } from '@/components/sections/resume-section'
+import { SkillsSection } from '@/components/sections/skills-section'
 import { ContactSection } from '@/components/sections/contact-section'
 import { SectionNav } from '@/components/layout/section-nav'
 import { FadeInSection } from '@/components/motion/fade-in-section'
@@ -26,10 +28,16 @@ export default function Home() {
         <AboutSection />
       </FadeInSection>
       <FadeInSection delay={100}>
-        <ProjectsSection />
+        <ExperienceSection />
+      </FadeInSection>
+      <FadeInSection delay={150}>
+        <SkillsSection />
       </FadeInSection>
       <FadeInSection delay={200}>
-        <ResumeSection />
+        <ProjectsSection />
+      </FadeInSection>
+      <FadeInSection delay={250}>
+        <EducationSection />
       </FadeInSection>
       <FadeInSection delay={300}>
         <ContactSection />

@@ -11,8 +11,10 @@ interface SectionItem {
 
 const sections: SectionItem[] = [
   { id: 'about', label: '소개' },
+  { id: 'experience', label: '경력' },
+  { id: 'education', label: '학력' },
   { id: 'projects', label: '프로젝트' },
-  { id: 'resume', label: '이력서' },
+  { id: 'skills', label: '기술' },
   { id: 'contact', label: '연락처' },
 ]
 

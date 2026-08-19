@@ -3,6 +3,8 @@ import type { Project } from '@/types/notion'
 import { groupProjectsByType } from '@/lib/project-utils'
 import { ProjectCard } from '@/components/projects/project-card'
 import { EmptyState } from '@/components/patterns/empty-state'
+import { SectionHeader } from '@/components/patterns/section-header'
+import { StaggerList, StaggerItem } from '@/components/motion/stagger-list'
 import { Briefcase } from 'lucide-react'
 
 export async function ProjectsSection() {
@@ -20,12 +22,7 @@ export async function ProjectsSection() {
     <section id="projects" className="-scroll-mt-5 py-20 sm:py-28">
       <div className="space-y-8">
         {/* 제목 */}
-        <div className="space-y-2">
-          <h2 className="text-3xl sm:text-4xl font-bold tracking-tight">프로젝트</h2>
-          <p className="text-lg text-muted-foreground">
-            다양한 규모와 기술 스택의 프로젝트 경험
-          </p>
-        </div>
+        <SectionHeader title="프로젝트" description="다양한 규모와 기술 스택의 프로젝트 경험" />
 
         {/* 콘텐츠 */}
         {!hasAnyProjects ? (
@@ -43,11 +40,13 @@ export async function ProjectsSection() {
                   <h3 className="text-2xl font-bold tracking-tight">주요 프로젝트</h3>
                   <p className="text-base text-muted-foreground">핵심 프로젝트 경험</p>
                 </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <StaggerList className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                   {main.map((project) => (
-                    <ProjectCard key={project.id} project={project} />
+                    <StaggerItem key={project.id}>
+                      <ProjectCard project={project} />
+                    </StaggerItem>
                   ))}
-                </div>
+                </StaggerList>
               </div>
             )}
 
@@ -58,11 +57,13 @@ export async function ProjectsSection() {
                   <h3 className="text-2xl font-bold tracking-tight">사이드 프로젝트</h3>
                   <p className="text-base text-muted-foreground">개인 프로젝트 및 실험</p>
                 </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <StaggerList className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                   {side.map((project) => (
-                    <ProjectCard key={project.id} project={project} />
+                    <StaggerItem key={project.id}>
+                      <ProjectCard project={project} />
+                    </StaggerItem>
                   ))}
-                </div>
+                </StaggerList>
               </div>
             )}
           </div>

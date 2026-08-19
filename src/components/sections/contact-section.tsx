@@ -1,63 +1,82 @@
 import { siteConfig } from '@/lib/site-config'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
-import { Mail, GitBranch, Code2 } from 'lucide-react'
+import { SectionHeader } from '@/components/patterns/section-header'
+import { StaggerList, StaggerItem } from '@/components/motion/stagger-list'
+import { Mail, GitBranch, Code2, ExternalLink } from 'lucide-react'
 
 export function ContactSection() {
   return (
     <section id="contact" className="-scroll-mt-5 py-20 sm:py-28">
       <div className="space-y-12">
         {/* 제목 */}
-        <div className="space-y-2">
-          <h2 className="text-3xl sm:text-4xl font-bold tracking-tight">연락처</h2>
-          <p className="text-lg text-muted-foreground">
-            함께 일할 수 있는 기회를 항상 열어두고 있습니다
-          </p>
-        </div>
+        <SectionHeader
+          title="연락처"
+          description="함께 일할 수 있는 기회를 항상 열어두고 있습니다"
+        />
 
-        {/* 연락처 카드 */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+        {/* 연락처 카드 - 2열 그리드, 좌측정렬 아이콘박스 구조 */}
+        <StaggerList className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           {/* 이메일 */}
-          <Card>
-            <CardContent className="pt-6 text-center">
-              <Mail className="h-8 w-8 text-primary mx-auto mb-4" />
-              <h3 className="font-semibold text-lg mb-2">이메일</h3>
-              <a
-                href={`mailto:${siteConfig.email}`}
-                className="text-sm text-primary hover:underline break-all"
-              >
-                {siteConfig.email}
-              </a>
-            </CardContent>
-          </Card>
+          <StaggerItem>
+            <a href={`mailto:${siteConfig.email}`} className="block">
+              <Card className="transition-colors hover:ring-foreground/20">
+                <CardContent className="flex items-center gap-4">
+                  <div
+                    className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border border-border"
+                    aria-hidden="true"
+                  >
+                    <Mail className="h-5 w-5 text-primary" />
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <h3 className="font-semibold text-sm">이메일</h3>
+                    <p className="text-sm text-muted-foreground truncate">{siteConfig.email}</p>
+                  </div>
+                  <ExternalLink className="h-4 w-4 shrink-0 text-muted-foreground" aria-hidden="true" />
+                </CardContent>
+              </Card>
+            </a>
+          </StaggerItem>
 
           {/* GitHub */}
-          <Card>
-            <CardContent className="pt-6 text-center">
-              <GitBranch className="h-8 w-8 text-primary mx-auto mb-4" />
-              <h3 className="font-semibold text-lg mb-2">GitHub</h3>
-              <a
-                href={siteConfig.github}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-sm text-primary hover:underline"
-              >
-                프로필 방문
-              </a>
-            </CardContent>
-          </Card>
+          <StaggerItem>
+            <a href={siteConfig.github} target="_blank" rel="noopener noreferrer" className="block">
+              <Card className="transition-colors hover:ring-foreground/20">
+                <CardContent className="flex items-center gap-4">
+                  <div
+                    className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border border-border"
+                    aria-hidden="true"
+                  >
+                    <GitBranch className="h-5 w-5 text-primary" />
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <h3 className="font-semibold text-sm">GitHub</h3>
+                    <p className="text-sm text-muted-foreground truncate">프로필 방문</p>
+                  </div>
+                  <ExternalLink className="h-4 w-4 shrink-0 text-muted-foreground" aria-hidden="true" />
+                </CardContent>
+              </Card>
+            </a>
+          </StaggerItem>
 
           {/* 포트폴리오 */}
-          <Card>
-            <CardContent className="pt-6 text-center">
-              <Code2 className="h-8 w-8 text-primary mx-auto mb-4" />
-              <h3 className="font-semibold text-lg mb-2">이 사이트</h3>
-              <p className="text-sm text-muted-foreground">
-                Next.js + React + TypeScript
-              </p>
-            </CardContent>
-          </Card>
-        </div>
+          <StaggerItem>
+            <Card>
+              <CardContent className="flex items-center gap-4">
+                <div
+                  className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border border-border"
+                  aria-hidden="true"
+                >
+                  <Code2 className="h-5 w-5 text-primary" />
+                </div>
+                <div className="min-w-0 flex-1">
+                  <h3 className="font-semibold text-sm">이 사이트</h3>
+                  <p className="text-sm text-muted-foreground truncate">Next.js + React + TypeScript</p>
+                </div>
+              </CardContent>
+            </Card>
+          </StaggerItem>
+        </StaggerList>
 
         {/* 큰 CTA 버튼 */}
         <div className="flex justify-center">

@@ -1,6 +1,8 @@
 import { getResumeData, getProjects } from '@/lib/notion'
 import { siteConfig } from '@/lib/site-config'
 import { Card, CardContent } from '@/components/ui/card'
+import { SectionHeader } from '@/components/patterns/section-header'
+import { StaggerList, StaggerItem } from '@/components/motion/stagger-list'
 import { Zap, Lightbulb, MessageSquare } from 'lucide-react'
 
 function calculateYearsOfExperience(startDate: string): number {
@@ -42,7 +44,7 @@ export async function AboutSection() {
       <div className="space-y-12">
         {/* 소개 텍스트 */}
         <div className="space-y-4">
-          <h2 className="text-3xl sm:text-4xl font-bold tracking-tight">소개</h2>
+          <SectionHeader title="소개" />
           <p className="text-lg text-muted-foreground leading-relaxed max-w-3xl">
             프론트엔드에서 풀스택으로 성장한 개발자입니다. UI/UX 구현에서 출발해 백엔드 로직, 데이터베이스, 시스템 통합까지 이해 범위를 넓혀왔습니다.
           </p>
@@ -73,64 +75,72 @@ export async function AboutSection() {
           </div>
         </div>
 
-        {/* 핵심 강점 */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-          <Card>
-            <CardContent className="pt-6">
-              <div className="flex gap-4">
-                <Zap className="h-6 w-6 text-primary shrink-0 mt-1" />
-                <div>
-                  <h3 className="font-semibold text-lg mb-2">빠른 학습과 적응</h3>
-                  <p className="text-sm text-muted-foreground">
-                    낯선 도메인과 프레임워크를 빠르게 습득해 프로젝트 요구사항을 기술적으로 구현합니다.
-                  </p>
+        {/* 핵심 강점 - 순차 진입 애니메이션 적용 */}
+        <StaggerList className="grid grid-cols-1 sm:grid-cols-2 gap-6 items-start">
+          <StaggerItem>
+            <Card>
+              <CardContent className="py-6">
+                <div className="flex gap-4">
+                  <Zap className="h-6 w-6 text-primary shrink-0 mt-1" />
+                  <div>
+                    <h3 className="font-semibold text-lg mb-2">빠른 학습과 적응</h3>
+                    <p className="text-sm text-muted-foreground">
+                      낯선 도메인과 프레임워크를 빠르게 습득해 프로젝트 요구사항을 기술적으로 구현합니다.
+                    </p>
+                  </div>
                 </div>
-              </div>
-            </CardContent>
-          </Card>
+              </CardContent>
+            </Card>
+          </StaggerItem>
 
-          <Card>
-            <CardContent className="pt-6">
-              <div className="flex gap-4">
-                <Lightbulb className="h-6 w-6 text-primary shrink-0 mt-1" />
-                <div>
-                  <h3 className="font-semibold text-lg mb-2">전체 시스템 이해</h3>
-                  <p className="text-sm text-muted-foreground">
-                    프론트엔드 UI부터 백엔드 API, 데이터베이스까지 전체 흐름을 이해하며 협업합니다.
-                  </p>
+          <StaggerItem>
+            <Card>
+              <CardContent className="py-6">
+                <div className="flex gap-4">
+                  <Lightbulb className="h-6 w-6 text-primary shrink-0 mt-1" />
+                  <div>
+                    <h3 className="font-semibold text-lg mb-2">전체 시스템 이해</h3>
+                    <p className="text-sm text-muted-foreground">
+                      프론트엔드 UI부터 백엔드 API, 데이터베이스까지 전체 흐름을 이해하며 협업합니다.
+                    </p>
+                  </div>
                 </div>
-              </div>
-            </CardContent>
-          </Card>
+              </CardContent>
+            </Card>
+          </StaggerItem>
 
-          <Card>
-            <CardContent className="pt-6">
-              <div className="flex gap-4">
-                <MessageSquare className="h-6 w-6 text-primary shrink-0 mt-1" />
-                <div>
-                  <h3 className="font-semibold text-lg mb-2">팀과의 소통</h3>
-                  <p className="text-sm text-muted-foreground">
-                    기획자, 디자이너, 백엔드 개발자와 원활하게 소통해 요구사항을 정확히 파악합니다.
-                  </p>
+          <StaggerItem>
+            <Card>
+              <CardContent className="py-6">
+                <div className="flex gap-4">
+                  <MessageSquare className="h-6 w-6 text-primary shrink-0 mt-1" />
+                  <div>
+                    <h3 className="font-semibold text-lg mb-2">팀과의 소통</h3>
+                    <p className="text-sm text-muted-foreground">
+                      기획자, 디자이너, 백엔드 개발자와 원활하게 소통해 요구사항을 정확히 파악합니다.
+                    </p>
+                  </div>
                 </div>
-              </div>
-            </CardContent>
-          </Card>
+              </CardContent>
+            </Card>
+          </StaggerItem>
 
-          <Card>
-            <CardContent className="pt-6">
-              <div className="flex gap-4">
-                <Zap className="h-6 w-6 text-primary shrink-0 mt-1" />
-                <div>
-                  <h3 className="font-semibold text-lg mb-2">성능과 사용성</h3>
-                  <p className="text-sm text-muted-foreground">
-                    사용자 경험을 최우선으로 성능 최적화와 직관적 인터페이스 설계를 추구합니다.
-                  </p>
+          <StaggerItem>
+            <Card>
+              <CardContent className="py-6">
+                <div className="flex gap-4">
+                  <Zap className="h-6 w-6 text-primary shrink-0 mt-1" />
+                  <div>
+                    <h3 className="font-semibold text-lg mb-2">성능과 사용성</h3>
+                    <p className="text-sm text-muted-foreground">
+                      사용자 경험을 최우선으로 성능 최적화와 직관적 인터페이스 설계를 추구합니다.
+                    </p>
+                  </div>
                 </div>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
+              </CardContent>
+            </Card>
+          </StaggerItem>
+        </StaggerList>
       </div>
     </section>
   )

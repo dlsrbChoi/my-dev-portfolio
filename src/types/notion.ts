@@ -28,3 +28,5 @@ export interface ExperienceEntry {
   description: string
   displayOrder: number
 }
+
+export type EducationEntry = ExperienceEntry
