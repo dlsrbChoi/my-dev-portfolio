@@ -1,0 +1,112 @@
+{
+  "nav": {
+    "about": "About",
+    "experience": "Experience",
+    "education": "Education",
+    "projects": "Projects",
+    "skills": "Skills",
+    "contact": "Contact",
+    "github": "GitHub",
+    "home": "Home"
+  },
+  "mobileNav": {
+    "openMenu": "Open menu"
+  },
+  "metadata": {
+    "homeTitle": "Home",
+    "homeDescription": "Portfolio of Choi In-gyu, a developer who grew from frontend to full stack. Explore projects, experience, and tech stack on a single page.",
+    "homeOgTitle": "Choi In-gyu | Developer Portfolio",
+    "homeOgDescription": "A growth-oriented developer who started with frontend UI/UX implementation and expanded into full-stack development for public sector projects."
+  },
+  "hero": {
+    "greeting": "Hello,",
+    "titleLine1": "From Frontend to",
+    "titleLine2": "Full Stack",
+    "description": "A growth-oriented developer who started with UI/UX implementation and expanded into backend logic for public sector projects.",
+    "projectsCta": "View Projects",
+    "resumeCta": "View Resume",
+    "profileAlt": "igchoi profile photo"
+  },
+  "about": {
+    "title": "About",
+    "description1": "I'm a developer who grew from frontend to full stack. Starting with UI/UX implementation, I've expanded my understanding to backend logic, databases, and system integration.",
+    "description2": "I led migration and payment system development for the Incheon Wallet app and the nationwide integrated parking portal, and I pursue continuous growth by acknowledging what I don't know and staying eager to learn.",
+    "statsExperience": "Years of Experience",
+    "statsProjects": "Completed Projects",
+    "statsSkills": "Tech Stack",
+    "strength1Title": "Fast Learning & Adaptation",
+    "strength1Description": "I quickly pick up unfamiliar domains and frameworks to technically implement project requirements.",
+    "strength2Title": "Full-System Understanding",
+    "strength2Description": "I collaborate with a clear understanding of the entire flow, from frontend UI to backend APIs and databases.",
+    "strength3Title": "Team Communication",
+    "strength3Description": "I communicate smoothly with planners, designers, and backend developers to accurately grasp requirements.",
+    "strength4Title": "Performance & Usability",
+    "strength4Description": "I prioritize user experience, pursuing performance optimization and intuitive interface design."
+  },
+  "experience": {
+    "title": "Experience"
+  },
+  "education": {
+    "educationTitle": "Education",
+    "certificatesTitle": "Certificates"
+  },
+  "skills": {
+    "title": "Tech Stack",
+    "description": "The main technologies and tools I currently use.",
+    "categoryFrontend": "Frontend",
+    "categoryBackend": "Backend",
+    "categoryTools": "Tools & Platforms"
+  },
+  "projects": {
+    "title": "Projects",
+    "description": "Project experience across various scales and tech stacks",
+    "mainTitle": "Main Projects",
+    "mainDescription": "Core project experience",
+    "sideTitle": "Side Projects",
+    "sideDescription": "Personal projects and experiments",
+    "emptyTitle": "No projects yet",
+    "emptyDescription": "Projects will be added soon",
+    "previewCta": "Preview"
+  },
+  "contact": {
+    "title": "Contact",
+    "description": "Always open to opportunities to work together",
+    "emailLabel": "Email",
+    "githubLabel": "GitHub",
+    "githubVisit": "Visit profile",
+    "siteLabel": "This site",
+    "siteDescription": "Next.js + React + TypeScript",
+    "ctaButton": "Contact via Email",
+    "ctaSubject": "Project collaboration proposal"
+  },
+  "footer": {
+    "siteHeading": "Site",
+    "home": "Home",
+    "about": "About",
+    "projects": "Projects",
+    "contactHeading": "Contact",
+    "email": "Email",
+    "github": "GitHub",
+    "resumeHeading": "Resume",
+    "resumeView": "View",
+    "copyright": "© 2026 Choi In-gyu. All rights reserved."
+  },
+  "themeToggle": {
+    "srLabel": "Toggle theme",
+    "light": "Light",
+    "dark": "Dark",
+    "system": "System"
+  },
+  "languageSwitcher": {
+    "srLabel": "Switch language"
+  },
+  "common": {
+    "errorTitle": "Something went wrong",
+    "errorDescription": "An unexpected error occurred while loading the data. Please try again.",
+    "errorRetry": "Try again",
+    "errorHome": "Go home",
+    "notFoundTitle": "Page not found",
+    "notFoundDescription": "The page you requested does not exist. Please check and try again.",
+    "notFoundAction": "Back to home"
+  }
+}

@@ -1,7 +1,8 @@
 'use client'
 
 import { useState } from 'react'
-import Link from 'next/link'
+import { useTranslations } from 'next-intl'
+import { Link } from '@/i18n/navigation'
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
 import { Menu } from 'lucide-react'
 import { Button } from '@/components/ui/button'
@@ -9,6 +10,8 @@ import { navItems } from '@/lib/nav'
 
 export function MobileNav() {
   const [open, setOpen] = useState(false)
+  const t = useTranslations('nav')
+  const tMobile = useTranslations('mobileNav')
 
   const handleClose = () => setOpen(false)
 
@@ -16,7 +19,7 @@ export function MobileNav() {
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger render={<Button variant="ghost" size="icon" className="md:hidden" />}>
         <Menu className="h-5 w-5" />
-        <span className="sr-only">메뉴 열기</span>
+        <span className="sr-only">{tMobile('openMenu')}</span>
       </SheetTrigger>
       <SheetContent side="left" className="w-[240px]">
         <div className="mb-4">
@@ -35,7 +38,7 @@ export function MobileNav() {
                 className="block text-sm text-foreground hover:text-primary transition-colors"
                 onClick={handleClose}
               >
-                {item.label}
+                {t(item.labelKey)}
               </a>
             ) : (
               <Link
@@ -44,7 +47,7 @@ export function MobileNav() {
                 className="block text-sm text-foreground hover:text-primary transition-colors"
                 onClick={handleClose}
               >
-                {item.label}
+                {t(item.labelKey)}
               </Link>
             )
           ))}

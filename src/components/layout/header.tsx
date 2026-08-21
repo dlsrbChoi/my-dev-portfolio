@@ -1,11 +1,15 @@
 'use client'
 
-import Link from 'next/link'
+import { useTranslations } from 'next-intl'
+import { Link } from '@/i18n/navigation'
 import { MobileNav } from './mobile-nav'
 import { ThemeToggle } from './theme-toggle'
+import { LanguageSwitcher } from './language-switcher'
 import { navItems } from '@/lib/nav'
 
 export function Header() {
+  const t = useTranslations('nav')
+
   return (
     <header className="sticky top-0 z-50 py-4">
       <div className="mx-auto max-w-7xl px-6">
@@ -28,7 +32,7 @@ export function Header() {
                     rel="noopener noreferrer"
                     className="group relative text-sm text-muted-foreground hover:text-foreground transition-colors duration-200"
                   >
-                    {item.label}
+                    {t(item.labelKey)}
                     {/* 호버 시 밑줄 애니메이션 */}
                     <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary group-hover:w-full transition-all duration-300" />
                   </a>
@@ -38,7 +42,7 @@ export function Header() {
                     href={item.href}
                     className="group relative text-sm text-muted-foreground hover:text-foreground transition-colors duration-200"
                   >
-                    {item.label}
+                    {t(item.labelKey)}
                     {/* 호버 시 밑줄 애니메이션 */}
                     <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary group-hover:w-full transition-all duration-300" />
                   </Link>
@@ -46,8 +50,9 @@ export function Header() {
               ))}
             </nav>
 
-            {/* 우측: 액션 (테마토글, 모바일메뉴) */}
-            <div className="flex items-center gap-4">
+            {/* 우측: 액션 (언어전환, 테마토글, 모바일메뉴) */}
+            <div className="flex items-center gap-2">
+              <LanguageSwitcher />
               <ThemeToggle />
               <MobileNav />
             </div>

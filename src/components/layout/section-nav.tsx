@@ -2,23 +2,26 @@
 
 import { motion } from 'framer-motion'
 import { useMediaQuery } from 'usehooks-ts'
+import { useTranslations } from 'next-intl'
 import { useEffect, useState } from 'react'
 
 interface SectionItem {
   id: string
-  label: string
+  // messages의 nav 네임스페이스 키
+  labelKey: string
 }
 
 const sections: SectionItem[] = [
-  { id: 'about', label: '소개' },
-  { id: 'experience', label: '경력' },
-  { id: 'education', label: '학력' },
-  { id: 'projects', label: '프로젝트' },
-  { id: 'skills', label: '기술' },
-  { id: 'contact', label: '연락처' },
+  { id: 'about', labelKey: 'about' },
+  { id: 'experience', labelKey: 'experience' },
+  { id: 'education', labelKey: 'education' },
+  { id: 'projects', labelKey: 'projects' },
+  { id: 'skills', labelKey: 'skills' },
+  { id: 'contact', labelKey: 'contact' },
 ]
 
 export function SectionNav() {
+  const t = useTranslations('nav')
   const [activeSection, setActiveSection] = useState<string | null>(null)
   // 서버와 클라이언트 첫 렌더 결과를 일치시켜 하이드레이션 불일치를 방지 (initializeWithValue: false)
   const prefersReducedMotion = useMediaQuery('(prefers-reduced-motion: reduce)', {
@@ -73,13 +76,13 @@ export function SectionNav() {
         <div key={section.id} className="group relative flex items-center justify-end gap-3">
           {/* 라벨 텍스트 (hover 시에만 표시) */}
           <span className="text-sm font-medium text-foreground opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap pr-2">
-            {section.label}
+            {t(section.labelKey)}
           </span>
 
           {/* 도트 버튼 */}
           <motion.button
             onClick={() => handleSectionClick(section.id)}
-            aria-label={section.label}
+            aria-label={t(section.labelKey)}
             animate={
               prefersReducedMotion
                 ? undefined
