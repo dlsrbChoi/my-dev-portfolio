@@ -1,6 +1,7 @@
 'use client'
 
 import { motion } from 'framer-motion'
+import { useLocale } from 'next-intl'
 import { ExperienceEntry } from '@/types/notion'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
@@ -20,6 +21,8 @@ export function ExperienceTimeline({
   showHeader = true,
   animateOnView = true,
 }: ExperienceTimelineProps) {
+  const locale = useLocale()
+
   // 최신순 정렬 (최근부터 이전으로)
   const sortedItems = [...items].sort((a, b) => {
     const dateA = new Date(a.period.start).getTime()
@@ -29,7 +32,7 @@ export function ExperienceTimeline({
 
   // 전체 경력 기간 계산
   const totalDuration = calculateTotalCareerDuration(sortedItems)
-  const totalDurationText = formatDuration(totalDuration, 'ko')
+  const totalDurationText = formatDuration(totalDuration, locale)
 
   const Container = animateOnView ? motion.section : 'section'
   const containerProps = animateOnView
@@ -86,7 +89,7 @@ export function ExperienceTimeline({
                       <Badge variant="secondary" className="ml-2">
                         {formatDuration(
                           calculateDuration(item.period.start, item.period.end),
-                          'ko'
+                          locale
                         )}
                       </Badge>
                     </div>

@@ -1,3 +1,6 @@
+'use client'
+
+import { useTranslations } from 'next-intl'
 import { siteConfig } from '@/lib/site-config'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
@@ -6,13 +9,15 @@ import { StaggerList, StaggerItem } from '@/components/motion/stagger-list'
 import { Mail, GitBranch, Code2, ExternalLink } from 'lucide-react'
 
 export function ContactSection() {
+  const t = useTranslations('contact')
+
   return (
     <section id="contact" className="-scroll-mt-5 py-20 sm:py-28">
       <div className="space-y-12">
         {/* 제목 */}
         <SectionHeader
-          title="연락처"
-          description="함께 일할 수 있는 기회를 항상 열어두고 있습니다"
+          title={t('title')}
+          description={t('description')}
         />
 
         {/* 연락처 카드 - 2열 그리드, 좌측정렬 아이콘박스 구조 */}
@@ -29,7 +34,7 @@ export function ContactSection() {
                     <Mail className="h-5 w-5 text-primary" />
                   </div>
                   <div className="min-w-0 flex-1">
-                    <h3 className="font-semibold text-sm">이메일</h3>
+                    <h3 className="font-semibold text-sm">{t('emailLabel')}</h3>
                     <p className="text-sm text-muted-foreground truncate">{siteConfig.email}</p>
                   </div>
                   <ExternalLink className="h-4 w-4 shrink-0 text-muted-foreground" aria-hidden="true" />
@@ -50,8 +55,8 @@ export function ContactSection() {
                     <GitBranch className="h-5 w-5 text-primary" />
                   </div>
                   <div className="min-w-0 flex-1">
-                    <h3 className="font-semibold text-sm">GitHub</h3>
-                    <p className="text-sm text-muted-foreground truncate">프로필 방문</p>
+                    <h3 className="font-semibold text-sm">{t('githubLabel')}</h3>
+                    <p className="text-sm text-muted-foreground truncate">{t('githubVisit')}</p>
                   </div>
                   <ExternalLink className="h-4 w-4 shrink-0 text-muted-foreground" aria-hidden="true" />
                 </CardContent>
@@ -70,8 +75,8 @@ export function ContactSection() {
                   <Code2 className="h-5 w-5 text-primary" />
                 </div>
                 <div className="min-w-0 flex-1">
-                  <h3 className="font-semibold text-sm">이 사이트</h3>
-                  <p className="text-sm text-muted-foreground truncate">Next.js + React + TypeScript</p>
+                  <h3 className="font-semibold text-sm">{t('siteLabel')}</h3>
+                  <p className="text-sm text-muted-foreground truncate">{t('siteDescription')}</p>
                 </div>
               </CardContent>
             </Card>
@@ -86,11 +91,11 @@ export function ContactSection() {
             nativeButton={false}
             render={
               <a
-                href={`mailto:${siteConfig.email}?subject=프로젝트 협업 제안`}
+                href={`mailto:${siteConfig.email}?subject=${t('ctaSubject')}`}
               />
             }
           >
-            이메일로 연락하기
+            {t('ctaButton')}
           </Button>
         </div>
       </div>

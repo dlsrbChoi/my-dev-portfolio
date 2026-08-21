@@ -1,3 +1,4 @@
+import { getTranslations } from 'next-intl/server'
 import { getProjects } from '@/lib/notion'
 import type { Project } from '@/types/notion'
 import { groupProjectsByType } from '@/lib/project-utils'
@@ -8,6 +9,7 @@ import { StaggerList, StaggerItem } from '@/components/motion/stagger-list'
 import { Briefcase } from 'lucide-react'
 
 export async function ProjectsSection() {
+  const t = await getTranslations('projects')
   let projects: Project[] = []
   try {
     projects = await getProjects()
@@ -22,14 +24,14 @@ export async function ProjectsSection() {
     <section id="projects" className="-scroll-mt-5 py-20 sm:py-28">
       <div className="space-y-8">
         {/* 제목 */}
-        <SectionHeader title="프로젝트" description="다양한 규모와 기술 스택의 프로젝트 경험" />
+        <SectionHeader title={t('title')} description={t('description')} />
 
         {/* 콘텐츠 */}
         {!hasAnyProjects ? (
           <EmptyState
             icon={Briefcase}
-            title="프로젝트가 없습니다"
-            description="곧 프로젝트가 추가될 예정입니다"
+            title={t('emptyTitle')}
+            description={t('emptyDescription')}
           />
         ) : (
           <div className="space-y-12">
@@ -37,8 +39,8 @@ export async function ProjectsSection() {
             {main.length > 0 && (
               <div className="space-y-4">
                 <div className="space-y-2">
-                  <h3 className="text-2xl font-bold tracking-tight">주요 프로젝트</h3>
-                  <p className="text-base text-muted-foreground">핵심 프로젝트 경험</p>
+                  <h3 className="text-2xl font-bold tracking-tight">{t('mainTitle')}</h3>
+                  <p className="text-base text-muted-foreground">{t('mainDescription')}</p>
                 </div>
                 <StaggerList className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                   {main.map((project) => (
@@ -54,8 +56,8 @@ export async function ProjectsSection() {
             {side.length > 0 && (
               <div className="space-y-4">
                 <div className="space-y-2">
-                  <h3 className="text-2xl font-bold tracking-tight">사이드 프로젝트</h3>
-                  <p className="text-base text-muted-foreground">개인 프로젝트 및 실험</p>
+                  <h3 className="text-2xl font-bold tracking-tight">{t('sideTitle')}</h3>
+                  <p className="text-base text-muted-foreground">{t('sideDescription')}</p>
                 </div>
                 <StaggerList className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                   {side.map((project) => (

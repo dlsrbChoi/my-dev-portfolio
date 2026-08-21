@@ -1,9 +1,17 @@
 'use client'
 
 import { motion } from 'framer-motion'
+import { useTranslations } from 'next-intl'
 import { Badge } from '@/components/ui/badge'
-import { Code2, Database, Palette, Settings, Wrench, type LucideIcon } from 'lucide-react'
+import { Code2, Database, Wrench, type LucideIcon } from 'lucide-react'
 import { siteConfig } from '@/lib/site-config'
+
+// site-config의 한국어 카테고리명 → 메시지 번역 키 매핑
+const categoryTranslationKey: Record<string, string> = {
+  '프론트엔드': 'categoryFrontend',
+  '백엔드': 'categoryBackend',
+  '도구 & 플랫폼': 'categoryTools',
+}
 
 const categoryIcons: Record<string, LucideIcon> = {
   '프론트엔드': Code2,
@@ -12,6 +20,8 @@ const categoryIcons: Record<string, LucideIcon> = {
 }
 
 export function SkillsSection() {
+  const t = useTranslations('skills')
+
   return (
     <section id="skills" className="py-20 md:py-32 scroll-mt-28">
       <div className="container mx-auto px-4">
@@ -23,9 +33,9 @@ export function SkillsSection() {
           viewport={{ once: true }}
           className="text-center mb-16"
         >
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">기술 스택</h2>
+          <h2 className="text-3xl md:text-4xl font-bold mb-4">{t('title')}</h2>
           <p className="text-muted-foreground max-w-2xl mx-auto">
-            현재 사용 중인 주요 기술과 도구들입니다.
+            {t('description')}
           </p>
         </motion.div>
 
@@ -33,6 +43,8 @@ export function SkillsSection() {
         <div className="max-w-4xl mx-auto space-y-6">
           {siteConfig.skillCategories.map((category, index) => {
             const IconComponent = categoryIcons[category.category] || Code2
+            const translationKey = categoryTranslationKey[category.category]
+            const categoryLabel = translationKey ? t(translationKey) : category.category
 
             return (
               <motion.div
@@ -48,7 +60,7 @@ export function SkillsSection() {
                   <div className="p-2 rounded-lg bg-primary/10">
                     <IconComponent className="h-5 w-5 text-primary" />
                   </div>
-                  <span className="font-medium">{category.category}</span>
+                  <span className="font-medium">{categoryLabel}</span>
                 </div>
 
                 {/* 기술 배지 */}

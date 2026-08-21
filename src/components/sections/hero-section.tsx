@@ -1,8 +1,9 @@
 'use client'
 
 import dynamic from 'next/dynamic'
-import Link from 'next/link'
 import Image from 'next/image'
+import { useTranslations } from 'next-intl'
+import { Link } from '@/i18n/navigation'
 import { Button } from '@/components/ui/button'
 import { ArrowRight } from 'lucide-react'
 
@@ -11,19 +12,21 @@ const LiquidBackground = dynamic(() => import('@/components/effects/liquid-backg
 })
 
 export function HeroSection() {
+  const t = useTranslations('hero')
+
   return (
     <section className="scroll-mt-28 py-20 sm:py-28 lg:py-32">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12 items-center">
         {/* 좌측: 텍스트 */}
         <div className="space-y-6">
           <div className="space-y-2">
-            <p className="text-lg text-primary font-semibold">안녕하세요,</p>
+            <p className="text-lg text-primary font-semibold">{t('greeting')}</p>
             <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold tracking-tight leading-tight">
-              프론트엔드에서<br />풀스택으로
+              {t('titleLine1')}<br />{t('titleLine2')}
             </h1>
           </div>
           <p className="text-lg sm:text-xl text-muted-foreground leading-relaxed">
-            UI/UX 구현에서 출발해 공공 프로젝트의 백엔드 로직까지 이해 범위를 넓혀온 성장형 개발자입니다.
+            {t('description')}
           </p>
           <div className="flex flex-col sm:flex-row gap-4 pt-4">
             <Button
@@ -32,7 +35,7 @@ export function HeroSection() {
               nativeButton={false}
               render={<Link href="/#projects" />}
             >
-              프로젝트 보기
+              {t('projectsCta')}
               <ArrowRight className="ml-2 h-4 w-4" />
             </Button>
             <Button
@@ -42,7 +45,7 @@ export function HeroSection() {
               nativeButton={false}
               render={<Link href="/#resume" />}
             >
-              이력서 보기
+              {t('resumeCta')}
             </Button>
           </div>
         </div>
@@ -56,7 +59,7 @@ export function HeroSection() {
             {/* 원형 프레임 + 이미지 */}
             <Image
               src="/igchoi-selfie.jpg"
-              alt="이그쵸이 프로필 사진"
+              alt={t('profileAlt')}
               fill
               priority
               className="rounded-full object-cover border-2 border-primary/50"

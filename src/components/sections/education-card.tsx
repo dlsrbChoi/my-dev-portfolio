@@ -1,11 +1,14 @@
 'use client'
 
 import { motion } from 'framer-motion'
+import { useTranslations } from 'next-intl'
 import { ExperienceEntry } from '@/types/notion'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { GraduationCap, Calendar } from 'lucide-react'
 
 export function EducationCard({ educations }: { educations: ExperienceEntry[] }) {
+  const t = useTranslations('education')
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -18,7 +21,7 @@ export function EducationCard({ educations }: { educations: ExperienceEntry[] })
         <div className="p-2 rounded-lg bg-primary/10">
           <GraduationCap className="h-6 w-6 text-primary" />
         </div>
-        <h2 className="text-3xl md:text-4xl font-bold">학력</h2>
+        <h2 className="text-3xl md:text-4xl font-bold">{t('educationTitle')}</h2>
       </div>
 
       <div className="space-y-4">

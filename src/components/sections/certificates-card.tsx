@@ -1,11 +1,14 @@
 'use client'
 
 import { motion } from 'framer-motion'
+import { useTranslations } from 'next-intl'
 import { ExperienceEntry } from '@/types/notion'
 import { Badge } from '@/components/ui/badge'
 import { Award } from 'lucide-react'
 
 export function CertificatesCard({ certificates }: { certificates: ExperienceEntry[] }) {
+  const t = useTranslations('education')
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -17,7 +20,7 @@ export function CertificatesCard({ certificates }: { certificates: ExperienceEnt
         <div className="p-2 rounded-lg bg-primary/10">
           <Award className="h-6 w-6 text-primary" />
         </div>
-        <h2 className="text-3xl md:text-4xl font-bold">자격증</h2>
+        <h2 className="text-3xl md:text-4xl font-bold">{t('certificatesTitle')}</h2>
       </div>
 
       <div className="space-y-0">
