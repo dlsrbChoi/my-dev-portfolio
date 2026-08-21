@@ -1,22 +1,6 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { ThemeProvider } from "@/components/theme-provider";
-import { Header } from "@/components/layout/header";
-import { Footer } from "@/components/layout/footer";
-import { Container } from "@/components/layout/container";
-import { TooltipProvider } from "@/components/ui/tooltip";
 import { siteConfig } from "@/lib/site-config";
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.url),
@@ -43,6 +27,12 @@ export const metadata: Metadata = {
     index: true,
     follow: true,
   },
+  alternates: {
+    languages: {
+      ko: '/',
+      en: '/en',
+    },
+  },
 };
 
 export default function RootLayout({
@@ -51,21 +41,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html
-      lang="ko"
-      suppressHydrationWarning
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
-    >
-      <body className="min-h-full flex flex-col bg-background text-foreground" suppressHydrationWarning>
-        <ThemeProvider>
-          <TooltipProvider>
-            <Header />
-            <main className="flex-1">
-              <Container>{children}</Container>
-            </main>
-            <Footer />
-          </TooltipProvider>
-        </ThemeProvider>
+    <html lang="ko" suppressHydrationWarning>
+      <body suppressHydrationWarning>
+        {children}
       </body>
     </html>
   );
