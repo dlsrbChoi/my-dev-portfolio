@@ -1,7 +1,8 @@
 'use client'
 
-import { Button } from '@/components/ui/button'
 import { LucideIcon } from 'lucide-react'
+import { Button } from '@/components/ui/button'
+import { Link } from '@/i18n/navigation'
 
 interface EmptyStateProps {
   icon: LucideIcon
@@ -29,7 +30,7 @@ export function EmptyState({
         </p>
       )}
       {action && (
-        <Button className="mt-4" onClick={() => window.location.href = action.href}>
+        <Button className="mt-4" nativeButton={false} render={<Link href={action.href} />}>
           {action.label}
         </Button>
       )}
