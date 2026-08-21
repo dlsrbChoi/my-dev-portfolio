@@ -217,28 +217,36 @@ Notion CMS 포트폴리오는 **채용 담당자·기술 면접관·협업 파�
 
 ---
 
-### Phase 8: GA4 방문자 분석 연동
+### Phase 8: GA4 방문자 분석 연동 🟡 부분 완료
 
 > **의존성**: Task 015 완료 후 `language_change` 이벤트 추가 (그 외 독립) · **예상 기간**: 1일
 
-- **Task 016: GA4 초기화 및 이벤트 트래킹 구현**
-  - Google Analytics 4 속성 생성 및 Measurement ID 발급, `.env.local`에 `NEXT_PUBLIC_GA_ID` 등록
-  - `next/third-parties/google`의 `GoogleAnalytics` 컴포넌트로 초기화 (별도 의존성 불필요, Next.js 16 내장)
-  - `src/lib/ga-events.ts` (신규) — 타입 안전한 이벤트 래퍼 함수
-    - `trackSectionClick(section)` / `trackResumeDownload()` / `trackThemeToggle(theme)` / `trackLanguageChange(locale)` / `trackProjectView(id, title)`
-  - `src/types/gtag.d.ts` — `window.gtag` 전역 타입 선언 (`any` 사용 금지)
-  - 이벤트 호출부 연결: `SectionNav`(도트 클릭), `PrintButton`(인쇄), `ThemeToggle`(테마), `LanguageSwitcher`(언어), 프로젝트 상세 페이지(조회)
-  - `NEXT_PUBLIC_GA_ID` 미설정 시 no-op 처리하여 로컬/개발 환경 오염 방지
-  - Vercel 프로덕션 환경변수 등록
+- **Task 016: GA4 초기화 및 이벤트 트래킹 구현** 🟡 핵심 구현 완료 (일부 항목 대기)
+  - [ ] Google Analytics 4 속성 생성 및 Measurement ID 발급 (실제 GA4 속성 발급은 사용자 액션 필요)
+  - ✅ `.env.local`에 `NEXT_PUBLIC_GA_ID` 플레이스홀더 등록 (값 비움 — 미설정 시 추적 비활성화)
+  - ✅ `src/components/analytics/google-analytics.tsx` (신규) — `next/script`(`afterInteractive`) 기반 gtag.js 로더 + `usePathname`/`useSearchParams`로 SPA pageview 자동 전송. `@next/third-parties`는 experimental 상태라 미설치, 순수 `next/script` 직접 구현으로 대체
+  - ✅ `src/lib/gtag.ts` (신규) — `GA_TRACKING_ID`(env 기반), `isGAEnabled()`, `pageview()`, `event({action, category, label, value})` 타입 안전 이벤트 래퍼
+  - ✅ `src/types/gtag.d.ts` (신규) — `window.gtag` / `window.dataLayer` 전역 타입 선언 (`any` 미사용)
+  - ✅ `src/app/layout.tsx` — `<GoogleAnalytics />`를 `Suspense`로 감싸 루트에 통합 (`useSearchParams` 요구사항 충족)
+  - ✅ `NEXT_PUBLIC_GA_ID` 미설정 시 컴포넌트가 `null` 반환 및 `event()`가 no-op 처리 — 로컬 환경 오염 방지 확인 (Playwright로 `googletagmanager.com` 요청 없음 검증)
+  - ✅ 이벤트 호출부 1차 연결: 프로젝트 모달 열람(`project_modal_open`), 상세 페이지 이동(`project_detail_view`), 외부 링크 클릭(`project_external_link_click`)
+  - [ ] 나머지 이벤트 호출부 연결 대기: `SectionNav`(도트 클릭), `PrintButton`(인쇄), `ThemeToggle`(테마), `LanguageSwitcher`(언어 — Phase 7 완료 후)
+  - [ ] Vercel 프로덕션 환경변수(`NEXT_PUBLIC_GA_ID`) 등록 (배포 시점 작업)
 
   **테스트 체크리스트 (Playwright MCP)**
-  - 프로덕션 빌드에서 gtag 스크립트 로드 확인 (`browser_network_requests`로 `googletagmanager.com` 요청 검증)
-  - 섹션 도트 클릭 → `section_click` 이벤트 페이로드 확인 (`browser_evaluate`로 `dataLayer` 검사)
-  - 인쇄 버튼 클릭 → `resume_download` 이벤트 발생 확인
-  - 테마 토글 / 언어 전환 → 각 이벤트 파라미터 정확성 확인
-  - 프로젝트 상세 진입 → `project_view` 이벤트에 `project_title` 포함 확인
-  - `NEXT_PUBLIC_GA_ID` 미설정 시 콘솔 에러 없이 정상 동작 확인
-  - GA4 실시간 보고서에서 5개 이상 이벤트 수집 확인 (수동)
+  - ✅ `NEXT_PUBLIC_GA_ID` 미설정 시 콘솔 에러 없이 정상 동작 및 gtag 스크립트 미로드 확인 (`browser_network_requests`)
+  - [ ] 프로덕션 빌드 + 실제 GA_ID 설정 후 gtag 스크립트 로드 확인
+  - [ ] 섹션 도트 클릭 → `section_click` 이벤트 페이로드 확인 (`browser_evaluate`로 `dataLayer` 검사)
+  - [ ] 인쇄 버튼 클릭 → `resume_download` 이벤트 발생 확인
+  - [ ] 테마 토글 / 언어 전환 → 각 이벤트 파라미터 정확성 확인
+  - ✅ 프로젝트 모달 열람 → `project_modal_open` 이벤트 호출 확인 (코드 리뷰 기준, `dataLayer` 실측은 GA_ID 미설정으로 보류)
+  - [ ] GA4 실시간 보고서에서 5개 이상 이벤트 수집 확인 (수동, 실제 속성 발급 후)
+
+#### 부가 구현: 프로젝트 모달 & SpotlightCard (Phase 2 향상 기능, 참고자료 반영)
+- ✅ `src/components/common/spotlight-card.tsx` (신규) — 마우스 위치 추적 radial-gradient 스포트라이트 효과 공통 컴포넌트 (참고: `reference/my-dev-portfolio/src/components/common/spotlight-card.tsx` 이식, oklch 색상 fallback으로 조정)
+- ✅ `src/components/projects/project-modal.tsx` (신규) — 프로젝트 카드 클릭 시 여는 빠른 미리보기 `Dialog` 모달. Notion 데이터 구조상 다중 이미지 갤러리가 없어 커버 이미지 1장 + 개요/핵심 성과/기술 스택 표시, "전체 상세 보기"로 `/projects/[slug]` 이동 (참고자료의 Carousel 기반 모달과 달리 역할 분리 설계)
+- ✅ `src/components/projects/project-card.tsx` — `SpotlightCard`로 래핑, "미리보기" 버튼 클릭 시 `ProjectModal` 오픈 (기존 "상세 보기" 직접 이동 버튼을 모달 경유 방식으로 변경)
+- ✅ `npm run build` / `npm run lint` / TypeScript strict 통과, Playwright로 모달 오픈·개요/성과/기술스택 렌더링·닫기 동작 실측 검증 (콘솔 에러 0건)
 
 ---
 
@@ -287,7 +295,7 @@ Notion CMS 포트폴리오는 **채용 담당자·기술 면접관·협업 파�
 | Phase 5 | 프로젝트 섹션 개편 (주요/사이드) | 1-2일 | 🟡 구현 완료(커밋 대기) |
 | Phase 6 | Framer Motion + Three.js | 2-3일 | ✅ 완료 (커밋 대기) |
 | Phase 7 | 다국어 지원 (next-intl) | 2일 | 📋 계획 중 |
-| Phase 8 | GA4 방문자 분석 | 1일 | 📋 계획 중 |
+| Phase 8 | GA4 방문자 분석 | 1일 | 🟡 핵심 구현 완료 (이벤트 확장·실속성 발급 대기) |
 | Phase 9 | 최종 폴리싱 및 배포 | 1-2일 | 📋 계획 중 |
 | Phase 10 | 포트폴리오 비주얼 확대 (회사 임팩트, 경력 상세화, 기술 스택, 사이드 프로젝트, GIF 시연) | 4-5일 | 📋 선택사항 (Task 023·025 우선순위) |
 
@@ -447,13 +455,14 @@ Notion CMS 포트폴리오는 **채용 담당자·기술 면접관·협업 파�
 
 ---
 
-**마지막 갱신**: 2026-08-13
+**마지막 갱신**: 2026-08-19
 - v1: PRD v2.0 기준 최초 작성 (Phase 1~9)
 - v2: 참고 포트폴리오(junheedot.com) 반영 (Phase 10 추가, 섹션별 UI/UX 개선 사항 반영)
 - v3: 참고 사이트(junheedot.com) 및 제작기 재분석 — Task 009~012 실제 구현 상태(커밋 대기) 반영, Phase 10 Task 번호 재정리(020~026) 및 경력 타임라인 상세화(Task 023)·GIF 시연(Task 025) 우선순위 항목으로 승격
 - v4: shrimp-task-manager로 Phase 6(Task 011~013) 계획→코드 검토→버그 수정→Playwright 실측 검증 완료. 검증 과정에서 실질 버그 다수 발견(카드 호버 그림자 죽은 클래스, 하이드레이션 불일치, WebGL RAF 메모리 누수, WebGL 미지원 시 ErrorBoundary로 히어로 전체 붕괴, oklch→RGB 변환 실패, lint 에러 4건) 및 수정. Phase 6 ✅ 완료로 갱신(git 커밋은 아직 미완료)
+- v5: Phase 8(Task 016) GA4 핵심 인프라 구현 — `next/script` 기반 `GoogleAnalytics` 컴포넌트, `gtag.ts` 이벤트 래퍼, `gtag.d.ts` 타입 선언, env 미설정 시 no-op 동작 Playwright 검증. 이벤트 호출부는 프로젝트 모달 관련 3종만 우선 연결(나머지는 대기). 부가로 참고자료(`reference/my-dev-portfolio`)의 `SpotlightCard` 공통 컴포넌트와 `ProjectModal`(Notion 데이터 구조에 맞춰 단일 커버 이미지 + 개요/성과/기술스택 프리뷰로 재설계)을 `ProjectCard`에 통합. 빌드/lint/타입체크 통과, Playwright로 모달 동작 실측 확인
 
-**다음 착수 작업**: Task 009~012(Phase 5·6) 워킹 디렉토리 변경사항 커밋 → 완료 후 Phase 7(다국어) 착수 또는 Task 023/025(Phase 10) 우선 착수 검토. Phase 6의 크로스 브라우저 검증 중 Safari/Firefox는 Playwright MCP로 확인 불가능해 수동 검증 필요
+**다음 착수 작업**: Task 009~012(Phase 5·6) 워킹 디렉토리 변경사항 커밋 → Task 016 잔여 항목(GA4 실제 속성 발급, 나머지 이벤트 호출부 연결) 또는 Phase 7(다국어) 착수 검토. Phase 6의 크로스 브라우저 검증 중 Safari/Firefox는 Playwright MCP로 확인 불가능해 수동 검증 필요
 
 ---
 
