@@ -1,3 +1,37 @@
+export const skillIcons: Record<string, string> = {
+  'JavaScript': 'javascript',
+  'TypeScript': 'typescript',
+  'Vue.js': 'vue',
+  'React.js': 'react',
+  'Next.js': 'nextjs',
+  'Thymeleaf': 'thymeleaf',
+  'JSP': 'jsp',
+  'jQuery': 'jquery',
+  'Java': 'java',
+  'Spring Boot (eGov)': 'spring',
+  'MyBatis': 'mybatis',
+  'shadcn/ui': 'shadcn',
+  'Styled-Components': 'styledcomponents',
+  'Tailwind CSS': 'tailwind',
+  'Webpack': 'webpack',
+  'Vite': 'vite',
+  'PostgreSQL': 'postgresql',
+  'MySQL': 'mysql',
+  'AWS EC2': 'aws',
+  'Nginx': 'nginx',
+  'Git': 'git',
+  'SVN': 'svn',
+  'Jira': 'jira',
+  'Slack': 'slack',
+  'MS Teams': 'msteams',
+  'Figma': 'figma',
+  'Zeplin': 'zeplin',
+  'Adobe XD': 'xd',
+  'Claude Code': 'claude',
+  'Playwright MCP': 'playwright',
+  'Shrimp Task Manager': 'shrimp',
+}
+
 export const siteConfig = {
   url: process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000',
   name: '최인규',
@@ -8,16 +42,32 @@ export const siteConfig = {
   location: '',
   skillCategories: [
     {
-      category: '프론트엔드',
-      items: ['TypeScript', 'React', 'Vue.js', 'Next.js', 'TailwindCSS'],
+      category: 'Front-end',
+      items: ['JavaScript', 'TypeScript', 'Vue.js', 'React.js', 'Next.js', 'Thymeleaf', 'JSP', 'jQuery'],
     },
     {
-      category: '백엔드',
-      items: ['Spring Boot', 'Node.js', 'Python', 'MySQL', 'PostgreSQL'],
+      category: 'Back-end',
+      items: ['Java', 'Spring Boot (eGov)', 'MyBatis'],
     },
     {
-      category: '도구 & 플랫폼',
-      items: ['Git', 'Docker', 'CI/CD', 'AWS', 'Vercel'],
+      category: 'Styling',
+      items: ['shadcn/ui', 'Styled-Components', 'Tailwind CSS'],
+    },
+    {
+      category: 'Build Tools',
+      items: ['Webpack', 'Vite'],
+    },
+    {
+      category: 'Database & Infra',
+      items: ['PostgreSQL', 'MySQL', 'AWS EC2', 'Nginx'],
+    },
+    {
+      category: 'Collaboration',
+      items: ['Git', 'SVN', 'Jira', 'Slack', 'MS Teams', 'Figma', 'Zeplin', 'Adobe XD'],
+    },
+    {
+      category: 'Productivity',
+      items: ['Claude Code', 'Playwright MCP', 'Shrimp Task Manager'],
     },
   ],
 }
