@@ -2,11 +2,11 @@
   "nav": {
     "about": "About",
     "experience": "Experience",
-    "education": "Education",
     "projects": "Projects",
+    "sideProjects": "Side Projects",
     "skills": "Skills",
+    "education": "Education",
     "contact": "Contact",
-    "github": "GitHub",
     "home": "Home"
   },
   "mobileNav": {
@@ -20,42 +20,514 @@
   },
   "hero": {
     "greeting": "Hello,",
-    "titleLine1": "From Frontend to",
-    "titleLine2": "Full Stack",
-    "description": "A growth-oriented developer who started with UI/UX implementation and expanded into backend logic for public sector projects.",
-    "projectsCta": "View Projects",
-    "resumeCta": "View Resume",
+    "titleLine1": "Web",
+    "titleLine2": "Developer",
+    "description": "A developer who designs user-centric UI/UX from the ground up and builds reliable backend architecture, seeking optimal solutions across the entire technology spectrum.",
+    "resumeDownload": "Download Resume",
+    "githubLink": "GitHub",
     "profileAlt": "igchoi profile photo"
   },
   "about": {
     "title": "About",
-    "description1": "I'm a developer who grew from frontend to full stack. Starting with UI/UX implementation, I've expanded my understanding to backend logic, databases, and system integration.",
-    "description2": "I led migration and payment system development for the Incheon Wallet app and the nationwide integrated parking portal, and I pursue continuous growth by acknowledging what I don't know and staying eager to learn.",
+    "company1Name": "Dadame S.Energy",
+    "company1Title": "SPOT Exchange Migration",
+    "company1Description": "Migrated 7-year-old registry (goodoo) project to React + TypeScript + Tansack Query",
+    "company2Name": "Dadame S.Energy",
+    "company2Title": "P2P Trading Service Design",
+    "company2Description": "Built real-time trading system with Next.js. Multi-protocol communication (WebSocket, SSE, Axios)",
+    "company3Name": "Appel",
+    "company3Title": "Web Performance & SEO Optimization",
+    "company3Description": "Data-driven optimization experience. SEO improvement (45% page performance boost) & FCP under 1s (Lighthouse)",
     "statsExperience": "Years of Experience",
     "statsProjects": "Completed Projects",
     "statsSkills": "Tech Stack",
-    "strength1Title": "Fast Learning & Adaptation",
-    "strength1Description": "I quickly pick up unfamiliar domains and frameworks to technically implement project requirements.",
-    "strength2Title": "Full-System Understanding",
-    "strength2Description": "I collaborate with a clear understanding of the entire flow, from frontend UI to backend APIs and databases.",
-    "strength3Title": "Team Communication",
-    "strength3Description": "I communicate smoothly with planners, designers, and backend developers to accurately grasp requirements.",
-    "strength4Title": "Performance & Usability",
-    "strength4Description": "I prioritize user experience, pursuing performance optimization and intuitive interface design."
+    "strength1Title": "Growth Through Experience",
+    "strength1Description": "Over the past 3 years, I've expanded experience across UI/UX, backend development, and non-development tasks (documentation, audits, PIA assessments, etc.)",
+    "strength2Title": "Expanding Developer",
+    "strength2Description": "Building a strong development stack by expanding from frontend fundamentals to backend responsibilities in public sector projects.",
+    "strength3Title": "Communication Skills",
+    "strength3Description": "I reduce communication overhead between teams and actively analyze issues to find optimal solutions together.",
+    "strength4Title": "Collaboration & Integrity",
+    "strength4Description": "I value and respect colleagues, building trust. I enjoy sharing problems and solving them together as a team."
   },
   "experience": {
-    "title": "Experience"
+    "title": "Experience",
+    "showDetails": "Show Details",
+    "hideDetails": "Hide Details",
+    "companies": {
+      "lps": {
+        "name": "Lead Point System Co., Ltd.",
+        "period": "2025.02 - 2026.04",
+        "duration": "1 year 3 months",
+        "type": "Full-time / Staff",
+        "positions": {
+          "service": {
+            "team": "WEB3 Service Team",
+            "period": "2025.05 - 2026.04",
+            "teamSize": "4 FS, 1 Planning, 2 UX/UI, 1 PM",
+            "projects": [
+              "Participated as developer in Incheon public project 'Incheon e-Wallet' construction",
+              "Public project technology audit and privacy impact assessment response",
+              "Technology stack migration for service integration",
+              "App release and operational maintenance",
+              "Seoul Social Welfare and Public Interest Law Center website renewal and mobile responsive web conversion"
+            ],
+            "details": {
+              "dev": [
+                "Built blockchain mainnet and spread service development (Incheon e-Wallet initial environment setup)",
+                "Built and operated blockchain citizen experience services (Incheon e-Wallet service enhancement)",
+                "Developed Incheon e-Wallet admin site (CMS) in Spring Boot environment using e-government framework",
+                "Integrated national services: electronic certificate (33 types), non-face-to-face verification, mobile ID verification services",
+                "Developed island visit authentication process: GPS-based location verification and stamp issuance using mobile device when users visit specific spots (islands), hybrid (Web+App) based authentication process",
+                "Developed step accumulation process: collected steps from smartphone hardware sensors (or OS health app) transmitted to web frontend, sent to server (DB) for comparison and synchronized pure step count through hybrid communication-based process"
+              ],
+              "audit_pia": [
+                "Dedicated to stage-by-stage technology audits, essential gateway for public SW projects",
+                "Directly written and updated essential deliverables: requirement traceability matrix, architecture definition, test results, etc., officially proving project quality integrity",
+                "Privacy impact assessment: analyzed and defended sensitive personal data processing requirements to receive 'conform' judgment",
+                "Proactively improved web and mobile vulnerability diagnostic action items to receive 'conform' judgment"
+              ],
+              "migration": [
+                "Migrated existing services built in different languages and frameworks to Incheon e-Wallet app standard environment (HTML/JS + Spring Boot)",
+                "Island Pass (Smart Pass): migrated React Native and Nest.js based services to web standards (HTML/JS) and Spring Boot environment integration",
+                "Eco Hub Platform: migrated existing JPA/Spring based services to project standard architecture",
+                "Intellectual Property Protection Platform: transferred React.js based services to secure consistent UX and maintenance environment"
+              ],
+              "maintenance": [
+                "Officially released and managed distribution of final app with citizen experience services in stores (Google Play, App Store)",
+                "Direct response to current operations and public CS: rapidly reflected new feature additions and modification requests in system, continuously improved UI/UX and functional inconveniences by analyzing user feedback",
+                "Critical troubleshooting (step challenge issue resolution): resolved data accumulation aggregation errors due to concurrency issues under large traffic and ensured data integrity through transaction management and query tuning"
+              ],
+              "swlcRenewal": [
+                "Implemented responsive web conversion within legacy environment (JSP)",
+                "Collaborated with design team and enhanced UI/UX"
+              ]
+            }
+          },
+          "design": {
+            "team": "WEB3 Design Team",
+            "period": "2025.02 - 2025.04",
+            "teamSize": "1 FE, 1 Planning, 2 UX/UI, 1 PM",
+            "projects": [
+              "Led frontend development based on initial design of Incheon e-Wallet project",
+              "Built static HTML, CSS publishing into Spring MVC Thymeleaf, jQuery based server and client standard architecture"
+            ],
+            "details": {
+              "fe": [
+                "Dedicated Incheon e-Wallet WebApp FE development",
+                "Mobile device asynchronous data requests through Flutter",
+                "Introduced Race Condition defense to synchronize device data coming from Flutter with web features",
+                "Branched AOS, iOS functionality according to each user device condition"
+              ],
+              "build": [
+                "Proceeded with FE work by confirming Zeplin design",
+                "Developed each screen event and functionality using jQuery",
+                "Used Ajax web development technique for asynchronous communication"
+              ]
+            }
+          }
+        }
+      },
+      "dhicc": {
+        "name": "Dae Heung Information Co., Ltd.",
+        "period": "2023.01 - 2025.01",
+        "duration": "2 years 1 month",
+        "type": "Full-time / SP (Solution Provider) Team Manager",
+        "positions": {
+          "yeosu": {
+            "team": "Yeosu City Parking Portal TF Team",
+            "period": "2024.12 - 2025.01",
+            "teamSize": "1 FE, 3 BE",
+            "projects": [
+              "Shortened development time using integrated parking portal mothership",
+              "Managed design and publishing outsourcing",
+              "Frontend performance optimization and quality improvement"
+            ],
+            "details": {
+              "mothership": [
+                "Completed last year's personal KPI FE MotherShip project and shortened development time based on fully implemented project (1 month > 2 weeks)",
+                "Achieved 131% performance based on Jira work management"
+              ],
+              "outsourcing": [
+                "Managing outsource vendors used in current and subsequent projects as also responsible for publishing",
+                "External vendor meetings and design, publishing review"
+              ],
+              "performance": [
+                "Achieved FCP within 2.3 seconds per page by Lighthouse standard",
+                "Unit test implementation (jest)"
+              ]
+            }
+          },
+          "chuncheon": {
+            "team": "Chuncheon City Parking Portal TF Team",
+            "period": "2024.12 - 2025.01",
+            "teamSize": "1 FE, 3 BE",
+            "projects": [
+              "Platform expansion and UI/UX enhancement",
+              "Menu hierarchy structure improvement",
+              "Delinquent payment calculation process improvement"
+            ],
+            "details": {
+              "paltform": [
+                "Mobile App expansion and dynamic rendering",
+                "Packaged and created existing web portal as WebView-based hybrid App using Apache Cordova",
+                "Responsive layout work tailored to tablet environment"
+              ],
+              "menu": [
+                "Analyzed data structure and implemented hierarchical dynamic menu creation logic based on recursive functions"
+              ],
+              "calc": [
+                "Implemented delinquent and additional collection amount calculation process for vehicle numbers",
+                "Previously exposed API amounts, now added validation to verify frontend calculated amounts match API queried amounts"
+              ]
+            }
+          },
+          "asan": {
+            "team": "Asan City Parking Portal TF Team",
+            "period": "2024.07 - 2024.11",
+            "teamSize": "1 FE, 3 BE",
+            "projects": [
+              "State management and logic optimization",
+              "Improved popup exposure functionality for different user devices and resolutions",
+              "Dedicated publishing"
+            ],
+            "details": {
+              "state": [
+                "Converted existing Vue Mixin functions to Vue3 Composable functions to increase logic reusability and modularized Vuex state management",
+                "Changed login persistence method from session storage to local storage to ensure state management stability"
+              ],
+              "popup": [
+                "Identified resolution before webpage exposure starts (before created) to provide optimal popup"
+              ],
+              "publishing": [
+                "Published Adobe XD design to Vue-based platform"
+              ]
+            }
+          },
+          "yangchun": {
+            "team": "Yangcheon-gu Parking Portal TF Team",
+            "period": "2024.04 - 2024.07",
+            "teamSize": "1 FE, 3 BE",
+            "projects": [
+              "PG payment module (Smartro) integration and payment process E2E flow control",
+              "AI chatbot connection",
+              "Added Drag and Drop sorting functionality for admin system bulletin board order",
+              "Dedicated publishing"
+            ],
+            "details": {
+              "PG": [
+                "Beyond simple API integration, built stable payment environment by linking payment lifecycle callbacks and redirect flow through Vue.js router",
+                "Prevented duplicate payments from user multiple clicks or network delays by centralizing payment progress state in Vuex and applying immediate loading UI (spinners, etc.) and debouncing"
+              ],
+              "chatbot": [
+                "Connected AI chatbot functionality to provide chat-based conversation environment for users on web screen"
+              ],
+              "board": [
+                "SortableJS based: reflected list reordering (Sort) functionality beyond simply placing items"
+              ],
+              "publishing": [
+                "Proceeded with publishing work due to publisher resignation",
+                "Published Adobe XD design to Vue-based platform"
+              ]
+            }
+          },
+          "incheon": {
+            "team": "Incheon City Parking Portal TF Team",
+            "period": "2023.11 - 2024.02",
+            "teamSize": "1 FE, 3 BE, 1 UX/UI",
+            "projects": [
+              "Introduced Atomic design pattern",
+              "Led team study group"
+            ],
+            "details": {
+              "atomic": [
+                "Introduced Atomic Design pattern to maximize UI component reusability and prevent design fragmentation",
+                "Removed duplicate components, alleviated complex dependency structures, eased designer communication, structured UI"
+              ],
+              "study": [
+                "Conducted study for better development knowledge improvement",
+                "Modern JavaScript Deep Dive: deeply learned JavaScript operation principles and core concepts"
+              ]
+            }
+          },
+          "busan": {
+            "team": "Busan City Parking Portal TF Team",
+            "period": "2023.05 - 2023.12",
+            "teamSize": "1 FE, 3 BE, 1 UX/UI",
+            "projects": [
+              "Led framework migration",
+              "Improved Kakao Map to user-centric UI/UX"
+            ],
+            "details": {
+              "migration": [
+                "Successfully migrated legacy Vue.js v2 based solution to Vue.js v3 environment to improve performance and development productivity"
+              ],
+              "map": [
+                "Converted Kakao Map basic markers to custom markers (Custom Overlay) according to customer and business requirements",
+                "Improved user intuitiveness through implementation of customer-tailored custom pins and info windows using Kakao Map API"
+              ]
+            }
+          },
+          "paju": {
+            "team": "Paju City Parking Portal TF Team",
+            "period": "2023.03 - 2023.07",
+            "teamSize": "1 FE, 4 BE, 1 UX/UI",
+            "projects": [
+              "Frontend performance optimization in limited closed network and low-spec client environment"
+            ],
+            "details": {
+              "loading": [
+                "Analyzed and improved initial loading time exceeding 10 seconds in elderly/low-spec device environment",
+                "Applied Lazy Loading to minimize unnecessary resource requests during initial rendering and reduced initial bundle size",
+                "Improved FCP (First Contentful Paint) and LCP through Font Preload and rendering blocking resource optimization",
+                "Code splitting and bundle optimization: divided entire service code (JS) by page (route) or component level to load only when needed",
+                "Improved initial page loading speed from 10+ seconds to 3+ seconds (approximately 70% reduction) to enhance UX in low-spec environment"
+              ]
+            }
+          },
+          "anyang": {
+            "team": "Anyang City Parking Portal TF Team",
+            "period": "2023.01 - 2023.03",
+            "teamSize": "1 FE, 4 BE, 1 UX/UI",
+            "projects": [
+              "Anyang City integrated login (SSO) connection for improved local government citizen services",
+              "Parking portal admin system FE development",
+              "Built Vue-based frontend UI/UX style guide and component library"
+            ],
+            "details": {
+              "sso": [
+                "Developed single account authentication (SSO) frontend module for Anyang City Hall linked services",
+                "Optimized session persistence and redirection linkage process between subordinate services through SSO connection",
+                "Built Auth Guard and user attrition prevention UX to prevent redirection exceptions on session expiration and authentication failure"
+              ],
+              "admin": [
+                "Dedicated to FE development of admin system to manage integrated parking portal",
+                "Proceeded with overall development including board CRUD, banners and popups, parking lot information, parking fee settings, etc."
+              ],
+              "guide": [
+                "Performed responsive web publishing as initial solution model and established SCSS componentization and code style guide to build foundation for future project UI development",
+                "Frontend code standardization: optimized company/team level maintainability through modularization of common UI components and style guide establishment",
+                "Reusable component design: shortened new screen development man-hours through Vue-based UI style guide construction"
+              ]
+            }
+          }
+        }
+      },
+      "dnsever": {
+        "name": "D&S Ever Co., Ltd.",
+        "period": "2024.07 - 2026.02",
+        "duration": "1 year 8 months",
+        "type": "Full-time",
+        "positions": {
+          "dev": {
+            "team": "Dev Team",
+            "period": "2025.06 - 2026.02",
+            "projects": [
+              "KYC (Know Your Customer) Authentication Service Internalization",
+              "AI-powered Service Structure Full Documentation Project",
+              "SPOT Enhancement (BUY/SELL Indicator, Simple Layout)",
+              "Full Service Maintenance"
+            ],
+            "details": {
+              "kyc": [
+                "Designed in-house authentication service using AWS Rekognition in response to Sumsub contract expiration",
+                "Implemented 3-step flow using Amplify Liveness: [Identity Verification - ID Upload - Real-time Face Recognition & Comparison]",
+                "Coordinated session management and authentication flow across infrastructure, backend, and frontend",
+                "Applied structure and design using Figma MCP and Claude Code"
+              ],
+              "ai_docs": [
+                "Analyzed monorepo structure services (7+ years maintained) using Claude Code and systematized in repository .md files",
+                "Built user flow analysis and automatic documentation generation system",
+                "Established single-document-based onboarding system"
+              ],
+              "spot": [
+                "Added BUY/SELL (Transaction) Indicator",
+                "Implemented mobile web Simple Layout mode (increased Buy/Sell click events from 7 to 12 per user)",
+                "Implemented depth chart using canvas-based custom solution"
+              ],
+              "maintenance": [
+                "Implemented and designed Angular-based legacy projects",
+                "Added member withdrawal functionality",
+                "Designed authentication maintenance system between webview and SSO server",
+                "Conducted soft-landing work for service termination"
+              ]
+            },
+            "teamSize": {
+              "kyc": "1 FE, 1 BE, 1 PM",
+              "ai_docs": "1 FE",
+              "spot": "1 FE, 1 PM",
+              "maintenance": "1 FE, 2 BE, 1 PM"
+            }
+          },
+          "p2p": {
+            "team": "P2P TF Team",
+            "period": "2025.01 - 2025.06",
+            "teamSize": "2 FE, 2 BE, 2 PM, 2 UX/UI, 1 PM",
+            "projects": [
+              "Project maintainer leading full frontend part from design to release",
+              "Implemented SSR/ISR strategy with Next.js",
+              "Applied multi-protocol communication (Axios, SSE, WebSocket)",
+              "Designed and implemented 2-factor authentication (2FA) system"
+            ],
+            "details": {
+              "overview": "Built real-time communication-based peer-to-peer physical-virtual currency trading system",
+              "process": [
+                "Established feature-based sprint cycles and continuous feedback-driven development process",
+                "Optimized page loading and ensured SEO compliance through Next.js SSR/ISR strategy"
+              ],
+              "communication": [
+                "Axios-based general request handling",
+                "Server-to-client push via SSE (Server Sent Events)",
+                "Real-time bidirectional communication via WebSocket"
+              ],
+              "features": [
+                "Ad management (my ads), creation (post ads), modification (update ads)",
+                "Trading features (open order), transaction history",
+                "User information (user center) related community features",
+                "Real-time chat functionality (Sendbird)"
+              ],
+              "security": [
+                "Complete design and implementation of 2-factor authentication (2FA) system",
+                "Integrated multiple authentication options: Passkey, phone authentication, OTP, email, Security Key, etc."
+              ]
+            }
+          },
+          "spot": {
+            "team": "SPOT Team",
+            "period": "2024.07 - 2024.12",
+            "teamSize": "2 FE, 1 PM, 2 UX/UI, 1 PM",
+            "projects": [
+              "ProBit Global Exchange Service (SPOT) Migration",
+              "Complete migration of 7-year-old qooxdoo-based legacy SPA to React-based architecture",
+              "Real-time socket communication optimization",
+              "Dark mode and color theme implementation"
+            ],
+            "details": {
+              "migration": [
+                "Performance improvements: MAU increased from 180K to 200K, click events from 3.6M to 4M",
+                "Enhanced maintainability and accelerated new feature development speed",
+                "Improved API call flow and prevented duplicate calls through tanstack-query adoption"
+              ],
+              "socket": [
+                "Redesigned ping-pong mechanism for improved connection stability",
+                "Implemented reconnection logic using window online/offline and document visibilitychange events",
+                "Developed auto-reauthentication feature for Access Token expiration (15-minute validity)",
+                "Minimized server load by removing unnecessary polling and introducing SSE (Server Sent Events)"
+              ],
+              "ux": [
+                "Implemented dark mode and color themes",
+                "Supported multiple layouts",
+                "Implemented initial listing countdown feature",
+                "Implemented depth chart (Depth Chart)",
+                "Ensured web accessibility and RTL/LTR support for multiple languages"
+              ]
+            }
+          }
+        }
+      },
+      "eazel": {
+        "name": "Eazel Corp.",
+        "period": "2022.01 - 2024.06",
+        "duration": "2 years 6 months",
+        "type": "Full-time",
+        "positions": {
+          "web2": {
+            "team": "Web Team",
+            "period": "2024.01 - 2024.05",
+            "teamSize": "3 FE, 2 BE, 1 UX/UI",
+            "projects": [
+              "Developed admin system for maintenance after website redesign",
+              "Frontend performance optimization and quality improvement",
+              "Established and executed SEO optimization strategy"
+            ],
+            "details": {
+              "admin": [
+                "Implemented data visualization features using highChart library with improved UX",
+                "Self-designed and frontend-implemented audio streaming functionality",
+                "Provided conditional audio streaming for non-members/members based on presigned URLs"
+              ],
+              "optimization": [
+                "Performed Next.js 12 → 14 and react-query v4 → v5 migration",
+                "Achieved FCP under 1 second per page according to Lighthouse standards",
+                "Improved structure to minimize Layout Shift using Suspense and Skeleton UI",
+                "Introduced unit testing (jest)"
+              ],
+              "seo": [
+                "Increased search engine indexed pages from ~8K to ~38K (4x increase)",
+                "Adopted Google Analytics 4",
+                "Documented workflow for non-developer understanding"
+              ]
+            }
+          },
+          "renewal": {
+            "team": "Renewal TF Team",
+            "period": "2023.01 - 2023.12",
+            "teamSize": "3 FE, 2 BE, 1 UX/UI",
+            "projects": [
+              "Led major technology stack transition for full web service redesign project",
+              "Implemented socket.io-based real-time chat functionality",
+              "Built payment system with Stripe SDK integration"
+            ],
+            "details": {
+              "tech": [
+                "Adopted Next.js, TypeScript, and react-query-based framework across the board",
+                "Applied SSR/CSR strategies and performance improvements (FCP/LCP optimization included)"
+              ],
+              "features": [
+                "Web socket-based real-time chat functionality",
+                "Implemented community system (comments, likes, follow system)",
+                "Built artwork payment system with Stripe SDK integration",
+                "Provided artwork pricing and trend analysis UI using highChart.js"
+              ],
+              "monitoring": ["Established error logging and handling system based on Sentry"]
+            }
+          },
+          "web1": {
+            "team": "Web Team",
+            "period": "2022.01 - 2022.12",
+            "teamSize": "3 FE, 1 BE, 1 UX/UI",
+            "projects": [
+              "Implemented features for global art project 'Gucci Garden Archetype' page",
+              "Led in-house developer study group",
+              "Introduced TypeScript to main project"
+            ],
+            "details": {
+              "gucci": [
+                "Developed UI features including map, loading screen, custom buttons",
+                "Developed admin page for internal operation efficiency",
+                "Curated and published art content related categories for responsive web"
+              ],
+              "study": [
+                "Led learning of key frontend theories including TypeScript, Clean Code, Refactoring with practical application"
+              ],
+              "typescript": [
+                "Introduced TypeScript to main project",
+                "Enhanced maintainability through parallel code documentation"
+              ]
+            }
+          }
+        }
+      }
+    }
   },
   "education": {
     "educationTitle": "Education",
-    "certificatesTitle": "Certificates"
+    "certificatesTitle": "Certifications & Awards",
+    "gpaLabel": "GPA",
+    "viewCourses": "View Courses",
+    "hideCourses": "Hide Courses",
+    "basicCourses": "Foundational Courses",
+    "majorCourses": "Major Courses"
   },
   "skills": {
     "title": "Tech Stack",
-    "description": "The main technologies and tools I currently use.",
+    "description": "Main technologies and tools.",
     "categoryFrontend": "Frontend",
     "categoryBackend": "Backend",
-    "categoryTools": "Tools & Platforms"
+    "categoryStyling": "Styling",
+    "categoryInfra": "Database & Infrastructure",
+    "categoryCollaboration": "Collaboration",
+    "categoryProductivity": "Productivity"
   },
   "projects": {
     "title": "Projects",

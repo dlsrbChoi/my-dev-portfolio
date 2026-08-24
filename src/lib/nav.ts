@@ -8,8 +8,9 @@ export interface NavItem {
 export const navItems: NavItem[] = [
   { labelKey: 'about', href: '/#about' },
   { labelKey: 'experience', href: '/#experience' },
-  { labelKey: 'education', href: '/#education' },
   { labelKey: 'projects', href: '/#projects' },
+  { labelKey: 'sideProjects', href: '/#sideProjects' },
   { labelKey: 'skills', href: '/#skills' },
-  { labelKey: 'github', href: 'https://github.com/dlsrbChoi', external: true },
+  { labelKey: 'education', href: '/#education' },
+  { labelKey: 'contact', href: '/#contact' },
 ]
