@@ -1,4 +1,4 @@
-import Link from 'next/link'
+import { Link } from '@/i18n/navigation'
 import { DocSectionCard } from '@/components/patterns/doc-section-card'
 import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'

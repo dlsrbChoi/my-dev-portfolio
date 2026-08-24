@@ -1,6 +1,7 @@
 import { notFound } from 'next/navigation'
 import { Separator } from '@/components/ui/separator'
 import { CodeBlock } from '@/components/patterns/code-block'
+import { locales } from '@/i18n/config'
 import { examples, getExampleBySlug } from '@/lib/examples'
 import { ComponentShowcaseDemo } from '@/components/examples/component-showcase-demo'
 import { FormBasicsDemo } from '@/components/examples/form-basics-demo'
@@ -12,9 +13,12 @@ import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { AlertCircle } from 'lucide-react'
 
 export function generateStaticParams() {
-  return examples.map((example) => ({
-    slug: example.slug,
-  }))
+  return locales.flatMap((locale) =>
+    examples.map((example) => ({
+      locale,
+      slug: example.slug,
+    }))
+  )
 }
 
 interface Post {
@@ -73,7 +77,7 @@ const demosMap: Record<string, React.ComponentType> = {
 export default async function ExampleDetailPage({
   params,
 }: {
-  params: Promise<{ slug: string }>
+  params: Promise<{ locale: string; slug: string }>
 }) {
   const { slug } = await params
   const example = getExampleBySlug(slug)
