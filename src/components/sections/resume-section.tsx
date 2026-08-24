@@ -1,5 +1,4 @@
-import { getResumeData } from '@/lib/notion'
-import type { ExperienceEntry } from '@/types/notion'
+import { experienceData } from '@/lib/experience-data'
 import { siteConfig } from '@/lib/site-config'
 import { getSkillIcon } from '@/lib/skill-icons'
 import { Card, CardContent } from '@/components/ui/card'
@@ -17,14 +16,6 @@ const skillCategoryIconMap: Record<string, LucideIcon> = {
 }
 
 export async function ResumeSection() {
-  let experiences: ExperienceEntry[] = []
-
-  try {
-    const data = await getResumeData()
-    experiences = data.experiences
-  } catch (error) {
-    console.error('Failed to fetch resume data:', error)
-  }
 
   return (
     <section id="resume" className="-scroll-mt-5 py-20 sm:py-28">
@@ -78,8 +69,8 @@ export async function ResumeSection() {
         </Card>
 
         {/* 경력 */}
-        {experiences.length > 0 && (
-          <ExperienceTimeline title="경력" items={experiences.slice(0, 3)} />
+        {experienceData.length > 0 && (
+          <ExperienceTimeline title="경력" items={experienceData.slice(0, 3)} />
         )}
 
         {/* 기술 스택 - 카테고리별 가로 바 형태 */}

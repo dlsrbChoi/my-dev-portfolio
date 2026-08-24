@@ -2,11 +2,11 @@
 
 import { motion } from 'framer-motion'
 import { useTranslations } from 'next-intl'
-import { ExperienceEntry } from '@/types/notion'
+import { CertificateEntry } from '@/lib/education-data'
 import { Badge } from '@/components/ui/badge'
-import { Award } from 'lucide-react'
+import { Trophy } from 'lucide-react'
 
-export function CertificatesCard({ certificates }: { certificates: ExperienceEntry[] }) {
+export function CertificatesCard({ certificates }: { certificates: CertificateEntry[] }) {
   const t = useTranslations('education')
 
   return (
@@ -16,12 +16,18 @@ export function CertificatesCard({ certificates }: { certificates: ExperienceEnt
       transition={{ duration: 0.5, delay: 0.2 }}
       viewport={{ once: true }}
     >
-      <div className="flex items-center gap-3 mb-8">
-        <div className="p-2 rounded-lg bg-primary/10">
-          <Award className="h-6 w-6 text-primary" />
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        viewport={{ once: true }}
+        className="mb-12"
+      >
+        <div className="flex items-center gap-3">
+          <Trophy className="h-5 w-5 text-primary" />
+          <h2 className="text-xl md:text-2xl font-bold">{t('certificatesTitle')}</h2>
         </div>
-        <h2 className="text-3xl md:text-4xl font-bold">{t('certificatesTitle')}</h2>
-      </div>
+      </motion.div>
 
       <div className="space-y-0">
         {certificates.map((cert, index) => (
@@ -43,7 +49,7 @@ export function CertificatesCard({ certificates }: { certificates: ExperienceEnt
                 <p className="text-sm text-muted-foreground">{cert.organization}</p>
               </div>
               <Badge variant="secondary" className="shrink-0 w-fit">
-                {cert.period.start}
+                {cert.date}
               </Badge>
             </div>
           </motion.div>

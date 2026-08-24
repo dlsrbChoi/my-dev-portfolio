@@ -3,20 +3,35 @@
 import { motion } from 'framer-motion'
 import { useTranslations } from 'next-intl'
 import { Badge } from '@/components/ui/badge'
-import { Code2, Database, Wrench, type LucideIcon } from 'lucide-react'
-import { siteConfig } from '@/lib/site-config'
+import { Code2, Database, Palette, Server, Users, Zap, Wrench, type LucideIcon } from 'lucide-react'
+import { siteConfig, skillIcons } from '@/lib/site-config'
+import Image from 'next/image'
 
-// site-config의 한국어 카테고리명 → 메시지 번역 키 매핑
+// site-config의 카테고리명 → 메시지 번역 키 매핑
 const categoryTranslationKey: Record<string, string> = {
-  '프론트엔드': 'categoryFrontend',
-  '백엔드': 'categoryBackend',
-  '도구 & 플랫폼': 'categoryTools',
+  'Front-end': 'categoryFrontend',
+  'Back-end': 'categoryBackend',
+  'Styling': 'categoryStyling',
+  'Build Tools': 'categoryBuildTools',
+  'Database & Infra': 'categoryInfra',
+  'Collaboration': 'categoryCollaboration',
+  'Productivity': 'categoryProductivity',
 }
 
 const categoryIcons: Record<string, LucideIcon> = {
-  '프론트엔드': Code2,
-  '백엔드': Database,
-  '도구 & 플랫폼': Wrench,
+  'Front-end': Code2,
+  'Back-end': Database,
+  'Styling': Palette,
+  'Build Tools': Wrench,
+  'Database & Infra': Server,
+  'Collaboration': Users,
+  'Productivity': Zap,
+}
+
+function CategoryLabel({ category }: { category: string }) {
+  const t = useTranslations('skills')
+  const translationKey = categoryTranslationKey[category]
+  return <span className="font-medium">{translationKey ? t(translationKey) : category}</span>
 }
 
 export function SkillsSection() {
@@ -40,11 +55,9 @@ export function SkillsSection() {
         </motion.div>
 
         {/* 기술 스택 그리드 */}
-        <div className="max-w-4xl mx-auto space-y-6">
+        <div className="max-w-5xl mx-auto space-y-4">
           {siteConfig.skillCategories.map((category, index) => {
             const IconComponent = categoryIcons[category.category] || Code2
-            const translationKey = categoryTranslationKey[category.category]
-            const categoryLabel = translationKey ? t(translationKey) : category.category
 
             return (
               <motion.div
@@ -53,27 +66,42 @@ export function SkillsSection() {
                 whileInView={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
                 viewport={{ once: true }}
-                className="flex flex-col md:flex-row md:items-center gap-4 p-6 rounded-lg border border-border/30 bg-background/50 hover:border-border/60 transition-colors"
+                className="flex flex-col md:flex-row md:items-center gap-4 px-6 py-4 rounded-xl border border-border/60 bg-background/20 hover:border-primary/60 hover:bg-background/25 transition-all duration-300 dark:bg-white/5 dark:hover:bg-white/8"
               >
                 {/* 카테고리 라벨 */}
-                <div className="flex items-center gap-3 md:w-48 shrink-0">
-                  <div className="p-2 rounded-lg bg-primary/10">
-                    <IconComponent className="h-5 w-5 text-primary" />
+                <div className="flex items-center gap-2.5 md:w-44 shrink-0">
+                  <div className="p-1 rounded-lg bg-primary/20 backdrop-blur-sm">
+                    <IconComponent className="h-4 w-4 text-primary" />
                   </div>
-                  <span className="font-medium">{categoryLabel}</span>
+                  <span className="font-semibold text-sm tracking-wide">
+                    <CategoryLabel category={category.category} />
+                  </span>
                 </div>
 
                 {/* 기술 배지 */}
                 <div className="flex flex-wrap gap-2">
-                  {category.items.map((skill) => (
-                    <Badge
-                      key={skill}
-                      variant="secondary"
-                      className="hover:bg-primary hover:text-primary-foreground transition-colors cursor-default"
-                    >
-                      {skill}
-                    </Badge>
-                  ))}
+                  {category.items.map((skill) => {
+                    const iconName = skillIcons[skill]
+                    return (
+                      <Badge
+                        key={skill}
+                        variant="secondary"
+                        className="hover:bg-primary/50 hover:border-primary/80 hover:text-primary-foreground transition-all duration-200 cursor-default text-xs py-1.5 px-3 bg-foreground/10 border border-foreground/20 font-medium dark:bg-white/10 dark:border-white/25 dark:hover:bg-primary/60 dark:hover:border-primary/80 flex items-center gap-1.5"
+                      >
+                        {iconName && (
+                          <img
+                            src={`https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/${iconName}/${iconName}-original.svg`}
+                            alt={skill}
+                            className="w-3 h-3"
+                            onError={(e) => {
+                              e.currentTarget.style.display = 'none'
+                            }}
+                          />
+                        )}
+                        {skill}
+                      </Badge>
+                    )
+                  })}
                 </div>
               </motion.div>
             )
