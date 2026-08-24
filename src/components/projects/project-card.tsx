@@ -5,13 +5,12 @@ import { motion } from 'framer-motion'
 import { useTranslations } from 'next-intl'
 import { useMediaQuery } from 'usehooks-ts'
 import Image from 'next/image'
-import type { Project } from '@/types/notion'
+import type { Project } from '@/types/project'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import { Button } from '@/components/ui/button'
 import { SpotlightCard } from '@/components/common/spotlight-card'
 import { ProjectModal } from '@/components/projects/project-modal'
-import { Eye, ArrowUpRight } from 'lucide-react'
+import { ArrowUpRight } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { event as gaEvent } from '@/lib/gtag'
 
@@ -40,82 +39,80 @@ export function ProjectCard({ project, className }: ProjectCardProps) {
         transition={{ duration: 0.3, ease: 'easeOut' }}
       >
         <SpotlightCard className="h-full">
-          <Card className={cn('flex flex-col overflow-hidden transition-shadow duration-300 hover:ring-foreground/20', className)}>
-          {/* 썸네일 이미지 */}
-          {project.coverImage && (
-            <div className="relative w-full h-48 overflow-hidden bg-muted">
-              <Image
-                src={project.coverImage.url}
-                alt={project.coverImage.alt}
-                fill
-                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                className="object-cover"
-              />
-              {/* 기간 배지 오버레이 (썸네일 좌하단) */}
-              {(project.period.start || project.period.end) && (
-                <div className="absolute bottom-2 left-2 rounded-full border border-white/15 bg-black/60 backdrop-blur-sm px-2.5 py-1 text-xs text-white">
-                  {project.period.start} ~ {project.period.end}
-                </div>
-              )}
-            </div>
-          )}
-
-          <CardHeader>
-            {/* 제목 + 우측 화살표 아이콘 */}
-            <div className="flex items-start justify-between gap-2">
-              <CardTitle className="text-lg">{project.name}</CardTitle>
-              <ArrowUpRight className="h-4 w-4 shrink-0 text-muted-foreground" aria-hidden="true" />
-            </div>
-            {/* 역할 뱃지 */}
-            <div className="mt-3 flex flex-wrap gap-2">
-              {project.role.map((r) => (
-                <Badge key={r} variant="outline" className="text-xs">
-                  {r}
-                </Badge>
-              ))}
-            </div>
-          </CardHeader>
-
-          <CardContent className="flex flex-col flex-1 justify-between">
-            {/* 요약 */}
-            <div className="space-y-4 mb-4">
-              <p className="text-sm text-foreground/90">{project.summary}</p>
-
-              {/* 기술 스택 태그 (최대 3개) */}
-              <div className="flex flex-wrap gap-2">
-                {project.techStack.slice(0, 3).map((tech) => (
-                  <Badge key={tech} variant="outline" className="text-xs">
-                    {tech}
-                  </Badge>
-                ))}
-                {project.techStack.length > 3 && (
-                  <Badge variant="outline" className="text-xs">
-                    +{project.techStack.length - 3}
-                  </Badge>
+          <Card
+            className={cn(
+              'flex h-full cursor-pointer flex-col overflow-hidden transition-shadow duration-300 hover:ring-foreground/20',
+              className
+            )}
+            onClick={handleOpenModal}
+          >
+            {/* 썸네일 이미지 */}
+            {project.image && (
+              <div className="relative h-48 w-full overflow-hidden bg-muted">
+                <Image
+                  src={project.image}
+                  alt={project.title}
+                  fill
+                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                  className="object-cover"
+                />
+                {/* 기간 배지 오버레이 (썸네일 좌하단) */}
+                {project.period && (
+                  <div className="absolute bottom-2 left-2 rounded-full border border-white/15 bg-black/60 backdrop-blur-sm px-2.5 py-1 text-xs text-white">
+                    {project.period.start} ~ {project.period.end ?? t('inProgress')}
+                  </div>
                 )}
               </div>
+            )}
 
-              {/* 주요 성과 지표 불릿 */}
-              {project.impactMetrics.length > 0 && (
-                <ul className="list-disc list-inside text-xs text-muted-foreground space-y-1">
-                  {project.impactMetrics.map((metric) => (
-                    <li key={metric}>{metric}</li>
-                  ))}
-                </ul>
+            <CardHeader>
+              {/* 제목 + 우측 화살표 아이콘 */}
+              <div className="flex items-start justify-between gap-2">
+                <CardTitle className="text-lg">{project.title}</CardTitle>
+                <ArrowUpRight className="h-4 w-4 shrink-0 text-muted-foreground" aria-hidden="true" />
+              </div>
+              {/* 역할 뱃지 */}
+              {project.role && (
+                <div className="mt-3 flex flex-wrap gap-2">
+                  <Badge variant="outline" className="text-xs">
+                    {project.role}
+                  </Badge>
+                </div>
               )}
-            </div>
+            </CardHeader>
 
-            {/* 빠른 미리보기(모달) 버튼 */}
-            <Button
-              size="sm"
-              className="w-full"
-              onClick={handleOpenModal}
-            >
-              <Eye className="mr-2 h-4 w-4" />
-              {t('previewCta')}
-            </Button>
-          </CardContent>
-        </Card>
+            <CardContent className="flex flex-1 flex-col justify-between">
+              <div className="mb-4 space-y-4">
+                {/* 요약 */}
+                <p className="text-sm text-foreground/90">
+                  {project.summary ?? project.description}
+                </p>
+
+                {/* 기술 스택 태그 (최대 3개) */}
+                <div className="flex flex-wrap gap-2">
+                  {project.technologies.slice(0, 3).map((tech) => (
+                    <Badge key={tech} variant="outline" className="text-xs">
+                      {tech}
+                    </Badge>
+                  ))}
+                  {project.technologies.length > 3 && (
+                    <Badge variant="outline" className="text-xs">
+                      +{project.technologies.length - 3}
+                    </Badge>
+                  )}
+                </div>
+
+                {/* 주요 기능 불릿 */}
+                {project.features && project.features.length > 0 && (
+                  <ul className="list-inside list-disc space-y-1 text-xs text-muted-foreground">
+                    {project.features.slice(0, 2).map((feature) => (
+                      <li key={feature}>{feature}</li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+            </CardContent>
+          </Card>
         </SpotlightCard>
       </motion.div>
 

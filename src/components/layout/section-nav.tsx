@@ -14,9 +14,10 @@ interface SectionItem {
 const sections: SectionItem[] = [
   { id: 'about', labelKey: 'about' },
   { id: 'experience', labelKey: 'experience' },
-  { id: 'education', labelKey: 'education' },
   { id: 'projects', labelKey: 'projects' },
+  { id: 'sideProjects', labelKey: 'sideProjects' },
   { id: 'skills', labelKey: 'skills' },
+  { id: 'education', labelKey: 'education' },
   { id: 'contact', labelKey: 'contact' },
 ]
 
@@ -92,7 +93,7 @@ export function SectionNav() {
                   }
             }
             transition={{ duration: 0.3, ease: 'easeOut' }}
-            className={`rounded-full transition-all duration-300 ${
+            className={`rounded-full transition-all duration-300 cursor-pointer ${
               activeSection === section.id
                 ? 'w-3.5 h-3.5 bg-primary border-2 border-primary'
                 : 'w-2.5 h-2.5 border-2 border-muted-foreground/60 hover:border-foreground/60'

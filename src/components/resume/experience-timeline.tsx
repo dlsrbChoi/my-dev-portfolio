@@ -1,11 +1,17 @@
 'use client'
 
+import { useState } from 'react'
 import { motion } from 'framer-motion'
-import { useLocale } from 'next-intl'
-import { ExperienceEntry } from '@/types/notion'
+import { useTranslations, useLocale } from 'next-intl'
+import { ExperienceEntry } from '@/types/resume'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import { Calendar, Briefcase } from 'lucide-react'
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from '@/components/ui/collapsible'
+import { Calendar, Briefcase, ChevronDown, Users } from 'lucide-react'
 import { formatDuration, calculateDuration, calculateTotalCareerDuration } from '@/lib/duration'
 
 interface ExperienceTimelineProps {
@@ -15,23 +21,171 @@ interface ExperienceTimelineProps {
   animateOnView?: boolean
 }
 
+// 회사별 직책 매핑 및 상세 정보 키
+const detailsConfig: Record<string, Record<string, string[]>> = {
+  lps: {
+    service: ['dev', 'audit_pia', 'migration', 'maintenance', 'swlcRenewal'],
+    design: ['fe', 'build'],
+  },
+  dhicc: {
+    yeosu: ['mothership', 'outsourcing', 'performance'],
+    chuncheon: ['paltform', 'menu', 'calc'],
+    asan: ['state', 'popup', 'publishing'],
+    yangchun: ['PG', 'chatbot', 'board', 'publishing'],
+    incheon: ['atomic', 'study'],
+    busan: ['migration', 'map'],
+    paju: ['loading'],
+    anyang: ['sso', 'admin', 'guide'],
+  },
+}
+
+function DetailsCollapsible({
+  companyKey,
+  positionKey,
+  t,
+}: {
+  companyKey: string
+  positionKey: string
+  t: ReturnType<typeof useTranslations<'experience'>>
+}) {
+  const [isOpen, setIsOpen] = useState(false)
+
+  const detailKeys = detailsConfig[companyKey]?.[positionKey]
+  if (!detailKeys || detailKeys.length === 0) return null
+
+  // 상세 정보 존재 여부 확인
+  let hasDetails = false
+  try {
+    const details = t.raw(`companies.${companyKey}.positions.${positionKey}.details`)
+    hasDetails = details && Object.keys(details).length > 0
+  } catch {
+    return null
+  }
+
+  if (!hasDetails) return null
+
+  return (
+    <Collapsible open={isOpen} onOpenChange={setIsOpen} className="mt-3">
+      <CollapsibleTrigger className="flex items-center gap-1 text-xs text-primary hover:text-primary/80 transition-colors cursor-pointer">
+        <ChevronDown
+          className={`h-3 w-3 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`}
+        />
+        <span>{isOpen ? t('hideDetails') : t('showDetails')}</span>
+      </CollapsibleTrigger>
+      <CollapsibleContent className="mt-3 p-3 bg-secondary/30 rounded-md space-y-3">
+        {detailKeys.map((detailKey) => {
+          let items: string[] = []
+          try {
+            items = t.raw(
+              `companies.${companyKey}.positions.${positionKey}.details.${detailKey}`
+            ) as string[]
+          } catch {
+            return null
+          }
+
+          if (!items || !Array.isArray(items) || items.length === 0) return null
+
+          return (
+            <div key={detailKey} className="pl-3 border-l border-primary/30 space-y-1">
+              {items.map((item: string, i: number) => (
+                <p key={i} className="text-xs text-muted-foreground">
+                  • {item}
+                </p>
+              ))}
+            </div>
+          )
+        })}
+      </CollapsibleContent>
+    </Collapsible>
+  )
+}
+
 export function ExperienceTimeline({
   items,
   title = '경력',
   showHeader = true,
   animateOnView = true,
 }: ExperienceTimelineProps) {
+  const t = useTranslations('experience')
   const locale = useLocale()
 
-  // 최신순 정렬 (최근부터 이전으로)
-  const sortedItems = [...items].sort((a, b) => {
-    const dateA = new Date(a.period.start).getTime()
-    const dateB = new Date(b.period.start).getTime()
-    return dateB - dateA
-  })
+  // 회사별로 그룹화
+  const groupedByCompany = items.reduce(
+    (acc, item) => {
+      const existing = acc.find((g) => g.organization === item.organization)
+      if (existing) {
+        existing.positions.push(item)
+      } else {
+        acc.push({ organization: item.organization, positions: [item] })
+      }
+      return acc
+    },
+    [] as Array<{ organization: string; positions: ExperienceEntry[] }>
+  )
+
+  // 회사별 총 재직 기간 계산 (첫 시작 ~ 마지막 종료)
+  const getCompanyDurationText = (positions: ExperienceEntry[]) => {
+    const firstPosition = positions.reduce((earliest, pos) => {
+      const posDate = new Date(
+        parseInt(pos.period.start.split('.')[0]),
+        parseInt(pos.period.start.split('.')[1]) - 1
+      ).getTime()
+      const earliestDate = new Date(
+        parseInt(earliest.period.start.split('.')[0]),
+        parseInt(earliest.period.start.split('.')[1]) - 1
+      ).getTime()
+      return posDate < earliestDate ? pos : earliest
+    })
+
+    const lastPosition = positions.reduce((latest, pos) => {
+      const posDate = new Date(
+        parseInt(pos.period.end.split('.')[0]),
+        parseInt(pos.period.end.split('.')[1]) - 1
+      ).getTime()
+      const latestDate = new Date(
+        parseInt(latest.period.end.split('.')[0]),
+        parseInt(latest.period.end.split('.')[1]) - 1
+      ).getTime()
+      return posDate > latestDate ? pos : latest
+    })
+
+    const duration = calculateDuration(
+      `${firstPosition.period.start.replace('.', '-')}`,
+      `${lastPosition.period.end.replace('.', '-')}`
+    )
+    return formatDuration(duration, locale)
+  }
+
+  // 회사 키 추출
+  const getCompanyKey = (organization: string): string => {
+    if (organization.includes('리드포인트시스템')) return 'lps'
+    if (organization.includes('대흥정보')) return 'dhicc'
+    return ''
+  }
+
+  // 직책 한글 이름 -> 위치 키 매핑
+  const getPositionKey = (companyKey: string, positionName: string): string => {
+    const positionMap: Record<string, Record<string, string>> = {
+      lps: {
+        'WEB3 서비스팀': 'service',
+        'WEB3 디자인팀': 'design',
+      },
+      dhicc: {
+        '여수시 주차포털 TF팀': 'yeosu',
+        '춘천시 주차포털 TF팀': 'chuncheon',
+        '아산시 주차포털 TF팀': 'asan',
+        '양천구 주차포털 TF팀': 'yangchun',
+        '인천시 주차포털 TF팀': 'incheon',
+        '부산시 주차포털 TF팀': 'busan',
+        '파주시 주차포털 TF팀': 'paju',
+        '안양시 주차포털 TF팀': 'anyang',
+      },
+    }
+    return positionMap[companyKey]?.[positionName] || ''
+  }
 
   // 전체 경력 기간 계산
-  const totalDuration = calculateTotalCareerDuration(sortedItems)
+  const totalDuration = calculateTotalCareerDuration(items)
   const totalDurationText = formatDuration(totalDuration, locale)
 
   const Container = animateOnView ? motion.section : 'section'
@@ -66,52 +220,154 @@ export function ExperienceTimeline({
 
         {/* 타임라인 */}
         <div className="max-w-4xl mx-auto space-y-8">
-          {sortedItems.map((item, index) => (
-            <motion.div
-              key={item.id}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-              viewport={{ once: true }}
-            >
-              <Card className="overflow-hidden hover:shadow-lg transition-shadow">
-                <CardHeader className="bg-gradient-to-r from-primary/5 to-transparent pb-4">
-                  <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-                    <div>
-                      <CardTitle className="text-xl">{item.organization}</CardTitle>
-                      <p className="text-sm text-muted-foreground mt-1">{item.position}</p>
+          {groupedByCompany.map((company, companyIndex) => {
+            const companyKey = getCompanyKey(company.organization)
+            return (
+              <motion.div
+                key={company.organization}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: companyIndex * 0.1 }}
+                viewport={{ once: true }}
+              >
+                <Card className="overflow-hidden hover:shadow-lg transition-shadow">
+                  {/* 회사 헤더 */}
+                  <CardHeader className="bg-gradient-to-r from-primary/5 to-transparent">
+                    <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                      <div>
+                        <CardTitle className="text-xl">{company.organization}</CardTitle>
+                        <p className="text-sm text-muted-foreground mt-1">
+                          {(() => {
+                            try {
+                              return t.raw(`companies.${companyKey}.type`)
+                            } catch {
+                              return '정규직'
+                            }
+                          })()}
+                        </p>
+                      </div>
+                      <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                        <Calendar className="h-4 w-4" />
+                        <span>
+                          {company.positions.reduce((earliest, pos) => {
+                            const pos1Date = new Date(
+                              parseInt(pos.period.start.split('.')[0]),
+                              parseInt(pos.period.start.split('.')[1]) - 1
+                            ).getTime()
+                            const earliestDate = new Date(
+                              parseInt(earliest.period.start.split('.')[0]),
+                              parseInt(earliest.period.start.split('.')[1]) - 1
+                            ).getTime()
+                            return pos1Date < earliestDate ? pos : earliest
+                          }).period.start}
+                        </span>
+                        <span>~</span>
+                        <span>
+                          {company.positions.reduce((latest, pos) => {
+                            const posEndDate = new Date(
+                              parseInt(pos.period.end.split('.')[0]),
+                              parseInt(pos.period.end.split('.')[1]) - 1
+                            ).getTime()
+                            const latestDate = new Date(
+                              parseInt(latest.period.end.split('.')[0]),
+                              parseInt(latest.period.end.split('.')[1]) - 1
+                            ).getTime()
+                            return posEndDate > latestDate ? pos : latest
+                          }).period.end}
+                        </span>
+                        <Badge variant="secondary" className="ml-2">
+                          {getCompanyDurationText(company.positions)}
+                        </Badge>
+                      </div>
                     </div>
-                    <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                      <Calendar className="h-4 w-4" />
-                      <span>{item.period.start}</span>
-                      <span>~</span>
-                      <span>{item.period.end}</span>
-                      <Badge variant="secondary" className="ml-2">
-                        {formatDuration(
-                          calculateDuration(item.period.start, item.period.end),
-                          locale
-                        )}
-                      </Badge>
+                  </CardHeader>
+
+                  {/* 직책 목록 */}
+                  <CardContent className="pt-6">
+                    <div className="space-y-6">
+                      {company.positions.map((position) => {
+                        const positionKey = getPositionKey(companyKey, position.position)
+
+                        return (
+                          <div
+                            key={position.id}
+                            className="relative pl-6 border-l-2 border-primary/30"
+                          >
+                            {/* 타임라인 점 */}
+                            <div className="absolute left-[-9px] top-0 w-4 h-4 rounded-full bg-primary border-2 border-background shadow-sm" />
+
+                            {/* 직책 정보 */}
+                            <div className="mb-2">
+                              <h3 className="font-semibold">{position.position}</h3>
+                              <p className="text-sm text-muted-foreground">
+                                {position.period.start} - {position.period.end}
+                              </p>
+
+                              {/* 팀 구성 */}
+                              {(() => {
+                                try {
+                                  const teamSize = t.raw(
+                                    `companies.${companyKey}.positions.${positionKey}.teamSize`
+                                  )
+                                  if (typeof teamSize === 'string') {
+                                    return (
+                                      <div className="flex items-center gap-1 mt-1 text-xs text-muted-foreground">
+                                        <Users className="h-3 w-3" />
+                                        <span>{teamSize}</span>
+                                      </div>
+                                    )
+                                  }
+                                  return null
+                                } catch {
+                                  return null
+                                }
+                              })()}
+                            </div>
+
+                            {/* 프로젝트/업무 목록 */}
+                            {(() => {
+                              try {
+                                const projects = t.raw(
+                                  `companies.${companyKey}.positions.${positionKey}.projects`
+                                ) as string[]
+                                if (Array.isArray(projects) && projects.length > 0) {
+                                  return (
+                                    <ul className="space-y-2 mb-3">
+                                      {projects.map((project: string, i: number) => (
+                                        <li
+                                          key={i}
+                                          className="flex items-start gap-2 text-sm text-muted-foreground"
+                                        >
+                                          <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-primary/50 shrink-0" />
+                                          <span>{project}</span>
+                                        </li>
+                                      ))}
+                                    </ul>
+                                  )
+                                }
+                                return null
+                              } catch {
+                                return null
+                              }
+                            })()}
+
+                            {/* 상세 내용 Collapsible */}
+                            {companyKey && positionKey && (
+                              <DetailsCollapsible
+                                companyKey={companyKey}
+                                positionKey={positionKey}
+                                t={t}
+                              />
+                            )}
+                          </div>
+                        )
+                      })}
                     </div>
-                  </div>
-                </CardHeader>
-
-                {/* 타임라인 점 및 라인 */}
-                <CardContent className="relative pt-6 pl-6">
-                  {/* 좌측 타임라인 라인 */}
-                  <div className="absolute left-0 top-0 bottom-0 w-px bg-border" />
-
-                  {/* 타임라인 점 */}
-                  <div className="absolute left-[-9px] top-6 w-4 h-4 rounded-full bg-primary border-2 border-background" />
-
-                  {/* 내용 */}
-                  {item.description && (
-                    <p className="text-sm leading-relaxed text-foreground">{item.description}</p>
-                  )}
-                </CardContent>
-              </Card>
-            </motion.div>
-          ))}
+                  </CardContent>
+                </Card>
+              </motion.div>
+            )
+          })}
         </div>
       </div>
     </Container>

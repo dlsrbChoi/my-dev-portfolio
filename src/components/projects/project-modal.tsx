@@ -1,8 +1,9 @@
 'use client'
 
+import { useState } from 'react'
 import Image from 'next/image'
-import { Link } from '@/i18n/navigation'
-import type { Project } from '@/types/notion'
+import { useTranslations } from 'next-intl'
+import type { Project } from '@/types/project'
 import {
   Dialog,
   DialogContent,
@@ -12,7 +13,15 @@ import {
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
-import { Calendar, Briefcase, TrendingUp, ArrowRight, ExternalLink } from 'lucide-react'
+import {
+  Calendar,
+  Briefcase,
+  Users,
+  ChevronLeft,
+  ChevronRight,
+  ExternalLink,
+  GitBranch,
+} from 'lucide-react'
 import { event as gaEvent } from '@/lib/gtag'
 
 interface ProjectModalProps {
@@ -21,38 +30,46 @@ interface ProjectModalProps {
   onOpenChange: (open: boolean) => void
 }
 
-function formatPeriod(period: Project['period']): string {
-  if (!period.start) return ''
-  const end = period.end ? period.end : '진행중'
-  return `${period.start} ~ ${end}`
-}
-
 /**
- * 프로젝트 카드 클릭 시 뜨는 빠른 미리보기 모달
- * - Notion 데이터 구조상 다중 이미지 갤러리가 없어 커버 이미지 1장만 표시
- * - 전체 노션 블록 콘텐츠(본문, 이미지 등)는 /projects/[slug] 상세 페이지가 담당 (역할 분리)
+ * 프로젝트 카드 클릭 시 뜨는 상세 정보 모달
+ * - 이미지 갤러리(images 우선, 없으면 단일 image), 기본 정보, 기술 스택, 주요 기능, 링크를 표시
+ * - 상세 페이지(/projects/[slug])가 없으므로 모달이 유일한 상세 뷰 역할을 담당
  */
 export function ProjectModal({ project, open, onOpenChange }: ProjectModalProps) {
-  const periodLabel = formatPeriod(project.period)
+  const t = useTranslations('projects')
+  const [currentImageIndex, setCurrentImageIndex] = useState(0)
+  const images = project.images ?? (project.image ? [project.image] : [])
 
-  const handleDetailClick = () => {
-    gaEvent({ action: 'project_detail_view', category: 'project', label: project.slug })
+  const periodLabel = project.period
+    ? `${project.period.start} ~ ${project.period.end ?? t('inProgress')}`
+    : ''
+
+  const handlePrevImage = () => {
+    setCurrentImageIndex((prev) => (prev - 1 + images.length) % images.length)
   }
 
-  const handleExternalLinkClick = () => {
-    gaEvent({ action: 'project_external_link_click', category: 'project', label: project.slug })
+  const handleNextImage = () => {
+    setCurrentImageIndex((prev) => (prev + 1) % images.length)
+  }
+
+  const handleLinkClick = (type: 'github' | 'demo' | 'website') => {
+    gaEvent({
+      action: 'project_link_click',
+      category: 'project',
+      label: `${project.slug}_${type}`,
+    })
   }
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-2xl max-h-[85vh] overflow-y-auto sm:max-w-2xl">
         <DialogHeader>
-          <DialogTitle className="text-2xl font-bold">{project.name}</DialogTitle>
-          <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground mt-2">
-            {project.role.length > 0 && (
+          <DialogTitle className="text-2xl font-bold">{project.title}</DialogTitle>
+          <div className="mt-2 flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
+            {project.role && (
               <div className="flex items-center gap-2">
                 <Briefcase className="h-4 w-4" aria-hidden="true" />
-                <span>{project.role.join(', ')}</span>
+                <span>{project.role}</span>
               </div>
             )}
             {periodLabel && (
@@ -61,63 +78,67 @@ export function ProjectModal({ project, open, onOpenChange }: ProjectModalProps)
                 <span>{periodLabel}</span>
               </div>
             )}
+            {project.teamSize !== undefined && project.teamSize > 0 && (
+              <div className="flex items-center gap-2">
+                <Users className="h-4 w-4" aria-hidden="true" />
+                <span>{t('personCount', { count: project.teamSize })}</span>
+              </div>
+            )}
           </div>
         </DialogHeader>
 
-        {/* 커버 이미지 */}
-        {project.coverImage && (
-          <div className="relative mt-4 aspect-video w-full overflow-hidden rounded-lg bg-muted">
-            <Image
-              src={project.coverImage.url}
-              alt={project.coverImage.alt}
-              fill
-              sizes="(max-width: 768px) 100vw, 600px"
-              className="object-cover"
-            />
+        {/* 이미지 갤러리 */}
+        {images.length > 0 && (
+          <div className="mt-4 space-y-2">
+            <div className="relative aspect-video w-full overflow-hidden rounded-lg bg-muted">
+              <Image
+                src={images[currentImageIndex]}
+                alt={`${project.title} - ${currentImageIndex + 1}`}
+                fill
+                sizes="(max-width: 768px) 100vw, 600px"
+                className="object-cover"
+              />
+            </div>
+            {images.length > 1 && (
+              <div className="flex items-center justify-between">
+                <Button variant="outline" size="sm" onClick={handlePrevImage}>
+                  <ChevronLeft className="h-4 w-4" aria-hidden="true" />
+                </Button>
+                <span className="text-sm text-muted-foreground">
+                  {currentImageIndex + 1} / {images.length}
+                </span>
+                <Button variant="outline" size="sm" onClick={handleNextImage}>
+                  <ChevronRight className="h-4 w-4" aria-hidden="true" />
+                </Button>
+              </div>
+            )}
           </div>
         )}
 
-        {/* 요약 */}
+        {/* 개요 */}
         <div className="mt-6">
-          <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
-            <span className="w-1 h-5 bg-primary rounded-full" aria-hidden="true" />
-            프로젝트 개요
+          <h3 className="mb-3 flex items-center gap-2 text-lg font-semibold">
+            <span className="h-5 w-1 rounded-full bg-primary" aria-hidden="true" />
+            {project.description}
           </h3>
-          <p className="text-muted-foreground leading-relaxed">{project.summary}</p>
+          {project.content && (
+            <p className="leading-relaxed whitespace-pre-wrap text-muted-foreground">
+              {project.content}
+            </p>
+          )}
         </div>
 
-        {/* 핵심 성과 */}
-        {project.impactMetrics.length > 0 && (
-          <>
-            <Separator className="my-4" />
-            <div>
-              <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
-                <span className="w-1 h-5 bg-primary rounded-full" aria-hidden="true" />
-                핵심 성과
-              </h3>
-              <ul className="space-y-2">
-                {project.impactMetrics.map((metric) => (
-                  <li key={metric} className="flex items-start gap-3 text-muted-foreground">
-                    <TrendingUp className="mt-0.5 h-4 w-4 shrink-0 text-primary" aria-hidden="true" />
-                    <span>{metric}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </>
-        )}
-
         {/* 기술 스택 */}
-        {project.techStack.length > 0 && (
+        {project.technologies.length > 0 && (
           <>
             <Separator className="my-4" />
             <div>
-              <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
-                <span className="w-1 h-5 bg-primary rounded-full" aria-hidden="true" />
-                기술 스택
+              <h3 className="mb-3 flex items-center gap-2 text-lg font-semibold">
+                <span className="h-5 w-1 rounded-full bg-primary" aria-hidden="true" />
+                {t('technologies')}
               </h3>
               <div className="flex flex-wrap gap-2">
-                {project.techStack.map((tech) => (
+                {project.technologies.map((tech) => (
                   <Badge key={tech} variant="secondary" className="text-sm">
                     {tech}
                   </Badge>
@@ -127,32 +148,59 @@ export function ProjectModal({ project, open, onOpenChange }: ProjectModalProps)
           </>
         )}
 
-        <Separator className="my-4" />
+        {/* 주요 기능 */}
+        {project.features && project.features.length > 0 && (
+          <>
+            <Separator className="my-4" />
+            <div>
+              <h3 className="mb-3 flex items-center gap-2 text-lg font-semibold">
+                <span className="h-5 w-1 rounded-full bg-primary" aria-hidden="true" />
+                {t('features')}
+              </h3>
+              <ul className="space-y-2">
+                {project.features.map((feature) => (
+                  <li key={feature} className="flex items-start gap-3 text-muted-foreground">
+                    <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-primary" aria-hidden="true" />
+                    <span>{feature}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </>
+        )}
 
-        {/* 액션 버튼 */}
-        <div className="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
-          {project.externalLink && (
-            <Button
-              variant="outline"
-              nativeButton={false}
-              onClick={handleExternalLinkClick}
-              render={
-                <Link href={project.externalLink} target="_blank" rel="noopener noreferrer" />
-              }
-            >
-              프로젝트 링크
-              <ExternalLink className="ml-2 h-4 w-4" />
-            </Button>
-          )}
-          <Button
-            nativeButton={false}
-            onClick={handleDetailClick}
-            render={<Link href={`/projects/${project.slug}`} />}
-          >
-            전체 상세 보기
-            <ArrowRight className="ml-2 h-4 w-4" />
-          </Button>
-        </div>
+        {/* 링크 */}
+        {project.links && (
+          <>
+            <Separator className="my-4" />
+            <div className="flex flex-wrap gap-2">
+              {project.links.github && (
+                <Button variant="outline" size="sm" nativeButton={false} onClick={() => handleLinkClick('github')} render={
+                  <a href={project.links.github} target="_blank" rel="noopener noreferrer" />
+                }>
+                  <GitBranch className="mr-2 h-4 w-4" aria-hidden="true" />
+                  {t('github')}
+                </Button>
+              )}
+              {project.links.demo && (
+                <Button variant="outline" size="sm" nativeButton={false} onClick={() => handleLinkClick('demo')} render={
+                  <a href={project.links.demo} target="_blank" rel="noopener noreferrer" />
+                }>
+                  <ExternalLink className="mr-2 h-4 w-4" aria-hidden="true" />
+                  {t('demo')}
+                </Button>
+              )}
+              {project.links.website && (
+                <Button variant="outline" size="sm" nativeButton={false} onClick={() => handleLinkClick('website')} render={
+                  <a href={project.links.website} target="_blank" rel="noopener noreferrer" />
+                }>
+                  <ExternalLink className="mr-2 h-4 w-4" aria-hidden="true" />
+                  {t('website')}
+                </Button>
+              )}
+            </div>
+          </>
+        )}
       </DialogContent>
     </Dialog>
   )
