@@ -86,30 +86,6 @@ export const experienceData: ExperienceEntry[] = [
       'Atomic 디자인 패턴 도입으로 UI 컴포넌트 재상용성 극대화. 파트 내 개발 스터디 주도, Modern JavaScript Deep Dive 학습',
     displayOrder: 7,
   },
-  // DHICC - 파주시 주차포털 TF팀
-  {
-    id: 'dhicc-paju',
-    name: '파주시 주차포털 TF팀',
-    entryType: 'experience',
-    organization: '(주)대흥정보',
-    position: '파주시 주차포털 TF팀',
-    period: { start: '2023-08-01', end: '2023-10-31' },
-    description:
-      '플랫폼 확장 및 로딩 성능 최적화. 번들 사이즈 감소 및 초기 로딩 시간 개선',
-    displayOrder: 8,
-  },
-  // DHICC - 안양시 주차포털 TF팀
-  {
-    id: 'dhicc-anyang',
-    name: '안양시 주차포털 TF팀',
-    entryType: 'experience',
-    organization: '(주)대흥정보',
-    position: '안양시 주차포털 TF팀',
-    period: { start: '2023-02-01', end: '2023-07-31' },
-    description:
-      'SSO 통합 로그인 구현 및 관리자 페이지 고도화. 사용자 가이드 문서 작성',
-    displayOrder: 9,
-  },
   // DHICC - 부산시 주차포털 TF팀
   {
     id: 'dhicc-busan',
@@ -120,6 +96,30 @@ export const experienceData: ExperienceEntry[] = [
     period: { start: '2023-05-01', end: '2023-12-31' },
     description:
       'Vue.js v2 → v3 마이그레이션 주도로 성능 및 개발 생산성 향상. 카카오 지도 커스텀 마커(Custom Overlay) 및 인포윈도우(InfoWindow) 구현',
+    displayOrder: 8,
+  },
+  // DHICC - 파주시 주차포털 TF팀
+  {
+    id: 'dhicc-paju',
+    name: '파주시 주차포털 TF팀',
+    entryType: 'experience',
+    organization: '(주)대흥정보',
+    position: '파주시 주차포털 TF팀',
+    period: { start: '2023-03-01', end: '2023-07-31' },
+    description:
+      '플랫폼 확장 및 로딩 성능 최적화. 번들 사이즈 감소 및 초기 로딩 시간 개선',
+    displayOrder: 9,
+  },
+  // DHICC - 안양시 주차포털 TF팀
+  {
+    id: 'dhicc-anyang',
+    name: '안양시 주차포털 TF팀',
+    entryType: 'experience',
+    organization: '(주)대흥정보',
+    position: '안양시 주차포털 TF팀',
+    period: { start: '2023-01-01', end: '2023-03-31' },
+    description:
+      'SSO 통합 로그인 구현 및 관리자 페이지 고도화. 사용자 가이드 문서 작성',
     displayOrder: 10,
   },
 ]
