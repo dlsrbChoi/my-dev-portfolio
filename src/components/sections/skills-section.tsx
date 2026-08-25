@@ -5,7 +5,6 @@ import { useTranslations } from 'next-intl'
 import { Badge } from '@/components/ui/badge'
 import { Code2, Database, Palette, Server, Users, Zap, Wrench, type LucideIcon } from 'lucide-react'
 import { siteConfig, skillIcons } from '@/lib/site-config'
-import Image from 'next/image'
 
 // site-config의 카테고리명 → 메시지 번역 키 매핑
 const categoryTranslationKey: Record<string, string> = {
@@ -88,7 +87,7 @@ export function SkillsSection() {
                         variant="secondary"
                         className="hover:bg-primary/50 hover:border-primary/80 hover:text-primary-foreground transition-all duration-200 cursor-default text-xs py-1.5 px-3 bg-foreground/10 border border-foreground/20 font-medium dark:bg-white/10 dark:border-white/25 dark:hover:bg-primary/60 dark:hover:border-primary/80 flex items-center gap-1.5"
                       >
-                        {iconName && (
+                        {iconName && iconName !== 'none' && (
                           <img
                             src={`https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/${iconName}/${iconName}-original.svg`}
                             alt={skill}

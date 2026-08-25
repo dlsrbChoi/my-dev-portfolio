@@ -169,8 +169,36 @@ export function ExperienceTimeline({
     return positionMap[companyKey]?.[positionName] || ''
   }
 
-  // 전체 경력 기간 계산
-  const totalDuration = calculateTotalCareerDuration(items)
+  // 전체 경력 기간 계산 (각 회사별 근무 기간 합산)
+  const totalDuration = (() => {
+    let totalYears = 0
+    let totalMonths = 0
+
+    groupedByCompany.forEach((company) => {
+      const firstPosition = company.positions.reduce((earliest, pos) => {
+        const posDate = new Date(pos.period.start).getTime()
+        const earliestDate = new Date(earliest.period.start).getTime()
+        return posDate < earliestDate ? pos : earliest
+      })
+
+      const lastPosition = company.positions.reduce((latest, pos) => {
+        const posDate = new Date(pos.period.end).getTime()
+        const latestDate = new Date(latest.period.end).getTime()
+        return posDate > latestDate ? pos : latest
+      })
+
+      const duration = calculateDuration(firstPosition.period.start, lastPosition.period.end)
+      totalYears += duration.years
+      totalMonths += duration.months
+    })
+
+    // 월을 년으로 변환
+    totalYears += Math.floor(totalMonths / 12)
+    totalMonths = totalMonths % 12
+
+    return { years: totalYears, months: totalMonths, days: 0 }
+  })()
+
   const totalDurationText = formatDuration(totalDuration, locale)
 
   const Container = animateOnView ? motion.section : 'section'
