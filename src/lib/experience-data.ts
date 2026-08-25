@@ -21,7 +21,7 @@ export const experienceData: ExperienceEntry[] = [
     entryType: 'experience',
     organization: '(주)리드포인트시스템',
     position: 'WEB3 디자인팀',
-    period: { start: '2025-02-03', end: '2025-04-30' },
+    period: { start: '2025-01-03', end: '2025-04-30' },
     description:
       '인천e지갑 프로젝트 초기 디자인 기반 프론트엔드 개발 리드. 정적 HTML/CSS를 Spring MVC Thymeleaf, jQuery 기반 아키텍처로 전환. WebApp FE 개발 전담 및 Flutter와 동기화',
     displayOrder: 2,
@@ -93,7 +93,7 @@ export const experienceData: ExperienceEntry[] = [
     entryType: 'experience',
     organization: '(주)대흥정보',
     position: '부산시 주차포털 TF팀',
-    period: { start: '2023-01-26', end: '2023-12-31' },
+    period: { start: '2023-02-26', end: '2023-12-31' },
     description:
       'Vue.js v2 → v3 마이그레이션 주도로 성능 및 개발 생산성 향상. 카카오 지도 커스텀 마커(Custom Overlay) 및 인포윈도우(InfoWindow) 구현',
     displayOrder: 8,
