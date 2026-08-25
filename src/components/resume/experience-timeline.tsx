@@ -126,33 +126,18 @@ export function ExperienceTimeline({
   // 회사별 총 재직 기간 계산 (첫 시작 ~ 마지막 종료)
   const getCompanyDurationText = (positions: ExperienceEntry[]) => {
     const firstPosition = positions.reduce((earliest, pos) => {
-      const posDate = new Date(
-        parseInt(pos.period.start.split('.')[0]),
-        parseInt(pos.period.start.split('.')[1]) - 1
-      ).getTime()
-      const earliestDate = new Date(
-        parseInt(earliest.period.start.split('.')[0]),
-        parseInt(earliest.period.start.split('.')[1]) - 1
-      ).getTime()
+      const posDate = new Date(pos.period.start).getTime()
+      const earliestDate = new Date(earliest.period.start).getTime()
       return posDate < earliestDate ? pos : earliest
     })
 
     const lastPosition = positions.reduce((latest, pos) => {
-      const posDate = new Date(
-        parseInt(pos.period.end.split('.')[0]),
-        parseInt(pos.period.end.split('.')[1]) - 1
-      ).getTime()
-      const latestDate = new Date(
-        parseInt(latest.period.end.split('.')[0]),
-        parseInt(latest.period.end.split('.')[1]) - 1
-      ).getTime()
+      const posDate = new Date(pos.period.end).getTime()
+      const latestDate = new Date(latest.period.end).getTime()
       return posDate > latestDate ? pos : latest
     })
 
-    const duration = calculateDuration(
-      `${firstPosition.period.start.replace('.', '-')}`,
-      `${lastPosition.period.end.replace('.', '-')}`
-    )
+    const duration = calculateDuration(firstPosition.period.start, lastPosition.period.end)
     return formatDuration(duration, locale)
   }
 
@@ -249,31 +234,27 @@ export function ExperienceTimeline({
                       <div className="flex items-center gap-2 text-sm text-muted-foreground">
                         <Calendar className="h-4 w-4" />
                         <span>
-                          {company.positions.reduce((earliest, pos) => {
-                            const pos1Date = new Date(
-                              parseInt(pos.period.start.split('.')[0]),
-                              parseInt(pos.period.start.split('.')[1]) - 1
-                            ).getTime()
-                            const earliestDate = new Date(
-                              parseInt(earliest.period.start.split('.')[0]),
-                              parseInt(earliest.period.start.split('.')[1]) - 1
-                            ).getTime()
-                            return pos1Date < earliestDate ? pos : earliest
-                          }).period.start}
+                          {(() => {
+                            const earliest = company.positions.reduce((earliest, pos) => {
+                              const posDate = new Date(pos.period.start).getTime()
+                              const earliestDate = new Date(earliest.period.start).getTime()
+                              return posDate < earliestDate ? pos : earliest
+                            })
+                            const parts = earliest.period.start.split('-')
+                            return `${parts[0]}.${parts[1]}`
+                          })()}
                         </span>
                         <span>~</span>
                         <span>
-                          {company.positions.reduce((latest, pos) => {
-                            const posEndDate = new Date(
-                              parseInt(pos.period.end.split('.')[0]),
-                              parseInt(pos.period.end.split('.')[1]) - 1
-                            ).getTime()
-                            const latestDate = new Date(
-                              parseInt(latest.period.end.split('.')[0]),
-                              parseInt(latest.period.end.split('.')[1]) - 1
-                            ).getTime()
-                            return posEndDate > latestDate ? pos : latest
-                          }).period.end}
+                          {(() => {
+                            const latest = company.positions.reduce((latest, pos) => {
+                              const posDate = new Date(pos.period.end).getTime()
+                              const latestDate = new Date(latest.period.end).getTime()
+                              return posDate > latestDate ? pos : latest
+                            })
+                            const parts = latest.period.end.split('-')
+                            return `${parts[0]}.${parts[1]}`
+                          })()}
                         </span>
                         <Badge variant="secondary" className="ml-2">
                           {getCompanyDurationText(company.positions)}
@@ -299,9 +280,20 @@ export function ExperienceTimeline({
                             {/* 직책 정보 */}
                             <div className="mb-2">
                               <h3 className="font-semibold">{position.position}</h3>
-                              <p className="text-sm text-muted-foreground">
-                                {position.period.start} - {position.period.end}
-                              </p>
+                              <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                                <span>
+                                  {position.period.start.split('-').slice(0, 2).join('.')} - {position.period.end.split('-').slice(0, 2).join('.')}
+                                </span>
+                                <Badge variant="outline" className="text-xs h-fit">
+                                  {formatDuration(
+                                    calculateDuration(
+                                      position.period.start,
+                                      position.period.end
+                                    ),
+                                    locale
+                                  )}
+                                </Badge>
+                              </div>
 
                               {/* 팀 구성 */}
                               {(() => {
