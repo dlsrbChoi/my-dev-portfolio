@@ -18,8 +18,7 @@ function calculateYearsOfExperience(experiences: Array<{ period: { start: string
 
   const startDate = oldestExperience.period.start
   if (!startDate) return 0
-  const [year, month] = startDate.split('.').map(Number)
-  const start = new Date(year, month - 1)
+  const start = new Date(startDate)
   const now = new Date()
   let years = now.getFullYear() - start.getFullYear()
   if (now.getMonth() < start.getMonth()) years--
@@ -46,52 +45,106 @@ export async function AboutSection() {
         {/* 회사 경험 카드 - 순차 진입 애니메이션 적용 */}
         <StaggerList className="grid grid-cols-1 sm:grid-cols-3 gap-6">
           <StaggerItem>
-            <Card className="group cursor-default transition-all duration-300 hover:border-primary hover:shadow-lg">
-              <CardContent className="p-6">
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="w-10 h-10 bg-muted rounded-full flex items-center justify-center text-xs font-bold group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
-                    DIS
+            <Card className="group cursor-default transition-all duration-300 hover:border-primary hover:shadow-lg h-full flex flex-col">
+              <CardContent className="p-6 flex flex-col h-full">
+                <div>
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="w-10 h-10 bg-muted rounded-full flex items-center justify-center text-xs font-bold group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
+                      LPS
+                    </div>
+                    <p className="text-sm font-semibold">{t('company1Name')}</p>
                   </div>
-                  <p className="text-sm font-semibold">{t('company1Name')}</p>
+                  <h3 className="font-semibold text-lg mb-2">{t('company1Title')}</h3>
+                  <p className="text-sm text-muted-foreground leading-relaxed mb-4">
+                    {t('company1Description')}
+                  </p>
                 </div>
-                <h3 className="font-semibold text-lg mb-2">{t('company1Title')}</h3>
-                <p className="text-sm text-muted-foreground leading-relaxed">
-                  {t('company1Description')}
-                </p>
+                <div className="mt-auto">
+                  <ul className="space-y-2 text-xs text-muted-foreground">
+                    <li className="flex gap-2">
+                      <span className="text-primary shrink-0 mt-1">•</span>
+                      <span>{t('company1Detail1')}</span>
+                    </li>
+                    <li className="flex gap-2">
+                      <span className="text-primary shrink-0 mt-1">•</span>
+                      <span>{t('company1Detail2')}</span>
+                    </li>
+                    <li className="flex gap-2">
+                      <span className="text-primary shrink-0 mt-1">•</span>
+                      <span>{t('company1Detail3')}</span>
+                    </li>
+                  </ul>
+                </div>
               </CardContent>
             </Card>
           </StaggerItem>
 
           <StaggerItem>
-            <Card className="group cursor-default transition-all duration-300 hover:border-primary hover:shadow-lg">
-              <CardContent className="p-6">
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="w-10 h-10 bg-muted rounded-full flex items-center justify-center text-xs font-bold group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
-                    DIS
+            <Card className="group cursor-default transition-all duration-300 hover:border-primary hover:shadow-lg h-full flex flex-col">
+              <CardContent className="p-6 flex flex-col h-full">
+                <div>
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="w-10 h-10 bg-muted rounded-full flex items-center justify-center text-xs font-bold group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
+                      LPS
+                    </div>
+                    <p className="text-sm font-semibold">{t('company2Name')}</p>
                   </div>
-                  <p className="text-sm font-semibold">{t('company2Name')}</p>
+                  <h3 className="font-semibold text-lg mb-2">{t('company2Title')}</h3>
+                  <p className="text-sm text-muted-foreground leading-relaxed mb-4">
+                    {t('company2Description')}
+                  </p>
                 </div>
-                <h3 className="font-semibold text-lg mb-2">{t('company2Title')}</h3>
-                <p className="text-sm text-muted-foreground leading-relaxed">
-                  {t('company2Description')}
-                </p>
+                <div className="mt-auto">
+                  <ul className="space-y-2 text-xs text-muted-foreground">
+                    <li className="flex gap-2">
+                      <span className="text-primary shrink-0 mt-1">•</span>
+                      <span>{t('company2Detail1')}</span>
+                    </li>
+                    <li className="flex gap-2">
+                      <span className="text-primary shrink-0 mt-1">•</span>
+                      <span>{t('company2Detail2')}</span>
+                    </li>
+                    <li className="flex gap-2">
+                      <span className="text-primary shrink-0 mt-1">•</span>
+                      <span>{t('company2Detail3')}</span>
+                    </li>
+                  </ul>
+                </div>
               </CardContent>
             </Card>
           </StaggerItem>
 
           <StaggerItem>
-            <Card className="group cursor-default transition-all duration-300 hover:border-primary hover:shadow-lg">
-              <CardContent className="p-6">
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="w-10 h-10 bg-muted rounded-full flex items-center justify-center text-xs font-bold group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
-                    아펠
+            <Card className="group cursor-default transition-all duration-300 hover:border-primary hover:shadow-lg h-full flex flex-col">
+              <CardContent className="p-6 flex flex-col h-full">
+                <div>
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="w-10 h-10 bg-muted rounded-full flex items-center justify-center text-xs font-bold group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
+                      DH
+                    </div>
+                    <p className="text-sm font-semibold">{t('company3Name')}</p>
                   </div>
-                  <p className="text-sm font-semibold">{t('company3Name')}</p>
+                  <h3 className="font-semibold text-lg mb-2">{t('company3Title')}</h3>
+                  <p className="text-sm text-muted-foreground leading-relaxed mb-4">
+                    {t('company3Description')}
+                  </p>
                 </div>
-                <h3 className="font-semibold text-lg mb-2">{t('company3Title')}</h3>
-                <p className="text-sm text-muted-foreground leading-relaxed">
-                  {t('company3Description')}
-                </p>
+                <div className="mt-auto">
+                  <ul className="space-y-2 text-xs text-muted-foreground">
+                    <li className="flex gap-2">
+                      <span className="text-primary shrink-0 mt-1">•</span>
+                      <span>{t('company3Detail1')}</span>
+                    </li>
+                    <li className="flex gap-2">
+                      <span className="text-primary shrink-0 mt-1">•</span>
+                      <span>{t('company3Detail2')}</span>
+                    </li>
+                    <li className="flex gap-2">
+                      <span className="text-primary shrink-0 mt-1">•</span>
+                      <span>{t('company3Detail3')}</span>
+                    </li>
+                  </ul>
+                </div>
               </CardContent>
             </Card>
           </StaggerItem>
