@@ -280,20 +280,9 @@ export function ExperienceTimeline({
                             {/* 직책 정보 */}
                             <div className="mb-2">
                               <h3 className="font-semibold">{position.position}</h3>
-                              <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                                <span>
-                                  {position.period.start.split('-').slice(0, 2).join('.')} - {position.period.end.split('-').slice(0, 2).join('.')}
-                                </span>
-                                <Badge variant="outline" className="text-xs h-fit">
-                                  {formatDuration(
-                                    calculateDuration(
-                                      position.period.start,
-                                      position.period.end
-                                    ),
-                                    locale
-                                  )}
-                                </Badge>
-                              </div>
+                              <p className="text-sm text-muted-foreground">
+                                {position.period.start.split('-').slice(0, 2).join('.')} - {position.period.end.split('-').slice(0, 2).join('.')}
+                              </p>
 
                               {/* 팀 구성 */}
                               {(() => {
