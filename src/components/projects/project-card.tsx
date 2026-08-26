@@ -106,9 +106,12 @@ export function ProjectCard({ project, className }: ProjectCardProps) {
                 {/* 주요 기능 불릿 */}
                 {project.features && project.features.length > 0 && (
                   <ul className="list-inside list-disc space-y-1 text-xs text-muted-foreground">
-                    {project.features.slice(0, 2).map((feature) => (
-                      <li key={feature}>{feature}</li>
-                    ))}
+                    {project.features.slice(0, 2).map((feature, idx) => {
+                      const title = typeof feature === 'string' ? feature : feature.title
+                      return (
+                        <li key={`${title}-${idx}`}>{title}</li>
+                      )
+                    })}
                   </ul>
                 )}
               </div>
