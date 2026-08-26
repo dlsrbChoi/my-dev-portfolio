@@ -21,7 +21,7 @@ export interface Project {
     demo?: string
     website?: string
   }
-  features?: string[]
+  features?: (string | { title: string; description: string })[]
   content?: string
 }
 

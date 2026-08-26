@@ -23,7 +23,7 @@ export async function ProjectsSection() {
             description={t('emptyDescription')}
           />
         ) : (
-          <StaggerList className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <StaggerList className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {projects.map((project) => (
               <StaggerItem key={project.id}>
                 <ProjectCard project={project} />

@@ -42,6 +42,7 @@ export function ProjectCard({ project, className }: ProjectCardProps) {
           <Card
             className={cn(
               'flex h-full cursor-pointer flex-col overflow-hidden transition-shadow duration-300 hover:ring-foreground/20',
+              'min-h-96',
               className
             )}
             onClick={handleOpenModal}

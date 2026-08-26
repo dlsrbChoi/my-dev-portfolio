@@ -157,13 +157,24 @@ export function ProjectModal({ project, open, onOpenChange }: ProjectModalProps)
                 <span className="h-5 w-1 rounded-full bg-primary" aria-hidden="true" />
                 {t('features')}
               </h3>
-              <ul className="space-y-2">
-                {project.features.map((feature) => (
-                  <li key={feature} className="flex items-start gap-3 text-muted-foreground">
-                    <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-primary" aria-hidden="true" />
-                    <span>{feature}</span>
-                  </li>
-                ))}
+              <ul className="space-y-4">
+                {project.features.map((feature, index) => {
+                  const isString = typeof feature === 'string'
+                  const title = isString ? feature : feature.title
+                  const description = !isString ? feature.description : undefined
+
+                  return (
+                    <li key={`${title}-${index}`} className="flex items-start gap-3">
+                      <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-primary" aria-hidden="true" />
+                      <div className="flex-1">
+                        <p className="font-medium text-foreground">{title}</p>
+                        {description && (
+                          <p className="mt-1 text-sm text-muted-foreground">{description}</p>
+                        )}
+                      </div>
+                    </li>
+                  )
+                })}
               </ul>
             </div>
           </>
