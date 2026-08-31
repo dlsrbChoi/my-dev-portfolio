@@ -51,7 +51,7 @@ export function ProjectCard({ project, className }: ProjectCardProps) {
             {/* 썸네일 이미지 또는 슬라이드 */}
             <div className="relative h-40 w-full shrink-0 overflow-hidden bg-muted">
               {project.images && project.images.length > 0 ? (
-                <ImageCarousel images={project.images} alt={project.title} />
+                <ImageCarousel images={project.images} alt={project.title} autoPlayInterval={7000} />
               ) : project.image ? (
                 <Image
                   src={project.image}
