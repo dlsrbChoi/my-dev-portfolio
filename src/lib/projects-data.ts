@@ -2,14 +2,14 @@
 // TODO: 아래 플레이스홀더 데이터를 실제 프로젝트 정보로 교체하세요.
 import type { Project } from '@/types/project'
 
-export const projects: Project[] = [
+export const projects: Array<Project> = [
   {
-    id: 'project-1',
+    id: 'project-1' as const,
     slug: 'project-1',
-    title: '블록체인 시민체감 서비스 구축 및 운영 용역 (인천e지갑 서비스 고도화)',
-    description: '분산된 지자체 서비스를 단일 앱으로 통합하고 정부 대국민 API를 연동하여 블록체인 기반 시민 체감형 서비스를 고도화 및 운영',
-    summary: '이기종 서비스 통합, 대국민 API 연동, PIA/보안 총괄 및 운영 트러블슈팅',
-    technologies: ['JavaSctipt', 'jQuery', 'Thymleaf', 'JAVA', 'Spring Boot', 'PostgreSQL'],
+    title: '블록체인 시민체감 서비스 구축 및 운영 용역 (서비스 고도화)',
+    description: '분산된 4개 서비스를 단일 앱으로 통합 및 정부 대국민 API 33종을 연동한 블록체인 기반 시민서비스 고도화',
+    summary: '이기종 기술 스택 통합, 33종 정부 API 연동, 보안/감리 총괄',
+    technologies: ['JAVA', 'jQuery', 'Spring Boot', 'JavaSctipt', 'Thymleaf', 'PostgreSQL'],
     period: {
       start: '2025-07',
       end: '2025-04',
@@ -17,21 +17,61 @@ export const projects: Project[] = [
     teamSize: 4,
     role: '웹 개발',
     image: '/images/projects/project-1.png',
+    images: [
+      '/images/projects/project-1-main.jpg',
+      '/images/projects/project-1-detail-1.png',
+      '/images/projects/project-1-detail-2.png',
+      '/images/projects/project-1-detail-3.png',
+      '/images/projects/project-1-detail-4.png',
+    ],
+    achievements: [
+      '4개 이기종 서비스(React Native, Nest.js, React.js) 단일 앱으로 통합',
+      '33종 전자증명서 발급/열람 기능 구현 및 정부 연계 승인 획득',
+      '비대면 자격확인, 모바일 주민등록증 서비스 구현 완료',
+      '공공 SW 기술 감리 단독 대응 및 모든 필수 산출물 직접 작성',
+      '개인정보영향평가 "적합" 판정 획득',
+      'Google Play, App Store 정식 출시',
+      '동시성 이슈 해결로 데이터 무결성 확보'
+    ],
     features: [
-      { title: '서비스 통합을 위한 기술 스택 마이그레이션', description: 'jQuery에서 React 기반으로 전환하여 코드 유지보수성 향상 및 개발 효율성 증대' },
-      { title: '대국민 서비스 연동 및 운영 전환', description: '정부 API 통합 및 블록체인 기반 서비스 연동으로 사용자 편의성 개선' },
-      { title: '공공사업 리스크 관리 및 품질 보증(QA) 총괄', description: '보안 감리, PIA 진행으로 공공 데이터 보호 기준 충족' },
-      { title: '앱 출시 및 배포 관리', description: 'App Store, Google Play Store 심사 및 배포 프로세스 관리' },
-      { title: '운영 유지보수 및 CS 기반 서비스 고도화', description: '사용자 피드백 기반 기능 개선 및 버그 수정으로 안정성 확보' },
+      {
+        title: '이기종 기술 스택 통합 마이그레이션',
+        descriptions: [
+          'React Native, Nest.js, React.js, JPA 등 4개 프레임워크로 구축된 서비스를 HTML/JS + Spring Boot 표준 환경으로 마이그레이션',
+          '섬패스(Smart Pass): 위치 기반 스탬프 인증 프로세스 구현',
+          '걸음 수 동기화: 디바이스 센서 → 웹 → 서버 통신 흐름 설계로 Race Condition 방어'
+        ],
+      },
+      {
+        title: '대국민 서비스 연동 (33종 API)',
+        descriptions: [
+          '전자증명서 33종 + 비대면 자격확인 + 모바일 주민등록증 정부 API 연계',
+          '위변조 방지, 통신 구간 암호화 등 보안 요구사항 모두 충족'
+        ],
+      },
+      {
+        title: '공공사업 품질 관리 및 보안 대응',
+        descriptions: [
+          '기술 감리(Audit): 요구사항 추적표, 아키텍처 정의서, 시험 결과서 등 산출물 단독 작성',
+          '개인정보영향평가(PIA): DB 암호화, UI 마스킹 등 보안 조치 주도로 "적합" 판정 획득'
+        ],
+      },
+      {
+        title: '운영 안정성 및 성능 개선',
+        descriptions: [
+          '대규모 트래픽 환경에서 동시성 이슈로 인한 데이터 집계 오류 해결',
+          'Google Play, App Store 정식 출시 및 배포 관리'
+        ],
+      },
     ],
   },
   {
     id: 'project-2',
     slug: 'project-2',
-    title: '블록체인 메인넷 구축 및 확산서비스 개발 용역 (인천e지갑 초기 환경 구축)',
-    description: '인천시 블록체인 메인넷 확산을 위한 웹뷰(WebView) 기반의 초기 모바일 앱 환경 및 기반 시스템 구축',
-    summary: '웹뷰 아키텍처 설계, 블록체인 API 연계, 인증 연동 및 DBA 파트 감리 대응',
-    technologies: ['JavaSctipt', 'jQuery', 'Thymleaf', 'JAVA', 'Spring Boot', 'PostgreSQL'],
+    title: '블록체인 메인넷 구축 및 확산서비스 개발 용역 (초기 환경 구축)',
+    description: '인천시 블록체인 메인넷을 위한 웹뷰 기반 초기 모바일 앱과 관리자 웹사이트 구축',
+    summary: '인증/보안 모듈 연동, 블록체인 API 설계, 크로스 브라우징 검증',
+    technologies: ['JAVA', 'jQuery', 'Spring Boot', 'JavaSctipt', 'Thymleaf', 'PostgreSQL'],
     period: {
       start: '2025-02',
       end: '2025-04',
@@ -39,19 +79,50 @@ export const projects: Project[] = [
     teamSize: 4,
     role: '웹 개발',
     image: '/images/projects/project-2.png',
+    achievements: [
+      '3개 인증 모듈(KG이니시스, KG모빌리언스, 라온시큐어) 안정적 연동',
+      '블록체인 메인넷 API 규격 분석 및 서버 간 연동 로직 구현',
+      '웹뷰 기반 표준 아키텍처 환경 구축 (Spring Boot + HTML/JS)',
+      'adb를 활용한 다양한 모바일 디바이스 크로스 브라우징 검증',
+      'DB 암호화 적용',
+      '공공 SW 1차 기술 감리 완벽 대응'
+    ],
     features: [
-      { title: '핵심 인증 및 보안 모듈 연동', description: 'OAuth 2.0 및 블록체인 기반 인증 시스템 통합' },
-      { title: '블록체인 메인넷 연동 및 아키텍처 설계', description: 'WebView 기반 모바일 앱 아키텍처 설계 및 블록체인 네트워크 연동' },
-      { title: '모바일 렌더링 최적화 및 디버깅', description: '다양한 모바일 기기 환경에서의 성능 최적화 및 크로스 플랫폼 호환성 확보' },
-      { title: '공공사업 기술 감리 대응 (DBA 파트)', description: '데이터베이스 설계 및 성능 검수로 공공 사업 감리 기준 충족' },
+      {
+        title: '인증/보안 모듈 통합 (3개 솔루션)',
+        descriptions: [
+          'KG이니시스/모빌리언스(휴대폰 본인인증), 라온시큐어(전자서명) 등 3개 인증 모듈을 서버/클라이언트 양단에 안정적으로 연동',
+          '블록체인 기반 사용자별 보안 강화'
+        ],
+      },
+      {
+        title: '블록체인 메인넷 연동 아키텍처 설계',
+        descriptions: [
+          '인천시 블록체인 메인넷 API 규격 분석 및 데이터 무결성이 보장되는 연동 로직 구현',
+          'Spring Boot + HTML/JS(Thymeleaf) 기반 표준 웹뷰 아키텍처 구축'
+        ],
+      },
+      {
+        title: '모바일 환경 최적화 및 검증',
+        descriptions: [
+          'adb(Android Debug Bridge)를 활용한 다양한 디바이스 크로스 브라우징 검증',
+          '초기 앱 안정성 확보'
+        ],
+      },
+      {
+        title: '공공사업 감리 대응 (DBA 파트)',
+        descriptions: [
+          'DB 암호화 적용 및 기술 감리 산출물(테이블 정의서, ERD) 단독 작성'
+        ],
+      },
     ],
   },
   {
     id: 'project-3',
     slug: 'project-3',
-    title: '서울사회복지공익법센터 홈페이지 개편 및 모바일 반응형 웹사이트 전환',
-    description: '레거시 홈페이지 디자인 개편 및 모바일 반응형 전환',
-    summary: '디자인 개편, 모바일 반응형, 메뉴 재귀 탐색 기반의 동적 렌더링 설계',
+    title: '서울사회복지공익법센터 홈페이지 개편 및 모바일 반응형 전환',
+    description: '레거시 홈페이지를 모바일 반응형으로 전환 및 동적 메뉴 구조로 재설계',
+    summary: '다단계 메뉴 동적 렌더링, 반응형 UI 재구축, 레거시 마크업 최적화',
     technologies: ['JSP', 'HTML', 'CSS', 'JavaScript', 'jQuery'],
     period: {
       start: '2025-06',
@@ -60,19 +131,42 @@ export const projects: Project[] = [
     teamSize: 3,
     role: '프론트엔드 개발',
     image: '/images/projects/project-3.png',
+    achievements: [
+      '하드코딩된 다단계 메뉴를 재귀(DFS) 기반 동적 렌더링으로 전환',
+      '유지보수성 향상 및 개발 생산성 증대',
+      '반응형 인터페이스 전면 재구축',
+      '모바일 접근성 및 크로스 브라우징 호환성 확보'
+    ],
     features: [
-      { title: '하드코딩된 다단계 메뉴 구조 재설계', description: '계층형 트리 데이터로 추상화하고 재귀(DFS) 탐색 기반의 동적 렌더링으로 유지보수성 향상 및 개발 생산성 증대' },
-      { title: '모바일 반응형 인터페이스 재구축', description: '디자인 가이드를 기반으로 기존 정적 웹페이지를 모바일·웹 표준에 최적화된 반응형 인터페이스로 전면 재구축' },
-      { title: '접근성 및 크로스 브라우징 개선', description: '레거시 화면 구조 및 마크업 최적화를 통해 모바일 접근성 및 크로스 브라우징 문제 해결' },
+      {
+        title: '다단계 메뉴 동적 렌더링 구현',
+        descriptions: [
+          '계층형 트리 데이터로 추상화하여 재귀 탐색(DFS) 기반의 동적 렌더링 구현',
+          '메뉴 구조 변경 시 하드코딩 불필요로 유지보수성 대폭 향상'
+        ],
+      },
+      {
+        title: '모바일 반응형 인터페이스 재구축',
+        descriptions: [
+          '기존 정적 웹페이지를 모바일·웹 표준에 최적화된 반응형으로 전면 개편',
+          '다양한 해상도에서 일관된 UX 제공'
+        ],
+      },
+      {
+        title: '레거시 마크업 최적화',
+        descriptions: [
+          '레거시 화면 구조 및 마크업 최적화로 접근성, 크로스 브라우징 호환성 확보'
+        ],
+      },
     ],
   },
   {
     id: 'project-4',
     slug: 'project-4',
     title: '전국 8개 지자체 통합주차포털 솔루션 구축 및 고도화',
-    description: '지자체별 공영주차장 이용 편의성을 극대화하기 위해 실시간 주차 정보 조회, 요금 감면 연계, 신청·결제 기능 등을 제공하는 대시민 통합주차포털의 웹 프론트엔드 구축',
-    summary: '주차 및 결제 관련 모든 서비스를 제공하는 웹/모바일 반응형 포털 화면 설계 및 개발',
-    technologies: ['Vue.js', 'JavaScript', 'Vuex', 'HTML', 'SCSS'],
+    description: '8개 지자체를 위한 주차 및 결제 통합포털 프론트엔드 개발 (Vue v2→v3 마이그레이션, 성능 70% 단축)',
+    summary: 'Vue 마이그레이션, 성능 최적화(10초→3초), 결제/SSO 시스템 구축',
+    technologies: ['Vue.js', 'JavaScript', 'Vuex', 'HTML', 'SCSS' , 'Axios'],
     period: {
       start: '2023-01',
       end: '2025-01',
@@ -80,11 +174,53 @@ export const projects: Project[] = [
     teamSize: 4,
     role: '프론트엔드 개발',
     image: '/images/projects/project-4.png',
+    achievements: [
+      'Vue.js v2 → v3 마이그레이션 성공 (부산시 주도)',
+      'Vue Mixin → Composable 함수 전환으로 재사용성 극대화',
+      'Vuex 모듈화 및 로컬스토리지 기반 안정성 확보',
+      'Atomic Design 패턴으로 컴포넌트 재사용성 극대화',
+      '초기 로딩 속도 70% 단축 (10초 → 3초)',
+      'Lighthouse FCP 2.3초 이내 달성',
+      'Jest 유닛 테스트 환경 구축',
+      '개발 기간 50% 단축 (1달 → 2주, Jira Performance 131%)',
+      'PG 결제(스마트로) E2E 흐름 안정성 확보',
+      '중복 결제 방지 (디바운싱 + 상태 중앙화)',
+      'SSO 연계 구현',
+      'Apache Cordova 하이브리드 앱 패키징'
+    ],
     features: [
-      { title: '통합 주차 포털 플랫폼 개발', description: '8개 지자체의 공영주차장 정보를 단일 플랫폼으로 통합하여 사용자 편의성 극대화' },
-      { title: '실시간 주차 정보 조회 및 예약', description: '실시간 주차장 현황 제공 및 선점예약 기능으로 사용자 만족도 향상' },
-      { title: '요금 감면 연계 및 결제 기능', description: '지자체별 요금 감면 정책 자동 적용 및 다양한 결제 수단 지원' },
-      { title: '웹/모바일 반응형 설계', description: 'Vue.js 기반 반응형 웹 설계로 다양한 기기에서의 최적 사용 경험 제공' },
+      {
+        title: '프레임워크 마이그레이션 & 상태 관리 최적화',
+        descriptions: [
+          'Vue.js v2 → v3로 레거시 솔루션 마이그레이션 (부산시)',
+          'Vue Mixin → Composable 함수 전환으로 로직 재사용성 확대 (아산시)',
+          'Vuex 모듈화 및 로컬스토리지 기반 세션 관리로 안정성 확보'
+        ],
+      },
+      {
+        title: '성능 최적화 (70% 단축)',
+        descriptions: [
+          'Lazy-loading + Font-preload로 초기 로딩 시간 10초 → 3초 단축 (파주시)',
+          'Lighthouse FCP 2.3초 이내 달성 (여수시)',
+          'Jest 기반 유닛 테스트로 회귀 버그 방지'
+        ],
+      },
+      {
+        title: '안정적인 결제 & SSO 시스템',
+        descriptions: [
+          'PG(스마트로) 결제 E2E 흐름 안정화 (승인/취소/실패 모두 처리)',
+          '중복 결제 방지 (Vuex 중앙화 + 디바운싱)',
+          'SSO(안양시) 연계로 단일 인증 구현'
+        ],
+      },
+      {
+        title: '플랫폼 확장 & UI 표준화',
+        descriptions: [
+          'Apache Cordova로 웹 포털을 하이브리드 앱 전환 (춘천시)',
+          'Atomic Design 패턴으로 UI 컴포넌트 체계화',
+          'SCSS 컴포넌트화 및 스타일 가이드 정립으로 전사 표준화'
+        ],
+      },
     ],
   },
 ]
