@@ -1,5 +1,11 @@
 // 프로젝트 데이터 타입 정의 (정적 데이터 기반, Notion 의존성 없음)
 
+// 프로젝트 기능 아이템
+export interface ProjectFeature {
+  title: string
+  descriptions?: string[]
+}
+
 // 메인 프로젝트 (회사 프로젝트)
 export interface Project {
   id: string
@@ -21,8 +27,9 @@ export interface Project {
     demo?: string
     website?: string
   }
-  features?: (string | { title: string; description: string })[]
+  features?: (string | ProjectFeature)[]
   content?: string
+  achievements?: string[]
 }
 
 // 사이드 프로젝트 (개인 프로젝트)
