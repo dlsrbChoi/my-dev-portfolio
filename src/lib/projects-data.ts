@@ -79,6 +79,11 @@ export const projects: Array<Project> = [
     teamSize: 4,
     role: '웹 개발',
     image: '/images/projects/project-2.png',
+    images: [
+      '/images/projects/project-2-main.jpg',
+      '/images/projects/project-2-detail-1.png',
+      '/images/projects/project-2-detail-2.png',
+    ],
     achievements: [
       '3개 인증 모듈(KG이니시스, KG모빌리언스, 라온시큐어) 안정적 연동',
       '블록체인 메인넷 API 규격 분석 및 서버 간 연동 로직 구현',
@@ -131,6 +136,12 @@ export const projects: Array<Project> = [
     teamSize: 3,
     role: '프론트엔드 개발',
     image: '/images/projects/project-3.png',
+    images: [
+      '/images/projects/project-3-main.png',
+      '/images/projects/project-3-detail-1.png',
+      '/images/projects/project-3-detail-2.png',
+      '/images/projects/project-3-detail-3.png',
+    ],
     achievements: [
       '하드코딩된 다단계 메뉴를 재귀(DFS) 기반 동적 렌더링으로 전환',
       '유지보수성 향상 및 개발 생산성 증대',
@@ -174,6 +185,15 @@ export const projects: Array<Project> = [
     teamSize: 4,
     role: '프론트엔드 개발',
     image: '/images/projects/project-4.png',
+    images: [
+      '/images/projects/project-4-main.png',
+      '/images/projects/project-4-detail-1.png',
+      '/images/projects/project-4-detail-2.png',
+      '/images/projects/project-4-detail-3.png',
+      '/images/projects/project-4-detail-4.png',
+      '/images/projects/project-4-detail-5.png',
+      '/images/projects/project-4-detail-6.png',
+    ],
     achievements: [
       'Vue.js v2 → v3 마이그레이션 성공 (부산시 주도)',
       'Vue Mixin → Composable 함수 전환으로 재사용성 극대화',
@@ -192,33 +212,47 @@ export const projects: Array<Project> = [
       {
         title: '프레임워크 마이그레이션 & 상태 관리 최적화',
         descriptions: [
-          'Vue.js v2 → v3로 레거시 솔루션 마이그레이션 (부산시)',
-          'Vue Mixin → Composable 함수 전환으로 로직 재사용성 확대 (아산시)',
-          'Vuex 모듈화 및 로컬스토리지 기반 세션 관리로 안정성 확보'
+          'Vue.js v2 → v3 마이그레이션 주도 (부산시): Composition API 기반 재구조화로 개발 생산성 및 성능 40% 향상',
+          'Vue Mixin → Composable 함수 전환 (아산시): 재사용 가능한 로직 모듈화로 코드 중복 제거, 유지보수성 극대화',
+          'Vuex 모듈화 및 로컬스토리지 기반 세션 관리: 사용자 로그인 상태 지속 유지, 새로고침 후에도 세션 복구로 UX 향상',
+          '카카오 지도 커스텀 마커(Custom Overlay) 및 인포윈도우(InfoWindow) 구현으로 지도 기반 주차장 검색 최적화'
         ],
       },
       {
         title: '성능 최적화 (70% 단축)',
         descriptions: [
-          'Lazy-loading + Font-preload로 초기 로딩 시간 10초 → 3초 단축 (파주시)',
-          'Lighthouse FCP 2.3초 이내 달성 (여수시)',
-          'Jest 기반 유닛 테스트로 회귀 버그 방지'
+          'Lazy-loading + Font-preload 전략으로 초기 로딩 시간 10초 → 3초 단축 (파주시): 번들 사이즈 감소 및 네트워크 요청 최소화',
+          'Lighthouse FCP 2.3초 이내 달성 (여수시): 코드 스플리팅 및 동적 임포트로 초기 페이지 로딩 성능 극대화',
+          'Jest 기반 유닛 테스트 환경 구축: 회귀 버그 방지 및 안정적인 리팩토링 기반 마련',
+          'Jira Performance 131% 달성: 마더십(MotherShip) 프로젝트 기반 개발기간 50% 단축 (1달 → 2주)'
         ],
       },
       {
         title: '안정적인 결제 & SSO 시스템',
         descriptions: [
-          'PG(스마트로) 결제 E2E 흐름 안정화 (승인/취소/실패 모두 처리)',
-          '중복 결제 방지 (Vuex 중앙화 + 디바운싱)',
-          'SSO(안양시) 연계로 단일 인증 구현'
+          'PG 결제 모듈(스마트로) 연동 및 라이프사이클 제어 (양천구): 승인/취소/실패 모든 경로에서 안정적인 E2E 흐름 구현',
+          '중복 결제 방지 메커니즘: Vuex 중앙화 상태 관리 + 디바운싱으로 동시 다중 결제 요청 차단',
+          'SSO(Single Sign-On) 통합 로그인 구현 (안양시): 여러 지자체 간 단일 인증 체계 구축으로 사용자 편의성 향상',
+          '관리자 페이지 고도화 및 사용자 가이드 문서 작성'
         ],
       },
       {
         title: '플랫폼 확장 & UI 표준화',
         descriptions: [
-          'Apache Cordova로 웹 포털을 하이브리드 앱 전환 (춘천시)',
-          'Atomic Design 패턴으로 UI 컴포넌트 체계화',
-          'SCSS 컴포넌트화 및 스타일 가이드 정립으로 전사 표준화'
+          'Apache Cordova 기반 하이브리드 앱 패키징 (춘천시): 웹 포털을 iOS/Android 네이티브 앱으로 확장, 모바일 플랫폼 지원',
+          'Atomic Design 패턴 도입 (인천시): Atom(버튼, 입력창) → Molecule(폼 필드) → Organism(카드, 리스트) 계층화로 UI 컴포넌트 재사용성 극대화',
+          '재귀함수 기반 계층형 동적 메뉴 생성 (춘천시): 하드코딩된 다단계 메뉴를 DFS 기반 동적 렌더링으로 전환, 유지보수성 향상',
+          'SCSS 컴포넌트화 및 스타일 가이드 정립: 8개 지자체 간 일관된 UI/UX 표준화, 개발 생산성 증대',
+          'Drag and Drop 정렬 기능 (양천구): SortableJS 라이브러리 연동으로 게시판 항목 드래그 정렬 기능 추가'
+        ],
+      },
+      {
+        title: '고급 기능 및 경험 최적화',
+        descriptions: [
+          '기기/해상도별 팝업 노출 기능 개선 (아산시): 반응형 디자인으로 모바일/태블릿/데스크톱 전 기기에 최적화된 팝업 렌더링',
+          'AI 챗봇 연계 (양천구): 사용자 문의에 대한 자동 응답 시스템 구현으로 고객 지원 효율화',
+          '미납요금 계산 프로세스 개선 (춘천시): 복잡한 계산 로직 최적화로 조회 성능 향상 및 정확성 확보',
+          '파트 내 개발 스터디 주도 (인천시): Modern JavaScript Deep Dive 학습 주관으로 팀 역량 강화 및 기술 표준화'
         ],
       },
     ],
