@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import React, { useState } from 'react'
 import { motion } from 'framer-motion'
 import { useTranslations, useLocale } from 'next-intl'
 import { ExperienceEntry } from '@/types/resume'
@@ -87,11 +87,51 @@ function DetailsCollapsible({
 
           return (
             <div key={detailKey} className="pl-3 border-l border-primary/30 space-y-1">
-              {items.map((item: string, i: number) => (
-                <p key={i} className="text-xs text-muted-foreground">
-                  • {item}
-                </p>
-              ))}
+              {items.map((item: string, i: number) => {
+                // 주요 키워드 추출 및 색상 강조
+                const highlightKeywords = (text: string) => {
+                  const patterns = [
+                    { regex: /\[핵심\]/g, color: 'text-red-500' },
+                    { regex: /\[성과\]/g, color: 'text-green-500' },
+                    { regex: /\[기술\]/g, color: 'text-blue-500' },
+                    { regex: /\[개선\]/g, color: 'text-purple-500' },
+                    { regex: /\[리드\]/g, color: 'text-orange-500' },
+                    { regex: /\[관리\]/g, color: 'text-cyan-500' },
+                    { regex: /\[솔루션\]/g, color: 'text-indigo-500' },
+                    { regex: /\[최적화\]/g, color: 'text-emerald-500' },
+                    { regex: /\[설계\]/g, color: 'text-fuchsia-500' },
+                    { regex: /\[알고리즘\]/g, color: 'text-rose-500' },
+                    { regex: /\[안정성\]/g, color: 'text-teal-500' },
+                    { regex: /\[플랫폼\]/g, color: 'text-sky-500' },
+                    { regex: /\[효율화\]/g, color: 'text-lime-500' },
+                    { regex: /\[표준화\]/g, color: 'text-violet-500' },
+                    { regex: /\[결제\]/g, color: 'text-amber-500' },
+                    { regex: /\[마이그레이션\]/g, color: 'text-pink-500' },
+                    { regex: /\[검증\]/g, color: 'text-cyan-600' },
+                    { regex: /\[출시\]/g, color: 'text-green-600' },
+                  ]
+
+                  let parts: (string | React.ReactNode)[] = [text]
+                  patterns.forEach(({ regex, color }) => {
+                    parts = parts.flatMap(part => {
+                      if (typeof part !== 'string') return part
+                      const split = part.split(regex)
+                      return split.flatMap((segment, idx) => {
+                        if (idx === split.length - 1) return segment
+                        const match = text.match(regex)?.[0]
+                        return [segment, <span key={`${i}-${idx}`} className={`font-semibold ${color}`}>{match}</span>]
+                      })
+                    })
+                  })
+                  return parts
+                }
+
+                return (
+                  <p key={i} className="text-sm text-muted-foreground">
+                    • {highlightKeywords(item)}
+                  </p>
+                )
+              })}
             </div>
           )
         })}
@@ -307,8 +347,8 @@ export function ExperienceTimeline({
 
                             {/* 직책 정보 */}
                             <div className="mb-2">
-                              <h3 className="font-semibold">{position.position}</h3>
-                              <p className="text-sm text-muted-foreground">
+                              <h3 className="font-semibold text-base">{position.position}</h3>
+                              <p className="text-base text-muted-foreground">
                                 {position.period.start.split('-').slice(0, 2).join('.')} - {position.period.end.split('-').slice(0, 2).join('.')}
                               </p>
 
@@ -320,7 +360,7 @@ export function ExperienceTimeline({
                                   )
                                   if (typeof teamSize === 'string') {
                                     return (
-                                      <div className="flex items-center gap-1 mt-1 text-xs text-muted-foreground">
+                                      <div className="flex items-center gap-1 mt-1 text-sm text-muted-foreground">
                                         <Users className="h-3 w-3" />
                                         <span>{teamSize}</span>
                                       </div>
