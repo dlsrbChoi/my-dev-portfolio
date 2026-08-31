@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import Image from 'next/image'
 import { useTranslations } from 'next-intl'
-import type { Project } from '@/types/project'
+import type { Project, ProjectFeature } from '@/types/project'
 import {
   Dialog,
   DialogContent,
@@ -62,7 +62,7 @@ export function ProjectModal({ project, open, onOpenChange }: ProjectModalProps)
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-2xl max-h-[85vh] overflow-y-auto sm:max-w-2xl">
+      <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto sm:max-w-4xl">
         <DialogHeader>
           <DialogTitle className="text-2xl font-bold">{project.title}</DialogTitle>
           <div className="mt-2 flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
@@ -89,27 +89,59 @@ export function ProjectModal({ project, open, onOpenChange }: ProjectModalProps)
 
         {/* 이미지 갤러리 */}
         {images.length > 0 && (
-          <div className="mt-4 space-y-2">
-            <div className="relative aspect-video w-full overflow-hidden rounded-lg bg-muted">
+          <div className="mt-4">
+            <div className="relative w-full overflow-hidden rounded-lg bg-muted" style={{ aspectRatio: '16 / 10' }}>
               <Image
                 src={images[currentImageIndex]}
                 alt={`${project.title} - ${currentImageIndex + 1}`}
                 fill
                 sizes="(max-width: 768px) 100vw, 600px"
-                className="object-cover"
+                className="object-contain"
               />
+
+              {/* 이미지 네비게이션 버튼 - 중앙 좌우에 위치 */}
+              {images.length > 1 && (
+                <>
+                  <button
+                    onClick={handlePrevImage}
+                    className="absolute left-4 top-1/2 z-10 -translate-y-1/2 rounded-full bg-black/50 p-2.5 text-white transition-all hover:bg-black/70"
+                    aria-label="이전 이미지"
+                  >
+                    <ChevronLeft className="h-5 w-5" />
+                  </button>
+
+                  <button
+                    onClick={handleNextImage}
+                    className="absolute right-4 top-1/2 z-10 -translate-y-1/2 rounded-full bg-black/50 p-2.5 text-white transition-all hover:bg-black/70"
+                    aria-label="다음 이미지"
+                  >
+                    <ChevronRight className="h-5 w-5" />
+                  </button>
+                </>
+              )}
             </div>
+
+            {/* 슬라이드 표시기 및 카운터 */}
             {images.length > 1 && (
-              <div className="flex items-center justify-between">
-                <Button variant="outline" size="sm" onClick={handlePrevImage}>
-                  <ChevronLeft className="h-4 w-4" aria-hidden="true" />
-                </Button>
-                <span className="text-sm text-muted-foreground">
+              <div className="mt-3 flex items-center justify-center gap-2">
+                {/* 점 표시기 */}
+                <div className="flex gap-2">
+                  {images.map((_, index) => (
+                    <button
+                      key={index}
+                      onClick={() => setCurrentImageIndex(index)}
+                      className={`h-2 w-2 rounded-full transition-all ${
+                        index === currentImageIndex ? 'bg-primary w-6' : 'bg-muted-foreground/50 hover:bg-muted-foreground'
+                      }`}
+                      aria-label={`${index + 1}번 이미지로 이동`}
+                    />
+                  ))}
+                </div>
+
+                {/* 카운터 */}
+                <span className="ml-2 text-sm text-muted-foreground">
                   {currentImageIndex + 1} / {images.length}
                 </span>
-                <Button variant="outline" size="sm" onClick={handleNextImage}>
-                  <ChevronRight className="h-4 w-4" aria-hidden="true" />
-                </Button>
               </div>
             )}
           </div>
@@ -119,14 +151,56 @@ export function ProjectModal({ project, open, onOpenChange }: ProjectModalProps)
         <div className="mt-6">
           <h3 className="mb-3 flex items-center gap-2 text-lg font-semibold">
             <span className="h-5 w-1 rounded-full bg-primary" aria-hidden="true" />
-            {project.description}
+            {t('overview')}
           </h3>
+          <p className="leading-relaxed text-foreground font-medium mb-2 text-base">
+            {project.description}
+          </p>
           {project.content && (
-            <p className="leading-relaxed whitespace-pre-wrap text-muted-foreground">
+            <p className="leading-relaxed whitespace-pre-wrap text-muted-foreground text-base">
               {project.content}
             </p>
           )}
         </div>
+
+        {/* 주요 작업 */}
+        {project.features && project.features.length > 0 && (
+          <>
+            <Separator className="my-4" />
+            <div>
+              <h3 className="mb-3 flex items-center gap-2 text-lg font-semibold">
+                <span className="h-5 w-1 rounded-full bg-primary" aria-hidden="true" />
+                {t('mainTasks')}
+              </h3>
+              <ul className="space-y-4">
+                {project.features.map((feature, index) => {
+                  // feature는 string 또는 ProjectFeature 객체
+                  const isStringFeature = typeof feature === 'string'
+                  const title: string = isStringFeature ? feature : feature.title
+                  const descriptions: string[] = !isStringFeature && feature.descriptions ? feature.descriptions : []
+
+                  return (
+                    <li key={`${title}-${index}`} className="flex items-start gap-3">
+                      <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-primary" aria-hidden="true" />
+                      <div className="flex-1">
+                        <p className="font-medium text-foreground text-base">{title}</p>
+                        {descriptions.length > 0 && (
+                          <ul className="mt-2 space-y-2">
+                            {descriptions.map((desc, descIndex) => (
+                              <li key={`${title}-${descIndex}`} className="text-base text-muted-foreground list-inside list-disc">
+                                {desc}
+                              </li>
+                            ))}
+                          </ul>
+                        )}
+                      </div>
+                    </li>
+                  )
+                })}
+              </ul>
+            </div>
+          </>
+        )}
 
         {/* 기술 스택 */}
         {project.technologies.length > 0 && (
@@ -139,7 +213,7 @@ export function ProjectModal({ project, open, onOpenChange }: ProjectModalProps)
               </h3>
               <div className="flex flex-wrap gap-2">
                 {project.technologies.map((tech) => (
-                  <Badge key={tech} variant="secondary" className="text-sm">
+                  <Badge key={tech} variant="secondary" className="text-base">
                     {tech}
                   </Badge>
                 ))}
@@ -148,33 +222,22 @@ export function ProjectModal({ project, open, onOpenChange }: ProjectModalProps)
           </>
         )}
 
-        {/* 주요 기능 */}
-        {project.features && project.features.length > 0 && (
+        {/* 성과 */}
+        {project.achievements && project.achievements.length > 0 && (
           <>
             <Separator className="my-4" />
             <div>
               <h3 className="mb-3 flex items-center gap-2 text-lg font-semibold">
                 <span className="h-5 w-1 rounded-full bg-primary" aria-hidden="true" />
-                {t('features')}
+                {t('achievements')}
               </h3>
-              <ul className="space-y-4">
-                {project.features.map((feature, index) => {
-                  const isString = typeof feature === 'string'
-                  const title = isString ? feature : feature.title
-                  const description = !isString ? feature.description : undefined
-
-                  return (
-                    <li key={`${title}-${index}`} className="flex items-start gap-3">
-                      <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-primary" aria-hidden="true" />
-                      <div className="flex-1">
-                        <p className="font-medium text-foreground">{title}</p>
-                        {description && (
-                          <p className="mt-1 text-sm text-muted-foreground">{description}</p>
-                        )}
-                      </div>
-                    </li>
-                  )
-                })}
+              <ul className="space-y-2">
+                {project.achievements.map((achievement, index) => (
+                  <li key={index} className="flex items-start gap-3">
+                    <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-primary" aria-hidden="true" />
+                    <span className="text-white text-base">{achievement}</span>
+                  </li>
+                ))}
               </ul>
             </div>
           </>
