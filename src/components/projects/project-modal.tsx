@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import { useTranslations } from 'next-intl'
 import type { Project, ProjectFeature } from '@/types/project'
@@ -38,18 +38,34 @@ interface ProjectModalProps {
 export function ProjectModal({ project, open, onOpenChange }: ProjectModalProps) {
   const t = useTranslations('projects')
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
+  const [isAutoPlay, setIsAutoPlay] = useState(true)
   const images = project.images ?? (project.image ? [project.image] : [])
 
   const periodLabel = project.period
     ? `${project.period.start} ~ ${project.period.end ?? t('inProgress')}`
     : ''
 
+  // 자동 슬라이드 (5초 간격)
+  useEffect(() => {
+    if (!isAutoPlay || images.length <= 1) return
+
+    const interval = setInterval(() => {
+      setCurrentImageIndex((prev) => (prev + 1) % images.length)
+    }, 5000)
+
+    return () => clearInterval(interval)
+  }, [images.length, isAutoPlay])
+
   const handlePrevImage = () => {
+    setIsAutoPlay(false)
     setCurrentImageIndex((prev) => (prev - 1 + images.length) % images.length)
+    setTimeout(() => setIsAutoPlay(true), 5000)
   }
 
   const handleNextImage = () => {
+    setIsAutoPlay(false)
     setCurrentImageIndex((prev) => (prev + 1) % images.length)
+    setTimeout(() => setIsAutoPlay(true), 5000)
   }
 
   const handleLinkClick = (type: 'github' | 'demo' | 'website') => {
@@ -121,15 +137,18 @@ export function ProjectModal({ project, open, onOpenChange }: ProjectModalProps)
               )}
             </div>
 
-            {/* 슬라이드 표시기 및 카운터 */}
+            {/* 슬라이드 표시기 */}
             {images.length > 1 && (
-              <div className="mt-3 flex items-center justify-center gap-2">
-                {/* 점 표시기 */}
+              <div className="mt-3 flex items-center justify-center">
                 <div className="flex gap-2">
                   {images.map((_, index) => (
                     <button
                       key={index}
-                      onClick={() => setCurrentImageIndex(index)}
+                      onClick={() => {
+                        setIsAutoPlay(false)
+                        setCurrentImageIndex(index)
+                        setTimeout(() => setIsAutoPlay(true), 5000)
+                      }}
                       className={`h-2 w-2 rounded-full transition-all ${
                         index === currentImageIndex ? 'bg-primary w-6' : 'bg-muted-foreground/50 hover:bg-muted-foreground'
                       }`}
@@ -137,11 +156,6 @@ export function ProjectModal({ project, open, onOpenChange }: ProjectModalProps)
                     />
                   ))}
                 </div>
-
-                {/* 카운터 */}
-                <span className="ml-2 text-sm text-muted-foreground">
-                  {currentImageIndex + 1} / {images.length}
-                </span>
               </div>
             )}
           </div>
@@ -207,13 +221,13 @@ export function ProjectModal({ project, open, onOpenChange }: ProjectModalProps)
           <>
             <Separator className="my-4" />
             <div>
-              <h3 className="mb-3 flex items-center gap-2 text-lg font-semibold">
+              <h3 className="mb-4 flex items-center gap-2 text-lg font-semibold">
                 <span className="h-5 w-1 rounded-full bg-primary" aria-hidden="true" />
                 {t('technologies')}
               </h3>
-              <div className="flex flex-wrap gap-2">
+              <div className="flex flex-wrap gap-3">
                 {project.technologies.map((tech) => (
-                  <Badge key={tech} variant="secondary" className="text-base">
+                  <Badge key={tech} variant="secondary" className="text-base px-3 py-1.5">
                     {tech}
                   </Badge>
                 ))}
