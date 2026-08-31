@@ -560,7 +560,10 @@
     "website": "Website",
     "viewDetails": "View Details",
     "inProgress": "In Progress",
-    "personCount": "{count}"
+    "personCount": "{count}",
+    "overview": "Overview",
+    "mainTasks": "Main Tasks",
+    "achievements": "Achievements"
   },
   "contact": {
     "title": "Contact",
