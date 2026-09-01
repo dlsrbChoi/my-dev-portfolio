@@ -1,9 +1,5 @@
 {
-  "buildCommand": "npm run build || true",
+  "buildCommand": "npm run build",
   "installCommand": "npm ci --legacy-peer-deps",
-  "env": {
-    "NEXT_SKIP_ENV_VALIDATION": "true",
-    "VERCEL_SKIP_TURBOPACK": "true"
-  },
   "outputDirectory": ".next"
 }
