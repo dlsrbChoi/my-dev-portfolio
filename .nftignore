@@ -4,3 +4,4 @@
 node_modules/.cache
 .git
 .next/cache
+.next/static

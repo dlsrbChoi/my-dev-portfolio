@@ -20,6 +20,15 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  webpack: (config, { isServer }) => {
+    if (isServer) {
+      config.optimization = {
+        ...config.optimization,
+        nodeEnv: 'production',
+      };
+    }
+    return config;
+  },
 };
 
 export default withNextIntl(nextConfig);
