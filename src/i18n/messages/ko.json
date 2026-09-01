@@ -22,7 +22,7 @@
     "greeting": "안녕하세요,",
     "titleLine1": "Web",
     "titleLine2": "Developer",
-    "description": "사용자 경험을 고려한 UI/UX 설계부터 안정적인 백엔드 아키텍처 구축까지, 기술 전반을 아우르며 최적의 해결책을 찾아나가는 개발자 최인규 입니다.",
+    "description": "사용자 경험을 고려한 UI/UX 설계부터 안정적인 백엔드 아키텍처 구축까지, 기술 전반을 아우르며 최적의 해결책을 찾아나가는 <highlight>개발자 최인규</highlight>입니다.",
     "resumeDownload": "이력서 다운로드",
     "githubLink": "GitHub",
     "profileAlt": "이그쵸이 프로필 사진"
