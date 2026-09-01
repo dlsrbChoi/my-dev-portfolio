@@ -1,166 +1,205 @@
 # CLAUDE.md
 
-이 파일은 Claude Code(claude.ai/code)가 이 저장소의 코드를 작업할 때 참고할 지침을 제공합니다.
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
 ## 프로젝트 개요
 
-Next.js 16 모던 웹 스타터킷. React 19, TypeScript, TailwindCSS v4, shadcn/ui (base-ui 기반)를 활용한 프로덕션 레디 프로젝트입니다.
+개인 포트폴리오 웹사이트. Next.js 16 App Router + React 19 + TypeScript + TailwindCSS v4 기반으로, 경력, 프로젝트, 기술 스택을 효과적으로 전시합니다.
 
-### 아키텍처 주요 특징
+### 핵심 아키텍처
 
-**앱 라우터 기반 구조** (`src/app/`)
-- Next.js 16 App Router를 사용하여 폴더 기반 라우팅 구현
-- 라우트: `/examples` (데모 목록), `/examples/[slug]` (상세 페이지), `/docs` (문서)
-- 특수 파일: `error.tsx` (에러 경계), `loading.tsx` (라우트 단위 로딩), `not-found.tsx` (404 페이지)
-- 루트 레이아웃 (`src/app/layout.tsx`)에서 ThemeProvider, TooltipProvider, 헤더, 푸터 등 공통 레이아웃 설정
+**다국어 i18n 라우팅** (`src/app/[locale]/`)
+- `next-intl` 기반 한국어(ko)/영어(en) 자동 전환
+- 로케일 설정: `src/i18n/config.ts` (지원 언어, 기본값)
+- 메타데이터 다국어화: `generateMetadata()` → `getTranslations()` 사용
+- 언어 전환 UI: `src/components/layout/language-switcher.tsx`
 
-**컴포넌트 계층** (`src/components/`)
-- **UI 컴포넌트** (`src/components/ui/`): shadcn/ui 기본 컴포넌트 (Button, Card, Input 등)
-  - `@base-ui/react` 기본 컴포넌트를 래핑해 shadcn 스타일 적용
-  - `class-variance-authority` (CVA)로 변형/크기 패턴 구현
-  - `cn()` 유틸리티 (`src/lib/utils.ts`)로 클래스 병합 (clsx + tailwind-merge)
-- **레이아웃 컴포넌트** (`src/components/layout/`): 헤더, 푸터, 모바일 네비, 테마 토글, 컨테이너
-  - 헤더/모바일 네비에서 `src/lib/nav.ts`의 navItems 참조해 메뉴 렌더링
-- **패턴 컴포넌트** (`src/components/patterns/`): 재사용 가능한 복합 컴포넌트 (히어로, 기능 그리드, 페이지 헤더, 코드 블록, 문서 섹션 카드 등)
-- **예제 데모** (`src/components/examples/`): 6개 기능 데모 컴포넌트
-  - ComponentShowcaseDemo, FormBasicsDemo, LayoutPatternsDemo, UseHooksTsDemo, ClientFetchDemo(데이터 페칭), ThemingDemo
-  - `src/app/examples/[slug]/page.tsx`의 `demosMap`(5개)과 별도 조건 분기로 로드됨 (data-fetching은 서버 fetch + 클라이언트 fetch 비교)
+**포트폴리오 섹션 구조** (`src/components/sections/`)
+- 각 섹션은 독립적인 컴포넌트로 분리 (단일 책임 원칙)
+- 메인 페이지 (`src/app/[locale]/page.tsx`)에서 순차적으로 조합
+  - HeroSection → AboutSection → ExperienceSection → ProjectsSection → SideProjectsSection → EducationSection → ContactSection
+- `FadeInSection` 래퍼로 스크롤 애니메이션 자동 적용
+- 섹션 내비게이션: `SectionNav` (목차 역할)
 
-**데이터/설정** (`src/lib/`)
-- `utils.ts`: `cn()` 클래스 병합 유틸리티
-- `nav.ts`: 헤더/모바일 네비게이션 메뉴 구조 정의
-- `examples.ts`: 6개 예제 메타데이터 (슬러그, 제목, 설명, 코드, 아이콘 등) + `getExampleBySlug()` 함수
+**프로젝트 갤러리 시스템**
+- **메인 프로젝트** (`src/components/projects/project-card.tsx`, `project-modal.tsx`)
+  - 이미지 캐러셀 기능 (`image-carousel.tsx`)
+  - 기술 스택 배지, 링크(GitHub, Live), 메타정보 표시
+  - 모달 기반 상세 보기
+- **사이드 프로젝트** (`src/components/projects/side-project-card.tsx`, `side-project-modal.tsx`)
+  - 보조 프로젝트, 오픈소스 기여 등
+  - 콤팩트한 카드 레이아웃
 
-**스타일링**
-- `src/app/globals.css`: TailwindCSS v4 + oklch 색상 변수 정의
-  - `tw-animate-css` 및 `shadcn/tailwind.css`를 import하므로, 해당 부분은 직접 수정하지 않음
-- 라이트/다크 모드를 `:root` 및 `.dark` 선택자로 분리
-- `next-themes`로 테마 전환 로직 구현 (`src/components/theme-provider.tsx`)
+**컴포넌트 계층**
+- **UI 컴포넌트** (`src/components/ui/`): shadcn/ui 기본 컴포넌트 (@base-ui/react 래핑)
+- **레이아웃** (`src/components/layout/`): 헤더, 푸터, 모바일 네비, 언어/테마 전환
+- **섹션** (`src/components/sections/`): 포트폴리오 주요 콘텐츠
+- **프로젝트** (`src/components/projects/`): 프로젝트 카드, 모달, 캐러셀
+- **모션** (`src/components/motion/`): Framer Motion 기반 애니메이션 (fade-in, stagger)
+- **패턴** (`src/components/patterns/`): 재사용 가능한 UI 패턴
 
-### Next.js 16 주요 변경사항
+**스타일링 & 테마**
+- `src/app/globals.css`: TailwindCSS v4 + oklch 색상 변수
+- `next-themes` 기반 라이트/다크 모드 (로컬 저장소 자동 기억)
+- `cn()` 유틸리티 (`src/lib/utils.ts`)로 클래스 병합
 
-⚠️ **중요**: 이 프로젝트의 Next.js 16은 학습 데이터 시점과 다를 수 있습니다. 확신이 없는 API나 패턴을 사용할 때는 코드 작성 전 `node_modules/next/dist/docs/` 폴더의 관련 가이드를 먼저 확인하세요.
+### Next.js 16 주요 차이점
 
-- **동적 라우트 params는 Promise**: `params: Promise<{slug: string}>`로 선언되며, 반드시 `await params`로 처리해야 함 (`src/app/examples/[slug]/page.tsx` 참조)
-- **generateStaticParams**: 동적 라우트를 정적 생성하려면 필수 (`src/app/examples/[slug]/page.tsx:14-18`)
-- **shadcn/ui "base-nova" 스타일**: `@base-ui/react` 기본 컴포넌트 기반. `render` prop으로 다른 엘리먼트(예: `Link`)를 렌더링할 수 있음 (실사용 예: `src/app/examples/page.tsx:43-50`, `src/components/ui/dialog.tsx`, `sheet.tsx`)
+⚠️ **중요**: Next.js 16은 이전 버전과 몇 가지 API 변경이 있습니다. 확신이 없으면 코드 작성 전 `node_modules/next/dist/docs/`를 확인하세요.
 
-## 자주 사용하는 명령어
+- **동적 라우트 params는 Promise**: `params: Promise<{locale: string}>` 형태로 선언하고 반드시 `await params`로 처리해야 함
+  - 예: `const { locale } = await params` (메인 페이지 참조)
+- **shadcn/ui base-nova**: `@base-ui/react` 헤드리스 컴포넌트 기반, `render` prop으로 다른 엘리먼트 래핑 가능
+- **next-intl 통합**: 동적 라우트 + 다국어 병합 시 params 처리 순서 중요
+
+## 개발 명령어
 
 ```bash
-# 개발 서버 실행 (localhost:3000)
-npm run dev
-
-# 프로덕션 빌드
-npm run build
-
-# 빌드된 앱 실행 (로컬에서 프로덕션 모드 테스트)
-npm run start
-
-# ESLint 실행 (린트 검사)
-npm run lint
+npm run dev       # 개발 서버 (localhost:3000, HMR 활성화)
+npm run build     # 프로덕션 빌드
+npm run start     # 빌드된 앱 실행 (프로덕션 모드 로컬 테스트)
+npm run lint      # ESLint 검사
 ```
+
+### 개발 팁
+- 개발 중 브라우저 언어 설정을 `/ko`, `/en` URL로 명시 변경 가능
+- 다크모드는 시스템 설정 또는 토글로 테스트 (로컬 저장소에 저장)
+- TypeScript strict mode 활성화 → `npm run dev`만으로 타입 검사 자동 수행
 
 ## 주요 의존성
 
 - **프레임워크**: Next.js 16, React 19, TypeScript 5
 - **스타일**: TailwindCSS v4, oklch 색상 시스템
-- **UI**: shadcn/ui (base-nova), @base-ui/react (헤드리스 컴포넌트 기반)
-- **테마**: next-themes (라이트/다크/시스템 모드)
-- **유틸리티**: 
-  - `class-variance-authority`: 컴포넌트 변형 정의
-  - `clsx` + `tailwind-merge`: 클래스 병합 (조건부/동적 클래스 충돌 해결)
-  - `usehooks-ts`: useMediaQuery, useLocalStorage 등 검증된 커스텀 훅
-  - `lucide-react`: SVG 아이콘 라이브러리
-  - `sonner`: 토스트 알림 (진행 상황 메시지, 에러 표시 등)
+- **UI**: shadcn/ui (base-nova), @base-ui/react
+- **i18n**: next-intl (한국어/영어 자동 전환)
+- **테마**: next-themes (라이트/다크/시스템 모드 + 로컬 저장소)
+- **애니메이션**: Framer Motion (페이드인, 스태거 효과)
+- **3D**: Three.js + @react-three/fiber (선택적)
+- **아이콘**: lucide-react, react-icons
+- **알림**: sonner (토스트)
+- **유틸리티**:
+  - CVA (컴포넌트 변형 정의)
+  - clsx + tailwind-merge (클래스 병합)
+  - usehooks-ts (useMediaQuery, useLocalStorage 등)
 
 ## 파일 경로 별칭
 
-`tsconfig.json`에서 `@/*` → `./src/*`로 설정:
+`tsconfig.json`에서 `@/*` → `./src/*` 설정:
 ```tsx
 import { Button } from '@/components/ui/button'
+import { HeroSection } from '@/components/sections/hero-section'
 import { cn } from '@/lib/utils'
 ```
 
-## 페이지 구조 패턴
+## 포트폴리오 섹션 추가 패턴
 
-새 페이지/라우트를 추가할 때 권장 패턴:
+새 섹션을 추가할 때:
 
 ```tsx
-// src/app/feature/page.tsx
-import { PageHeader } from '@/components/patterns/page-header'
-import { Container } from '@/components/layout/container'
+// src/components/sections/my-section.tsx
+'use client'
 
-export default function Feature() {
+import { FadeInSection } from '@/components/motion/fade-in-section'
+
+export function MySection() {
+  return (
+    <FadeInSection>
+      <section className="py-16 md:py-24">
+        {/* 섹션 콘텐츠 */}
+      </section>
+    </FadeInSection>
+  )
+}
+```
+
+메인 페이지에 추가:
+```tsx
+// src/app/[locale]/page.tsx
+import { MySection } from '@/components/sections/my-section'
+
+export default async function Home({ params }: Props) {
+  const { locale } = await params
+  setRequestLocale(locale)
+  
   return (
     <>
-      <PageHeader 
-        title="기능명"
-        description="설명"
-      />
-      <Container>
-        {/* 콘텐츠 */}
-      </Container>
+      <HeroSection />
+      <AboutSection />
+      <MySection /> {/* 추가 */}
+      {/* ... */}
     </>
   )
 }
 ```
 
-동적 라우트의 경우:
-```tsx
-// src/app/resource/[id]/page.tsx
-export async function generateStaticParams() {
-  return [{ id: '1' }, { id: '2' }]
-}
+## 다국어 콘텐츠 작성
 
-export default async function ResourceDetail({ 
-  params 
-}: { 
-  params: Promise<{ id: string }> 
-}) {
-  const { id } = await params  // ⚠️ 반드시 await!
-  // ...
+다국어 지원이 필요한 컴포넌트:
+
+```tsx
+import { useTranslations } from 'next-intl'
+
+export function MyComponent() {
+  const t = useTranslations('myComponent')
+  
+  return <h2>{t('title')}</h2>
 }
 ```
 
-## 스타일링 규칙
+번역 파일: `src/i18n/messages/ko.json`, `en.json`
+- 계층 구조: `{ "myComponent": { "title": "..." } }`
+- 메타데이터 다국어화: `getTranslations({ locale, namespace: 'metadata' })`
 
-- **클래스 병합**: `cn()` 함수 사용하여 동적 클래스 충돌 해결
-  ```tsx
-  className={cn("px-4 py-2", variant === 'primary' && "bg-primary")}
-  ```
-- **색상 변수**: `src/app/globals.css`의 oklch 변수 참조
-  ```css
-  bg-primary, text-foreground, border-border 등
-  ```
-- **반응형**: TailwindCSS 브레이크포인트 (`md:`, `lg:` 등)
-- **다크모드**: `dark:` 접두사로 자동 처리 (next-themes 활용)
+## 스타일링 & 애니메이션 규칙
 
-## 예제 및 데모
+### 클래스 병합
+```tsx
+import { cn } from '@/lib/utils'
 
-프로젝트의 `/examples` 페이지는 6가지 기능 데모를 제공합니다:
-1. **component-showcase**: shadcn UI 컴포넌트 15개 전시
-2. **form-basics**: React state + HTML5 검증을 활용한 폼
-3. **layout-patterns**: Tailwind 그리드/구분선 활용
-4. **usehooks-ts-demo**: 6개 유틸리티 훅 (useCounter, useToggle, useLocalStorage, useCopyToClipboard, useWindowSize, useDarkMode)
-5. **data-fetching**: 서버 컴포넌트 + 클라이언트 fetch 비교
-6. **theming-and-dark-mode**: 테마 전환 및 CSS 변수 커스터마이징
+className={cn("px-4 py-2", variant === 'primary' && "bg-primary", className)}
+```
 
-각 데모는 `src/components/examples/*.tsx`에서 구현되며, `src/app/examples/[slug]/page.tsx`에서 동적 렌더링됨. 라이브 데모 + 소스코드 표시 기능 제공.
+### 색상 변수
+`src/app/globals.css`의 oklch 색상 참조:
+- `bg-primary`, `text-foreground`, `border-border` 등
+- 다크모드는 `dark:` 접두사 자동 처리
 
-## 개발 워크플로우
+### 애니메이션
+- **스크롤 페이드인**: `FadeInSection` 래퍼 (컴포넌트 자동 감싼 후 관찰)
+- **스태거 애니메이션**: `StaggerList` (리스트 항목 순차 나타남)
+- **커스텀 모션**: Framer Motion의 `motion.div`, `whileInView` 등 사용 가능
 
-1. **새 페이지**: `src/app/[route]/page.tsx` 생성 (자동 라우팅)
-2. **새 UI 컴포넌트**: `src/components/ui/` 추가 (CVA 패턴 사용)
-   - shadcn CLI로 추가 시 `components.json` 설정(style: `base-nova`, baseColor: `neutral`, iconLibrary: `lucide`)에 따라 파일이 생성됨
-3. **복합 컴포넌트**: `src/components/patterns/` 추가
-4. **클라이언트 로직**: `'use client'` 지시어로 컴포넌트 마크 (useState, 이벤트 핸들러 등)
-5. **서버 데이터**: 페이지/레이아웃 컴포넌트에서 `async` 선언 후 직접 fetch
-6. **타입 안전**: TypeScript strict mode 활성화 — 컴포넌트 props, API 응답 등에 타입 명시
+예제:
+```tsx
+import { FadeInSection } from '@/components/motion/fade-in-section'
 
-## 검증 및 테스트
+<FadeInSection>
+  <div>콘텐츠</div>
+</FadeInSection>
+```
 
-- **TypeScript**: `npm run dev` 실행 시 자동 타입 체크 (strict mode)
-- **ESLint**: `npm run lint`로 코드 품질 검사
-- **시각적 검증**: `/examples` 페이지에서 기능 및 UI 확인
-- **주의**: 이 프로젝트에는 자동화된 단위/통합 테스트 스위트가 없습니다 (jest/vitest 미설정, `*.test.ts` 또는 `*.spec.ts` 파일 없음). 모든 검증은 수동 브라우저 테스트 또는 타입 체크로 진행됩니다.
+## 포트폴리오 콘텐츠 관리
+
+### 프로젝트 데이터
+프로젝트는 컴포넌트와 분리하여 관리됩니다. 데이터 파일 위치를 확인한 후:
+- 프로젝트 메타데이터 (제목, 설명, 태그, 이미지) 추가/수정
+- 포트폴리오 섹션 컴포넌트에서 자동으로 렌더링
+
+### 이력서 & 경력 데이터
+- `src/components/sections/experience-section.tsx`: 경력 타임라인
+- `src/components/resume/experience-timeline.tsx`: 타임라인 컴포넌트
+- 데이터 소스 파악 후 업데이트
+
+### 다국어 콘텐츠
+- 정적 텍스트: `src/i18n/messages/ko.json`, `en.json`
+- 동적 콘텐츠: 각 섹션 컴포넌트에서 `useTranslations()` 사용
+
+## 검증 및 테스트 규칙
+
+- **TypeScript**: strict mode 자동 검사 (타입 에러 시 빌드 실패)
+- **ESLint**: `npm run lint`로 검사
+- **시각적 검증**: `npm run dev` 후 브라우저에서 확인
+  - 반응형: 모바일(375px), 태블릿(768px), 데스크톱(1280px) 테스트
+  - 다국어: `/ko`, `/en` 모두 테스트
+  - 테마: 라이트/다크 모드 확인
+- **주의**: 자동화된 단위/통합 테스트 없음 (jest/vitest 미설정). 모든 검증은 수동 브라우저 테스트와 타입 체크로 진행합니다.
