@@ -9,7 +9,7 @@ export const sideProjects: SideProject[] = [
     description:
       'Next.js 16 App Router 기반 개인 포트폴리오로, 다국어(한/영) 및 다크모드를 지원하며 GA 이벤트 기반 사용자 행동 분석을 구현했습니다.',
     technologies: ['Next.js', 'React', 'TypeScript', 'TailwindCSS', 'Playwright MCP', 'shadcn/ui', 'Framer Motion', 'next-intl', 'Vercel'],
-    images: ['/images/side-projects/portfolio-website.png'],
+    images: ['/images/side_projects/sideProject-1-main.png'],
     year: 2026,
     highlights: [
       'App Router 기반 라우팅/레이아웃 설계 및 SSR/ISR 최적화',
@@ -40,7 +40,18 @@ export const sideProjects: SideProject[] = [
     description:
       '참여형 광고로 포인트를 적립하고 가맹점에서 현금처럼 사용하는 리워드 플랫폼입니다. 회원/가맹점/관리자 3개 영역으로 구성된 반응형 웹앱이며, Vue.js 기반으로 모바일 환경에 최적화되어 있습니다.',
     technologies: ['Vue.js', 'Vite', 'Vuex', 'Vuetify', 'SCSS', 'JavaScript'],
-    images: ['/images/side-projects/rewardit.png'],
+    images: [
+      '/images/side_projects/sideProject-2-main.png',
+      '/images/side_projects/sideProject-2-detail-1.png',
+      '/images/side_projects/sideProject-2-detail-2.png',
+      '/images/side_projects/sideProject-2-detail-3.png',
+      '/images/side_projects/sideProject-2-detail-4.png',
+      '/images/side_projects/sideProject-2-detail-5.png',
+      '/images/side_projects/sideProject-2-detail-6.png',
+      '/images/side_projects/sideProject-2-detail-7.png',
+      '/images/side_projects/sideProject-2-detail-8.png',
+      '/images/side_projects/sideProject-2-detail-9.png',
+    ],
     year: 2024,
     highlights: [
       '3개 권한(회원/가맹점/관리자) 분기 라우팅 및 JWT 인증 구현',
@@ -69,7 +80,15 @@ export const sideProjects: SideProject[] = [
     description:
       '현지인이 추천하는 여행 일정표를 마트처럼 판매/구매할 수 있는 여행 콘텐츠 마켓플레이스입니다.',
     technologies: ['Vue.js', 'Bootstrap', 'Axios', 'JavaScript', 'HTML'],
-    images: ['/images/side-projects/market-trip.png'],
+    images: [
+      '/images/side_projects/sideProject-3-main.png',
+      '/images/side_projects/sideProject-3-detail-1.png',
+      '/images/side_projects/sideProject-3-detail-2.png',
+      '/images/side_projects/sideProject-3-detail-3.png',
+      '/images/side_projects/sideProject-3-detail-4.png',
+      '/images/side_projects/sideProject-3-detail-5.png',
+      '/images/side_projects/sideProject-3-detail-6.png',
+    ],
     year: 2022,
     highlights: [
       '프로젝트 리더로서 팀 기획·설계·개발 전담',
@@ -96,7 +115,14 @@ export const sideProjects: SideProject[] = [
     title: '식단관리 서비스',
     description: '수술/시술 후 환자 및 일반인을 위한 AI 기반 식단 촬영·분석·기록 앱입니다.',
     technologies: ['React Native', 'React.js', 'JavaScript', 'SCSS'],
-    images: ['/images/side-projects/diet-management.png'],
+    images: [
+      '/images/side_projects/sideProject-4-main.png',
+      '/images/side_projects/sideProject-4-detail-1.png',
+      '/images/side_projects/sideProject-4-detail-2.png',
+      '/images/side_projects/sideProject-4-detail-3.png',
+      '/images/side_projects/sideProject-4-detail-4.png',
+      '/images/side_projects/sideProject-4-detail-5.png',
+    ],
     year: 2022,
     highlights: [
       'AI 분석 결과를 사용자 친화적으로 노출하는 UI/UX 설계',
