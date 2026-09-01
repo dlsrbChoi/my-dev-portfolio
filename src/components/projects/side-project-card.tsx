@@ -73,12 +73,12 @@ export function SideProjectCard({ project, className }: SideProjectCardProps) {
             <CardContent className="flex flex-1 flex-col justify-between px-6 pb-6">
               <div className="flex flex-col gap-3">
                 {/* 요약 */}
-                <p className="text-sm text-foreground/90 line-clamp-2">
+                <p className="text-sm text-foreground/90 line-clamp-2 h-10">
                   {project.description}
                 </p>
 
                 {/* 기술 스택 태그 */}
-                <div className="flex flex-wrap gap-2">
+                <div className="flex flex-wrap gap-2 h-12">
                   {project.technologies.slice(0, 4).map((tech, idx) => {
                     const isCore = idx === 0
                     const isSub = idx === 1 || idx === 2
@@ -122,11 +122,11 @@ export function SideProjectCard({ project, className }: SideProjectCardProps) {
 
               {/* 핵심 기능 */}
               {project.highlights && project.highlights.length > 0 && (
-                <div className="flex flex-col gap-2 pt-3">
+                <div className="flex flex-col gap-2 pt-3 h-16">
                   {project.highlights.slice(0, 2).map((highlight, idx) => (
-                    <div key={idx} className="flex gap-2">
-                      <span className="text-primary text-lg leading-none">•</span>
-                      <p className="text-xs text-foreground/80 leading-relaxed flex-1">
+                    <div key={idx} className="flex gap-2 line-clamp-1">
+                      <span className="text-primary text-lg leading-none shrink-0">•</span>
+                      <p className="text-xs text-foreground/80 leading-relaxed flex-1 line-clamp-1">
                         {highlight}
                       </p>
                     </div>
