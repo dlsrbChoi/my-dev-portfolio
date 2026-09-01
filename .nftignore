@@ -1,0 +1,6 @@
+*.map
+*.test.js
+*.test.ts
+node_modules/.cache
+.git
+.next/cache
