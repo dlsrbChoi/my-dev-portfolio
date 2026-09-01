@@ -1,7 +1,7 @@
 'use client'
 
 import { useTranslations, useLocale } from 'next-intl'
-import { Languages } from 'lucide-react'
+import { Globe } from 'lucide-react'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -27,7 +27,7 @@ export function LanguageSwitcher() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger render={<Button variant="ghost" size="icon" />}>
-        <Languages className="h-[1.2rem] w-[1.2rem]" />
+        <Globe className="h-[1.2rem] w-[1.2rem]" />
         <span className="sr-only">{t('srLabel')}</span>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">

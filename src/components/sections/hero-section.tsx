@@ -31,12 +31,14 @@ export function HeroSection() {
         <div className="space-y-6">
           <div className="space-y-2">
             <p className="text-lg text-primary font-semibold">{t('greeting')}</p>
-            <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold tracking-tight leading-tight">
+            <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold tracking-tight leading-tight whitespace-nowrap">
               {t('titleLine1')} {t('titleLine2')}
             </h1>
           </div>
           <p className="text-base sm:text-lg text-muted-foreground leading-relaxed">
-            {t('description')}
+            {t.rich('description', {
+              highlight: (chunks) => <span className="font-bold text-primary">{chunks}</span>,
+            })}
           </p>
           <div className="flex flex-col sm:flex-row gap-4 pt-4">
             <a
