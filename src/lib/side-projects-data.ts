@@ -71,7 +71,7 @@ export const sideProjects: SideProject[] = [
     ],
     period: { start: '2024-12', end: '2025-02' },
     role: '외주 프로젝트 참여 (프론트엔드 전담)',
-    links: { github: 'https://github.com/dlsrbChoi/rewardfe' },
+    links: { github: 'https://github.com/dlsrbChoi/rewardit-fe' },
   },
   {
     id: 'market-trip',
@@ -107,7 +107,7 @@ export const sideProjects: SideProject[] = [
     ],
     period: { start: '2022-09', end: '2022-09' },
     role: '팀 프로젝트 리더 (기획, 화면설계, 프론트엔드 개발)',
-    links: { github: 'https://github.com/dlsrbChoi/followtrip-vue' },
+    links: { github: 'https://github.com/dlsrbChoi/follow-trip-vue' },
   },
   {
     id: 'diet-management',
@@ -141,7 +141,7 @@ export const sideProjects: SideProject[] = [
     ],
     period: { start: '2022-03', end: '2022-06' },
     role: '팀원 (프론트엔드/WebApp 개발)',
-    links: { github: 'https://github.com/dlsrbChoi/reactnaproject-2022-1' },
+    links: { github: 'https://github.com/dlsrbChoi/reactnative-project-2022-1' },
   },
 ]
 
