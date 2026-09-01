@@ -1,5 +1,5 @@
 {
-  "buildCommand": "npm run build && node scripts/create-middleware-nft.js || true",
+  "buildCommand": "npm run build",
   "installCommand": "npm ci --legacy-peer-deps",
   "env": {
     "NEXT_SKIP_ENV_VALIDATION": "true",
