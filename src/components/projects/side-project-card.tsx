@@ -39,8 +39,8 @@ export function SideProjectCard({ project, className }: SideProjectCardProps) {
         <SpotlightCard className="h-full">
           <Card
             className={cn(
-              'flex h-full cursor-pointer flex-col overflow-hidden transition-shadow duration-300 hover:ring-foreground/20',
-              'min-h-96',
+              'flex cursor-pointer flex-col overflow-hidden transition-shadow duration-300 hover:ring-foreground/20',
+              'h-96',
               className
             )}
             onClick={handleOpenModal}
@@ -128,7 +128,7 @@ export function SideProjectCard({ project, className }: SideProjectCardProps) {
 
               {/* 핵심 기능 */}
               {project.highlights && project.highlights.length > 0 && (
-                <div className="flex flex-col gap-2 pt-3 border-t border-border">
+                <div className="flex flex-col gap-2 pt-3">
                   {project.highlights.slice(0, 2).map((highlight, idx) => (
                     <div key={idx} className="flex gap-2">
                       <span className="text-primary text-lg leading-none">•</span>
