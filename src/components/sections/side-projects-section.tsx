@@ -24,7 +24,7 @@ export async function SideProjectsSection() {
           />
         ) : (
           <StaggerList className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {sideProjects.slice(0, 4).map((project) => (
+            {sideProjects.map((project) => (
               <StaggerItem key={project.id}>
                 <SideProjectCard project={project} />
               </StaggerItem>

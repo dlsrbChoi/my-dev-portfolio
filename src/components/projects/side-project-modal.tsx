@@ -13,7 +13,15 @@ import {
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
-import { ChevronLeft, ChevronRight, GitBranch, ExternalLink } from 'lucide-react'
+import {
+  ChevronLeft,
+  ChevronRight,
+  GitBranch,
+  ExternalLink,
+  Briefcase,
+  Calendar,
+  Users,
+} from 'lucide-react'
 import { event as gaEvent } from '@/lib/gtag'
 
 interface SideProjectModalProps {
@@ -52,6 +60,26 @@ export function SideProjectModal({ project, open, onOpenChange }: SideProjectMod
       <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto sm:max-w-4xl">
         <DialogHeader>
           <DialogTitle className="text-2xl font-bold">{project.title}</DialogTitle>
+          <div className="mt-2 flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
+            {project.role && (
+              <div className="flex items-center gap-2">
+                <Briefcase className="h-4 w-4" aria-hidden="true" />
+                <span>{project.role}</span>
+              </div>
+            )}
+            {project.period && (
+              <div className="flex items-center gap-2">
+                <Calendar className="h-4 w-4" aria-hidden="true" />
+                <span>{project.period.start} ~ {project.period.end ?? t('inProgress')}</span>
+              </div>
+            )}
+            {project.teamSize !== undefined && project.teamSize > 0 && (
+              <div className="flex items-center gap-2">
+                <Users className="h-4 w-4" aria-hidden="true" />
+                <span>{t('personCount', { count: project.teamSize })}</span>
+              </div>
+            )}
+          </div>
         </DialogHeader>
 
         {/* 이미지 갤러리 */}
@@ -160,27 +188,41 @@ export function SideProjectModal({ project, open, onOpenChange }: SideProjectMod
           </>
         )}
 
-        {/* 링크 */}
-        {project.links && (
+        {/* 링크 섹션 */}
+        {project.links && (Object.values(project.links).some(link => link)) && (
           <>
             <Separator className="my-4" />
-            <div className="flex flex-wrap gap-2">
-              {project.links.github && (
-                <Button variant="outline" size="sm" nativeButton={false} onClick={() => handleLinkClick('github')} render={
-                  <a href={project.links.github} target="_blank" rel="noopener noreferrer" />
-                }>
-                  <GitBranch className="mr-2 h-4 w-4" aria-hidden="true" />
-                  {t('github')}
-                </Button>
-              )}
-              {project.links.demo && (
-                <Button variant="outline" size="sm" nativeButton={false} onClick={() => handleLinkClick('demo')} render={
-                  <a href={project.links.demo} target="_blank" rel="noopener noreferrer" />
-                }>
-                  <ExternalLink className="mr-2 h-4 w-4" aria-hidden="true" />
-                  {t('demo')}
-                </Button>
-              )}
+            <div>
+              <h3 className="mb-4 flex items-center gap-2 text-lg font-semibold">
+                <span className="h-5 w-1 rounded-full bg-primary" aria-hidden="true" />
+                {t('links')}
+              </h3>
+              <div className="flex flex-wrap gap-3">
+                {project.links.github && (
+                  <a
+                    href={project.links.github}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={() => handleLinkClick('github')}
+                    className="inline-flex items-center gap-2 rounded-md bg-muted px-3 py-2 hover:bg-muted/80 transition-colors"
+                  >
+                    <GitBranch className="h-4 w-4" aria-hidden="true" />
+                    <span className="text-sm font-medium">GitHub Repository</span>
+                  </a>
+                )}
+                {project.links.demo && (
+                  <a
+                    href={project.links.demo}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={() => handleLinkClick('demo')}
+                    className="inline-flex items-center gap-2 rounded-md bg-muted px-3 py-2 hover:bg-muted/80 transition-colors"
+                  >
+                    <ExternalLink className="h-4 w-4" aria-hidden="true" />
+                    <span className="text-sm font-medium">Demo</span>
+                  </a>
+                )}
+              </div>
             </div>
           </>
         )}
