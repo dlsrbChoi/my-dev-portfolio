@@ -40,7 +40,7 @@ export function SideProjectCard({ project, className }: SideProjectCardProps) {
           <Card
             className={cn(
               'flex h-full cursor-pointer flex-col overflow-hidden transition-shadow duration-300 hover:ring-foreground/20',
-              'h-96',
+              'min-h-96',
               className
             )}
             onClick={handleOpenModal}
@@ -55,6 +55,12 @@ export function SideProjectCard({ project, className }: SideProjectCardProps) {
                   sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                   className="object-cover"
                 />
+                {project.year && (
+                  <div className="absolute bottom-3 left-3 flex items-center gap-1.5 rounded-full bg-black/60 px-3 py-1.5 backdrop-blur-sm">
+                    <GitBranch className="h-3.5 w-3.5 text-white" aria-hidden="true" />
+                    <span className="text-sm font-semibold text-white">{project.year}</span>
+                  </div>
+                )}
               </div>
             )}
 
@@ -71,7 +77,7 @@ export function SideProjectCard({ project, className }: SideProjectCardProps) {
             </CardHeader>
 
             <CardContent className="flex flex-1 flex-col justify-between px-6 pb-6">
-              <div className="flex flex-col gap-3 overflow-hidden">
+              <div className="flex flex-col gap-3">
                 {/* 요약 */}
                 <p className="text-sm text-foreground/90 line-clamp-2">
                   {project.description}
@@ -79,7 +85,7 @@ export function SideProjectCard({ project, className }: SideProjectCardProps) {
 
                 {/* 기술 스택 태그 */}
                 <div className="flex flex-wrap gap-2">
-                  {project.technologies.slice(0, 3).map((tech, idx) => {
+                  {project.technologies.slice(0, 4).map((tech, idx) => {
                     const isCore = idx === 0
                     const isSub = idx === 1 || idx === 2
 
@@ -112,22 +118,27 @@ export function SideProjectCard({ project, className }: SideProjectCardProps) {
                       </Badge>
                     )
                   })}
-                  {project.technologies.length > 3 && (
+                  {project.technologies.length > 4 && (
                     <Badge variant="outline" className="text-xs">
-                      +{project.technologies.length - 3}
+                      +{project.technologies.length - 4}
                     </Badge>
                   )}
                 </div>
-
-                {/* 주요 기능 불릿 */}
-                {project.features.length > 0 && (
-                  <ul className="list-inside list-disc space-y-1 text-sm text-muted-foreground line-clamp-2">
-                    {project.features.slice(0, 2).map((feature, idx) => (
-                      <li key={`${feature}-${idx}`}>{feature}</li>
-                    ))}
-                  </ul>
-                )}
               </div>
+
+              {/* 핵심 기능 */}
+              {project.highlights && project.highlights.length > 0 && (
+                <div className="flex flex-col gap-2 pt-3 border-t border-border">
+                  {project.highlights.slice(0, 2).map((highlight, idx) => (
+                    <div key={idx} className="flex gap-2">
+                      <span className="text-primary text-lg leading-none">•</span>
+                      <p className="text-xs text-foreground/80 leading-relaxed flex-1">
+                        {highlight}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              )}
             </CardContent>
           </Card>
         </SpotlightCard>

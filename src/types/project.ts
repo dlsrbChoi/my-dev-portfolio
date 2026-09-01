@@ -40,8 +40,16 @@ export interface SideProject {
   description: string
   technologies: string[]
   images: string[]
+  year?: number
+  highlights?: string[]
   features: string[]
   learnings: string[]
+  period?: {
+    start: string // YYYY-MM 형식
+    end: string | null // null이면 진행 중
+  }
+  role?: string
+  teamSize?: number
   links?: {
     github?: string
     demo?: string
