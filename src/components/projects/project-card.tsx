@@ -94,7 +94,7 @@ export function ProjectCard({ project, className }: ProjectCardProps) {
 
                 {/* 기술 스택 태그 */}
                 <div className="flex flex-wrap gap-2">
-                  {project.technologies.map((tech, idx) => {
+                  {project.technologies.slice(0, 6).map((tech, idx) => {
                     const isCore = idx === 0
                     const isSub = idx === 1 || idx === 2
 
@@ -127,6 +127,11 @@ export function ProjectCard({ project, className }: ProjectCardProps) {
                       </Badge>
                     )
                   })}
+                  {project.technologies.length > 6 && (
+                    <Badge variant="outline" className="text-xs">
+                      +{project.technologies.length - 6}
+                    </Badge>
+                  )}
                 </div>
 
                 {/* 주요 기능 불릿 */}

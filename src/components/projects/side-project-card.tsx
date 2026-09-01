@@ -3,12 +3,12 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { useMediaQuery } from 'usehooks-ts'
-import Image from 'next/image'
 import type { SideProject } from '@/types/project'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { SpotlightCard } from '@/components/common/spotlight-card'
 import { SideProjectModal } from '@/components/projects/side-project-modal'
+import { ImageCarousel } from '@/components/projects/image-carousel'
 import { ArrowUpRight, GitBranch } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { event as gaEvent } from '@/lib/gtag'
@@ -45,18 +45,12 @@ export function SideProjectCard({ project, className }: SideProjectCardProps) {
             )}
             onClick={handleOpenModal}
           >
-            {/* 썸네일 이미지 */}
+            {/* 썸네일 이미지 슬라이드 */}
             {project.images.length > 0 && (
               <div className="relative h-40 w-full shrink-0 overflow-hidden bg-muted">
-                <Image
-                  src={project.images[0]}
-                  alt={project.title}
-                  fill
-                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                  className="object-cover"
-                />
+                <ImageCarousel images={project.images} alt={project.title} autoPlayInterval={7000} />
                 {project.year && (
-                  <div className="absolute bottom-3 left-3 flex items-center gap-1.5 rounded-full bg-black/60 px-3 py-1.5 backdrop-blur-sm">
+                  <div className="absolute bottom-3 left-3 flex items-center gap-1.5 rounded-full bg-black/60 px-3 py-1.5 backdrop-blur-sm z-20">
                     <GitBranch className="h-3.5 w-3.5 text-white" aria-hidden="true" />
                     <span className="text-sm font-semibold text-white">{project.year}</span>
                   </div>
