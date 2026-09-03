@@ -14,7 +14,11 @@ interface Duration {
  */
 export function calculateDuration(startDate: string, endDate?: string): Duration {
   const start = new Date(startDate)
-  const end = endDate ? new Date(endDate) : new Date()
+  const rawEnd = endDate ? new Date(endDate) : new Date()
+  // 종료월을 재직 개월수에 포함시키기 위해 종료일 다음날 기준으로 계산 (예: 1월 시작 ~ 1월 31일 종료 = 1개월)
+  const end = endDate
+    ? new Date(rawEnd.getFullYear(), rawEnd.getMonth(), rawEnd.getDate() + 1)
+    : rawEnd
 
   let years = end.getFullYear() - start.getFullYear()
   let months = end.getMonth() - start.getMonth()
